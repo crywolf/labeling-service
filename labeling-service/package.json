@@ -1,0 +1,55 @@
+{
+  "name": "LabelingService",
+  "version": "0.0.0-semantically-released",
+  "description": "",
+  "main": "src/app.ts",
+  "scripts": {
+    "commit": "git-cz",
+    "lint": "tslint ./src/{,**/}*.ts",
+    "test": "mocha --opts ./mocha.opts",
+    "test:watch": "mocha -w --opts ./mocha.opts",
+    "test:commit": "npm run lint --silent",
+    "test:push": "npm run test --silent && npm run lint --silent",
+    "coverage": "nyc npm run test",
+    "precommit": "npm run test:commit --silent",
+    "prepush": "npm run test:push --silent",
+    "security": "nsp check",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
+    "start": "ts-node src/app.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "restify": "^4.3.0"
+  },
+  "devDependencies": {
+    "@types/mocha": "^2.2.39",
+    "commitizen": "^2.9.5",
+    "mocha": "^3.2.0",
+    "nsp": "^2.6.2",
+    "nyc": "^10.1.2",
+    "semantic-release": "^6.3.2",
+    "ts-node": "^2.0.0",
+    "tslint": "^4.4.2",
+    "tslint-eslint-rules": "^3.3.0",
+    "typescript": "^2.1.5"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mbrtargeting/slabs-cz"
+  },
+  "publishConfig": {
+    "registry": "http://jenkins.billboard.intra:4873/"
+  },
+  "release": {
+    "branch": "master",
+    "verifyConditions": {
+      "path": "./node_modules/@krux/condition-jenkins"
+    }
+  }
+}
