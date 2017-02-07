@@ -1,7 +1,7 @@
-import {ServerInterface as Server} from '../server/HttpServerInterface';
+import {HttpServerInterface as HttpServer} from '../server/ServerInterface';
 
 interface RouterInterface {
-    registerRoutes (server: Server);
+    registerRoutes (server: HttpServer);
 }
 
 export default RouterInterface;

@@ -1,4 +1,4 @@
 import config from '../../config';
-import {HttpServer} from './HttpServer';
+import {Server} from './Server';
 
-export default new HttpServer(config);
+export default new Server(config);

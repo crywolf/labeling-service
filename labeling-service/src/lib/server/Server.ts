@@ -1,12 +1,12 @@
 import logger from '../logger';
 import * as restify from 'restify';
 import Router from '../router/Router';
-import {HttpServerInterface, ServerInterface as Server} from './HttpServerInterface';
+import {ServerInterface, HttpServerInterface as HttpServer} from './ServerInterface';
 
 logger.module('HttpServer');
 
-export class HttpServer implements HttpServerInterface {
-    private server: Server;
+export class Server implements ServerInterface {
+    private server: HttpServer;
 
     constructor (private config) {
         this.server = restify.createServer({

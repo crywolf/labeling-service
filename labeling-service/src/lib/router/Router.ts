@@ -1,11 +1,11 @@
 import logger from '../logger';
 import EntityLabelsQuery from '../../queries/EntityLabelsQuery';
 import RouterInterface from './RouterInterface';
-import {ServerInterface as Server} from '../server/HttpServerInterface';
+import {HttpServerInterface as HttpServer} from '../server/ServerInterface';
 
 class Router implements RouterInterface {
-    public registerRoutes (server: Server) {
 
+    public registerRoutes (server: HttpServer) {
         const query = new EntityLabelsQuery();
         const method = query.method.toLowerCase();
         const url = query.url;
@@ -13,6 +13,7 @@ class Router implements RouterInterface {
         logger.info(`Registering route ${method.toUpperCase()} ${url}`);
         server[method](url, query.handler.bind(query));
     }
+
 }
 
 export default Router;
