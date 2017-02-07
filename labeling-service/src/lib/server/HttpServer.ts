@@ -1,11 +1,12 @@
-import {logger} from '../logger';
+import logger from '../logger';
 import * as restify from 'restify';
-import {Router} from '../router/Router';
+import Router from '../router/Router';
+import {HttpServerInterface, ServerInterface as Server} from './HttpServerInterface';
 
 logger.module('HttpServer');
 
-export class HttpServer {
-    private server;
+export class HttpServer implements HttpServerInterface {
+    private server: Server;
 
     constructor (private config) {
         this.server = restify.createServer({
@@ -14,12 +15,14 @@ export class HttpServer {
     }
 
     public registerRoutes (router: Router) {
-        logger.info('Registering routes');
         router.registerRoutes(this.server);
     }
 
     public listen () {
-        this.server.listen(this.config.httpServer.port, this.config.httpServer.hostname, () => {
+        const port = this.config.httpServer.port;
+        const hostname = this.config.httpServer.hostname;
+
+        this.server.listen(port, hostname, () => {
             logger.info(`${this.server.name} listening at ${this.server.url}`);
         });
     }

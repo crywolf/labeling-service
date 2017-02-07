@@ -1,4 +1,4 @@
-import {config} from '../../config';
+import config from '../../config';
 import {HttpServer} from './HttpServer';
 
-export const server = new HttpServer(config);
+export default new HttpServer(config);
