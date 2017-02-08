@@ -8,7 +8,8 @@ class AllEntitiesHavingLabelQuery extends Query {
     };
 
     protected response (req) {
-        return 'hello from AllEntitiesHavingLabelQuery: ' + req.params.ownerId;
+        const data = 'hello from AllEntitiesHavingLabelQuery: ' + req.params.ownerId;
+        return new Promise((resolve) => resolve(data));
     }
 
 }

@@ -12,6 +12,8 @@ export class Server implements ServerInterface {
         this.server = restify.createServer({
             name: 'LabelingService'
         });
+        this.server.use(restify.queryParser());
+        this.server.use(restify.bodyParser({mapParams: false}));
     }
 
     public registerRoutes (router: Router) {

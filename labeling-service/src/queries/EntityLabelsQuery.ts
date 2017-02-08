@@ -8,7 +8,8 @@ class EntityLabelsQuery extends Query {
     };
 
     protected response (req) {
-        return 'hello ' + req.params.name;
+        const data = 'hello ' + req.params.name;
+        return new Promise((resolve) => resolve(data));
     }
 
 }

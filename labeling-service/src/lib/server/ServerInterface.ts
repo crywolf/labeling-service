@@ -9,6 +9,7 @@ export interface ServerInterface {
 export interface HttpServerInterface extends Server {
     name: string;
     url: string;
+    use (plugin: any);
 }
 
 export default ServerInterface;

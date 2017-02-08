@@ -1,11 +1,11 @@
-interface QuerySettings {
+interface CommandSettings {
     method: string;
     url: string;
 }
 
-abstract class Query {
+abstract class Command {
 
-    protected settings: QuerySettings;
+    protected settings: CommandSettings;
 
     get method (): string {
         return this.settings.method;
@@ -16,15 +16,15 @@ abstract class Query {
     }
 
     public handler (req, res, next): void {
-        this.response(req)
+        this.process(req)
             .then((data) => {
-                res.send(data);
-                next();
-            });
+            res.send(data);
+            next();
+        });
     }
 
-    protected abstract response (req): Promise<string>;
+    protected abstract process (req): Promise<any>;
 
 }
 
-export default Query;
+export default Command;
