@@ -2,9 +2,6 @@ import logger from '../logger';
 import RouterInterface from './RouterInterface';
 import {HttpServerInterface as HttpServer} from '../server/ServerInterface';
 
-// import EntityLabelsQuery from '../../queries/EntityLabelsQuery';
-// import AllEntitiesHavingLabelQuery from '../../queries/AllEntitiesHavingLabelQuery';
-
 import * as queries from '../../queries';
 
 class Router implements RouterInterface {
