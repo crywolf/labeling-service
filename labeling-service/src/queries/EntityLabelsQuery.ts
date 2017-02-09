@@ -4,12 +4,18 @@ class EntityLabelsQuery extends Query {
 
     protected readonly settings = {
         method: 'GET',
-        url: '/hello/:name'
+        url: '/owner/:ownerId/labeled-entities/:entityId/labels'
     };
 
     protected response (req) {
-        const data = 'hello ' + req.params.name;
-        return new Promise((resolve) => resolve(data));
+        const ownerId = parseInt(req.params.ownerId, 10);
+        const entityId = parseInt(req.params.entityId, 10);
+
+        const labelTypes = req.params.labelTypes ? req.params.labelTypes.split(',') : [];
+        const labelValues = req.params.labelValues ? req.params.labelValues.split(',') : [];
+        const entityTypes = req.params.entityTypes ? req.params.entityTypes.split(',') : [];
+
+        return this.store.entityLabels(ownerId, entityId, labelTypes, labelValues, entityTypes);
     }
 
 }

@@ -6,10 +6,14 @@ export interface ServerInterface {
     listen ();
 }
 
+interface RequestHandler {
+    (req: any, res: any, next: any);
+}
+
 export interface HttpServerInterface extends Server {
     name: string;
     url: string;
-    use (plugin: any);
+    use (plugin: RequestHandler): Server;
 }
 
 export default ServerInterface;

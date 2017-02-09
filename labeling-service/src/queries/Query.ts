@@ -1,3 +1,5 @@
+import Store from '../lib/store/Store';
+
 interface QuerySettings {
     method: string;
     url: string;
@@ -5,7 +7,13 @@ interface QuerySettings {
 
 abstract class Query {
 
+    protected store: Store;
+
     protected settings: QuerySettings;
+
+    constructor (store: Store) {
+        this.store = store;
+    }
 
     get method (): string {
         return this.settings.method;

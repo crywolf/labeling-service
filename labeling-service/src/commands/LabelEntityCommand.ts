@@ -8,8 +8,14 @@ class LabelEntityCommand extends Command {
     };
 
     protected process (req) {
-// console.log('-->', req.params, req.body);
-        return new Promise((resolve) => resolve());
+        const label = {
+            ownerId: parseInt(req.params.ownerId, 10),
+            entityId: req.body.entityId,
+            entityType: req.body.entityType,
+            type: req.body.type,
+            value: req.body.value
+        };
+        return this.store.labelEntity(label);
     }
 
 }

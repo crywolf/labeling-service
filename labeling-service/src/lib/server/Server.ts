@@ -14,6 +14,7 @@ export class Server implements ServerInterface {
         });
         this.server.use(restify.queryParser());
         this.server.use(restify.bodyParser({mapParams: false}));
+        // TODO use some authentication middleware
     }
 
     public registerRoutes (router: Router) {

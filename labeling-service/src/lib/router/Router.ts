@@ -5,6 +5,8 @@ import {HttpServerInterface as HttpServer} from '../server/ServerInterface';
 import * as queries from '../../queries';
 import * as commands from '../../commands';
 
+import store from '../../lib/store';
+
 class Router implements RouterInterface {
 
     public registerRoutes (server: HttpServer) {
@@ -14,7 +16,7 @@ class Router implements RouterInterface {
 
     private registerQueries (server: HttpServer) {
         Object.keys(queries).forEach((queryName) => {
-            const query = new (queries[queryName])();
+            const query = new (queries[queryName])(store);
 
             const method = query.method.toLowerCase();
             const url = query.url;
@@ -26,7 +28,7 @@ class Router implements RouterInterface {
 
     private registerCommands (server: HttpServer) {
         Object.keys(commands).forEach((commandName) => {
-            const command = new (commands[commandName])();
+            const command = new (commands[commandName])(store);
 
             let method = command.method.toLowerCase();
             method = (method === 'delete') ? 'del' : method;
