@@ -34,6 +34,7 @@
       "spaces"
     ],
     "interface-name": [true, "never-prefix"],
+    "object-literal-sort-keys": false,
     "no-parameter-properties": false,
     "trailing-comma": [
       true,
