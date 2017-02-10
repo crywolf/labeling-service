@@ -1,4 +1,4 @@
-import Command from './Command';
+import Command from '../../coreEntities/Command';
 
 class LabelEntityCommand extends Command {
 

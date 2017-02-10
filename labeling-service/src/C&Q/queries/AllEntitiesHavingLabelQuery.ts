@@ -1,4 +1,4 @@
-import Query from './Query';
+import Query from '../../coreEntities/Query';
 
 class AllEntitiesHavingLabelQuery extends Query {
 

@@ -2,8 +2,8 @@ import logger from '../logger';
 import RouterInterface from './RouterInterface';
 import {HttpServerInterface as HttpServer} from '../server/ServerInterface';
 
-import * as queries from '../../queries';
-import * as commands from '../../commands';
+import * as queries from '../../C&Q/queries';
+import * as commands from '../../C&Q/commands';
 
 import store from '../../lib/store';
 

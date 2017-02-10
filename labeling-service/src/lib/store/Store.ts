@@ -1,10 +1,4 @@
-interface Label {
-    ownerId: number;
-    entityId: number;
-    entityType: string;
-    type: string;
-    value: string;
-}
+import Label from '../../coreEntities/Label';
 
 class Store {
 
