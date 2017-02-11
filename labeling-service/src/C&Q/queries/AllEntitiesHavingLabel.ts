@@ -1,9 +1,9 @@
-import Query from '../../coreEntities/Query';
+import {Query, Method} from '../../coreEntities/Query';
 
-class AllEntitiesHavingLabelQuery extends Query {
+class AllEntitiesHavingLabel extends Query {
 
     protected readonly settings = {
-        method: 'GET',
+        method: Method.GET,
         url: '/owner/:ownerId/labeled-entities'
     };
 
@@ -33,4 +33,4 @@ class AllEntitiesHavingLabelQuery extends Query {
 
 }
 
-export default AllEntitiesHavingLabelQuery;
+export default AllEntitiesHavingLabel;

@@ -1,7 +1,9 @@
 import Store from '../lib/store/Store';
 
+enum Method { GET }
+
 interface QuerySettings {
-    method: string;
+    method: Method;
     url: string;
 }
 
@@ -16,7 +18,7 @@ abstract class Query {
     }
 
     get method (): string {
-        return this.settings.method;
+        return Method[this.settings.method];
     }
 
     get url (): string {
@@ -36,3 +38,4 @@ abstract class Query {
 }
 
 export default Query;
+export {Query, Method, QuerySettings};

@@ -3,10 +3,13 @@ import * as fs from 'fs';
 const commands = {};
 
 fs.readdirSync(__dirname + '/').forEach((fileName) => {
-    if (fileName.match(/Command\.ts$/) && fileName !== 'Command.ts') {
+    if (fileName !== 'index.ts') {
         const commandName = fileName.replace('.ts', '');
-        commands[commandName] = require(`./${fileName}`).default;
+        const command = require(`./${fileName}`).default;
+        if (Object.getPrototypeOf(command).name === 'Command') {
+            commands[commandName] = command;
+        }
     }
 });
 
-module.exports = commands;
+export = commands;

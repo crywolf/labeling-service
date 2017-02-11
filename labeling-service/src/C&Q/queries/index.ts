@@ -3,10 +3,13 @@ import * as fs from 'fs';
 const queries = {};
 
 fs.readdirSync(__dirname + '/').forEach((fileName) => {
-    if (fileName.match(/Query\.ts$/) && fileName !== 'Query.ts') {
+    if (fileName !== 'index.ts') {
         const queryName = fileName.replace('.ts', '');
-        queries[queryName] = require(`./${fileName}`).default;
+        const query = require(`./${fileName}`).default;
+        if (Object.getPrototypeOf(query).name === 'Query') {
+            queries[queryName] = query;
+        }
     }
 });
 
-module.exports = queries;
+export = queries;

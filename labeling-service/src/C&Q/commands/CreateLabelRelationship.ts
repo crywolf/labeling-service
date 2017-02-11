@@ -1,10 +1,10 @@
-import Command from '../../coreEntities/Command';
+import {Command, Method} from '../../coreEntities/Command';
 
-class LabelEntityCommand extends Command {
+class CreateLabelRelationship extends Command {
 
     protected readonly settings = {
-        method: 'POST',
-        url: '/owner/:ownerId/labeled-entities'
+        method: Method.POST,
+        url: '/owner/:ownerId/label-relationships'
     };
 
     protected process (req) {
@@ -20,4 +20,4 @@ class LabelEntityCommand extends Command {
 
 }
 
-export default LabelEntityCommand;
+export default CreateLabelRelationship;

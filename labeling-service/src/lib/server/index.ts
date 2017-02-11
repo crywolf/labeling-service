@@ -1,4 +1,4 @@
 import config from '../../config';
-import {Server} from './Server';
+import {RestifyServer} from './RestifyServer';
 
-export default new Server(config);
+export default new RestifyServer(config);

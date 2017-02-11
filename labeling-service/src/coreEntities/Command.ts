@@ -1,7 +1,9 @@
 import Store from '../lib/store/Store';
 
+enum Method { POST, PUT, DELETE }
+
 interface CommandSettings {
-    method: string;
+    method: Method;
     url: string;
 }
 
@@ -16,7 +18,7 @@ abstract class Command {
     }
 
     get method (): string {
-        return this.settings.method;
+        return Method[this.settings.method];
     }
 
     get url (): string {
@@ -36,3 +38,4 @@ abstract class Command {
 }
 
 export default Command;
+export {Command, Method, CommandSettings};

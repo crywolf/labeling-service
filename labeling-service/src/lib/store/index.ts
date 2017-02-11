@@ -1,3 +1,3 @@
-import Store from './Store';
+import MemoryStore from './MemoryStore';
 
-export default new Store();
+export default new MemoryStore();

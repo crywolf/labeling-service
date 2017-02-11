@@ -1,9 +1,9 @@
-import Command from '../../coreEntities/Command';
+import {Command, Method} from '../../coreEntities/Command';
 
-class RemoveLabelCommand extends Command {
+class RemoveLabel extends Command {
 
     protected readonly settings = {
-        method: 'DELETE',
+        method: Method.DELETE,
         url: '/owner/:ownerId/labeled-entities/:entityId/labels'
     };
 
@@ -14,4 +14,4 @@ class RemoveLabelCommand extends Command {
 
 }
 
-export default RemoveLabelCommand;
+export default RemoveLabel;
