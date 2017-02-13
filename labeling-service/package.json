@@ -25,6 +25,7 @@
   "devDependencies": {
     "@types/mocha": "^2.2.39",
     "@types/node": "^7.0.5",
+    "chai": "^3.5.0",
     "commitizen": "^2.9.5",
     "mocha": "^3.2.0",
     "nsp": "^2.6.2",

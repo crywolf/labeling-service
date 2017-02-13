@@ -28,7 +28,7 @@ class AllEntitiesHavingLabel extends Query {
                 }
             };
         });
-        return new Promise((resolve) => resolve(formattedData));
+        return Promise.resolve(formattedData);
     }
 
 }

@@ -33,7 +33,7 @@ abstract class Query {
             });
     }
 
-    protected abstract response (req): Promise<string>;
+    protected abstract response (req): Promise<any>;
 
 }
 
