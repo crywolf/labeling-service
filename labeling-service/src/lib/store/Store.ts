@@ -2,7 +2,9 @@ import Label from '../../coreEntities/Label';
 
 interface Store {
 
-    labelEntity (label: Label): Promise<any>;
+    createLabelRelationship (label: Label): Promise<any>;
+
+    removeLabel (entityId: number, labelTypes: Array<string>, labelValues: Array<string>): Promise<any>;
 
     allEntitiesHavingLabel (ownerId: number, labelTypes: Array<string>,
                                    entityTypes: Array<string>): Promise<any>;

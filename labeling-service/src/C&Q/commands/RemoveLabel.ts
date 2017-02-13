@@ -8,8 +8,12 @@ class RemoveLabel extends Command {
     };
 
     protected process (req) {
-//  console.log('--> DELETE', req.params, req.body);
-        return new Promise((resolve) => resolve());
+        const entityId = parseInt(req.params.entityId, 10);
+
+        const labelTypes = req.params.labelTypes ? req.params.labelTypes.split(',') : [];
+        const labelValues = req.params.labelValues ? req.params.labelValues.split(',') : [];
+
+        return this.store.removeLabel(entityId, labelTypes, labelValues);
     }
 
 }

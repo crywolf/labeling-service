@@ -5,9 +5,38 @@ class MemoryStore implements Store {
 
     private storage: Array<Label> = [];
 
-    public labelEntity (label: Label) {
+    public createLabelRelationship (label: Label) {
         this.storage.push(label);
 //        console.log('===>', this.storage);
+        return new Promise((resolve) => resolve());
+    }
+
+    public removeLabel (entityId: number, labelTypes: Array<string>, labelValues: Array<string>): Promise<any> {
+        let toDelete;
+
+        if (entityId) {
+            if (labelTypes.length) {
+                toDelete = new Set(labelTypes);
+                this.storage = this.storage.filter((obj) => {
+                    if (obj.entityId !== entityId) {
+                        return true;
+                    }
+                    return !toDelete.has(obj.type);
+                });
+            } else if (labelValues.length) {
+                toDelete = new Set(labelValues);
+                this.storage = this.storage.filter((obj) => {
+                    if (obj.entityId !== entityId) {
+                        return true;
+                    }
+                    return !toDelete.has(obj.value);
+                });
+            } else {
+                toDelete = new Set([entityId]);
+                this.storage = this.storage.filter((obj) => !toDelete.has(obj.entityId));
+            }
+        }
+
         return new Promise((resolve) => resolve());
     }
 
