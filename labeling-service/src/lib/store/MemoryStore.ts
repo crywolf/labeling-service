@@ -3,7 +3,11 @@ import Label from '../../coreEntities/Label';
 
 class MemoryStore implements Store {
 
-    private storage: Set<Label> = new Set();
+    private storage: Set<Label>;
+
+    constructor (storage: Set<Label>) {
+        this.storage = storage;
+    }
 
     public createLabelRelationship (label: Label): Promise<Label> {
         this.storage.add(label);

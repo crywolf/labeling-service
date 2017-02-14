@@ -5,13 +5,14 @@ import Label from '../../coreEntities/Label';
 describe('MemoryStore', () => {
 
     let store: MemoryStore;
+    let memoryStorage: Set<Label>;
     let label1: Label;
     let label2: Label;
     let label3: Label;
     let label4: Label;
 
     beforeEach(() => {
-        store = new MemoryStore();
+        store = initializeStore();
 
         label1 = {
             ownerId: 1,
@@ -49,24 +50,18 @@ describe('MemoryStore', () => {
         });
 
         it('should attach label to entity', () => {
-            const ownerId = 1;
-            const entityId = 2;
-
-            return store.entityLabels(ownerId, entityId)
-                .then((labels) => {
-                    expect(labels).to.be.a('Array');
-                    expect(labels).to.have.lengthOf(1);
-                    expect(labels[0]).to.deep.equal(label1);
-                });
+            expect(memoryStorage).to.be.a('Set');
+            expect(memoryStorage.size).to.equal(1);
+            expect(memoryStorage.values().next().value).to.deep.equal(label1);
         });
     });
 
     describe('#allEntitiesHavingLabel', () => {
         beforeEach(() => {
-            return store.createLabelRelationship(label1)
-                .then(() => store.createLabelRelationship(label2))
-                .then(() => store.createLabelRelationship(label3))
-                .then(() => store.createLabelRelationship(label4));
+            memoryStorage.add(label1);
+            memoryStorage.add(label2);
+            memoryStorage.add(label3);
+            memoryStorage.add(label4);
         });
 
         describe('without label types and values parameters', () => {
@@ -122,10 +117,10 @@ describe('MemoryStore', () => {
 
     describe('#entityLabels', () => {
         beforeEach(() => {
-            return store.createLabelRelationship(label1)
-                .then(() => store.createLabelRelationship(label2))
-                .then(() => store.createLabelRelationship(label3))
-                .then(() => store.createLabelRelationship(label4));
+            memoryStorage.add(label1);
+            memoryStorage.add(label2);
+            memoryStorage.add(label3);
+            memoryStorage.add(label4);
         });
 
         describe('without label types and values parameters', () => {
@@ -207,9 +202,9 @@ describe('MemoryStore', () => {
                 value: '5'
             };
 
-            return store.createLabelRelationship(labelA)
-                .then(() => store.createLabelRelationship(labelB))
-                .then(() => store.createLabelRelationship(labelC));
+            memoryStorage.add(labelA);
+            memoryStorage.add(labelB);
+            memoryStorage.add(labelC);
         });
 
         it('should return removed labels', () => {
@@ -250,5 +245,10 @@ describe('MemoryStore', () => {
                 });
         });
     });
+
+    function initializeStore (): MemoryStore {
+        memoryStorage = new Set();
+        return new MemoryStore(memoryStorage);
+    }
 
 });
