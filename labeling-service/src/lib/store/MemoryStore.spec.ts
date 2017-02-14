@@ -120,6 +120,65 @@ describe('MemoryStore', () => {
         });
     });
 
+    describe('#entityLabels', () => {
+        beforeEach(() => {
+            return store.createLabelRelationship(label1)
+                .then(() => store.createLabelRelationship(label2))
+                .then(() => store.createLabelRelationship(label3))
+                .then(() => store.createLabelRelationship(label4));
+        });
+
+        describe('without label types and values parameters', () => {
+            it('should return all labels of entity', () => {
+                const ownerId = 1;
+                const entityId = 3;
+
+                return store.entityLabels(ownerId, entityId)
+                    .then((labels) => {
+                        expect(labels).to.be.a('Array');
+                        expect(labels).to.have.lengthOf(3);
+                        expect(labels[0]).to.deep.equal(label2);
+                        expect(labels[1]).to.deep.equal(label3);
+                        expect(labels[2]).to.deep.equal(label4);
+                    });
+            });
+        });
+
+        describe('with label types', () => {
+            it('should return labels with corresponding label types', () => {
+                const ownerId = 1;
+                const entityId = 3;
+                const labelTypes = ['color', 'height'];
+
+                return store.entityLabels(ownerId, entityId, labelTypes)
+                    .then((labels) => {
+                        expect(labels).to.be.a('Array');
+                        expect(labels).to.have.lengthOf(2);
+                        expect(labels[0]).to.deep.equal(label2);
+                        expect(labels[1]).to.deep.equal(label4);
+                    });
+            });
+        });
+
+        describe('with label types and entity types parameters', () => {
+            it('should return labels with corresponding label types and entity types', () => {
+                const ownerId = 1;
+                const entityId = 3;
+                const labelTypes = ['color', 'height'];
+                const entityTypes = ['SomeOtherEntity'];
+
+                return store.entityLabels(ownerId, entityId, labelTypes, entityTypes)
+                    .then((labels) => {
+                        expect(labels).to.be.a('Array');
+                        expect(labels).to.have.lengthOf(2);
+                        expect(labels[0]).to.deep.equal(label2);
+                        expect(labels[1]).to.deep.equal(label4);
+                    });
+            });
+        });
+
+    });
+
     describe('#removeLabel without labelTypes and labelValues parameters', () => {
         let labelA: Label;
         let labelB: Label;
