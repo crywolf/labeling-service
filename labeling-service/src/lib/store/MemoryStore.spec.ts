@@ -34,7 +34,10 @@ describe('MemoryStore', () => {
         });
 
         it('should attach label to entity', () => {
-            return store.entityLabels(1, 2)
+            const ownerId = 1;
+            const entityId = 2;
+
+            return store.entityLabels(ownerId, entityId)
                 .then((labels) => {
                     expect(labels).to.be.a('Array');
                     expect(labels).to.have.lengthOf(1);
@@ -50,7 +53,9 @@ describe('MemoryStore', () => {
         });
 
         it('should return all labeled entities', () => {
-            return store.allEntitiesHavingLabel(1)
+            const ownerId = 1;
+
+            return store.allEntitiesHavingLabel(ownerId)
                 .then((labels) => {
                     expect(labels).to.be.a('Array');
                     expect(labels).to.have.lengthOf(2);
@@ -94,7 +99,9 @@ describe('MemoryStore', () => {
         });
 
         it('should return removed labels', () => {
-            return store.removeLabel(3)
+            const entityId = 3;
+
+            return store.removeLabel(entityId)
                 .then((labels) => {
                     expect(labels).to.be.a('Array');
                     expect(labels).to.have.lengthOf(2);
@@ -104,8 +111,11 @@ describe('MemoryStore', () => {
         });
 
         it('should remove all labels of entity', () => {
-            return store.removeLabel(3)
-                .then(() => store.entityLabels(1, 3))
+            const ownerId = 1;
+            const entityId = 3;
+
+            return store.removeLabel(entityId)
+                .then(() => store.entityLabels(ownerId, entityId))
                 .then((labels) => {
                     expect(labels).to.be.a('Array');
                     expect(labels).to.have.lengthOf(0);
@@ -113,8 +123,12 @@ describe('MemoryStore', () => {
         });
 
         it('should let labels of other entities untouched', () => {
-            return store.removeLabel(3)
-                .then(() => store.entityLabels(1, 4))
+            const entityId = 3;
+            const ownerId = 1;
+            const otherEntityId = 4;
+
+            return store.removeLabel(entityId)
+                .then(() => store.entityLabels(ownerId, otherEntityId))
                 .then((labels) => {
                     expect(labels).to.be.a('Array');
                     expect(labels).to.have.lengthOf(1);

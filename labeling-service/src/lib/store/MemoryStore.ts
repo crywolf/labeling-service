@@ -3,11 +3,10 @@ import Label from '../../coreEntities/Label';
 
 class MemoryStore implements Store {
 
-    private storage: Array<Label> = [];
+    private storage: Set<Label> = new Set();
 
     public createLabelRelationship (label: Label): Promise<Label> {
-        this.storage.push(label);
-//        console.log('===>', this.storage);
+        this.storage.add(label);
         return Promise.resolve(label);
     }
 
@@ -19,32 +18,26 @@ class MemoryStore implements Store {
         if (entityId) {
             if (labelTypes.length) {
                 toDelete = new Set(labelTypes);
-                this.storage = this.storage.filter((obj) => {
-                    if (obj.entityId !== entityId) {
-                        return true;
-                    } else if (toDelete.has(obj.type)) {
-                        deletedLabels.push(obj);
-                        return false;
+                this.storage.forEach((label) => {
+                    if (label.entityId === entityId && toDelete.has(label.type)) {
+                        deletedLabels.push(label);
+                        this.storage.delete(label);
                     }
                 });
             } else if (labelValues.length) {
                 toDelete = new Set(labelValues);
-                this.storage = this.storage.filter((obj) => {
-                    if (obj.entityId !== entityId) {
-                        return true;
-                    } else if (toDelete.has(obj.value)) {
-                        deletedLabels.push(obj);
-                        return false;
+                this.storage.forEach((label) => {
+                    if (label.entityId === entityId && toDelete.has(label.value)) {
+                        deletedLabels.push(label);
+                        this.storage.delete(label);
                     }
                 });
             } else {
                 toDelete = new Set([entityId]);
-                this.storage = this.storage.filter((obj) => {
-                    if (obj.entityId !== entityId) {
-                        return true;
-                    } else if (toDelete.has(obj.entityId)) {
-                        deletedLabels.push(obj);
-                        return false;
+                this.storage.forEach((label) => {
+                    if (label.entityId === entityId && toDelete.has(label.entityId)) {
+                        deletedLabels.push(label);
+                        this.storage.delete(label);
                     }
                 });
             }
@@ -55,8 +48,8 @@ class MemoryStore implements Store {
 
     public allEntitiesHavingLabel (ownerId: number, labelTypes: Array<string> = [],
                                    entityTypes: Array<string> = []): Promise<Array<Label>> {
-//        console.log('*', ownerId, labelTypes)
-        const data = this.storage.filter((label) => {
+
+        const data = Array.from(this.storage).filter((label) => {
             if (labelTypes.length) {
                 return (labelTypes.indexOf(label.type)) !== -1 && (label.ownerId === ownerId);
             } else {
@@ -73,8 +66,8 @@ class MemoryStore implements Store {
         labelValues: Array<string> = [],
         entityTypes: Array<string> = []
     ): Promise<any> {
-//        console.log('*', ownerId, entityId)
-        const data = this.storage.filter((label) => {
+
+        const data = Array.from(this.storage).filter((label) => {
             return (label.ownerId === ownerId) && (label.entityId === entityId);
         });
         return Promise.resolve(data);
