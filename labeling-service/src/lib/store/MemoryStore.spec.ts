@@ -5,13 +5,15 @@ import Label from '../../coreEntities/Label';
 describe('MemoryStore', () => {
 
     let store: MemoryStore;
-    let label: Label;
+    let label1: Label;
     let label2: Label;
+    let label3: Label;
+    let label4: Label;
 
     beforeEach(() => {
         store = new MemoryStore();
 
-        label = {
+        label1 = {
             ownerId: 1,
             entityId: 2,
             entityType: 'SomeEntity',
@@ -25,12 +27,25 @@ describe('MemoryStore', () => {
             type: 'height',
             value: '3'
         };
-
+        label3 = {
+            ownerId: 1,
+            entityId: 3,
+            entityType: 'SomeOtherEntity',
+            type: 'width',
+            value: '6'
+        };
+        label4 = {
+            ownerId: 1,
+            entityId: 3,
+            entityType: 'SomeOtherEntity',
+            type: 'color',
+            value: 'black'
+        };
     });
 
     describe('#createLabelRelationship', () => {
         beforeEach(() => {
-            return store.createLabelRelationship(label);
+            return store.createLabelRelationship(label1);
         });
 
         it('should attach label to entity', () => {
@@ -41,27 +56,67 @@ describe('MemoryStore', () => {
                 .then((labels) => {
                     expect(labels).to.be.a('Array');
                     expect(labels).to.have.lengthOf(1);
-                    expect(labels[0]).to.deep.equal(label);
+                    expect(labels[0]).to.deep.equal(label1);
                 });
         });
     });
 
     describe('#allEntitiesHavingLabel', () => {
         beforeEach(() => {
-            return store.createLabelRelationship(label)
-                .then(() => store.createLabelRelationship(label2));
+            return store.createLabelRelationship(label1)
+                .then(() => store.createLabelRelationship(label2))
+                .then(() => store.createLabelRelationship(label3))
+                .then(() => store.createLabelRelationship(label4));
         });
 
-        it('should return all labeled entities', () => {
-            const ownerId = 1;
+        describe('without label types and values parameters', () => {
+            it('should return all labeled entities', () => {
+                const ownerId = 1;
 
-            return store.allEntitiesHavingLabel(ownerId)
-                .then((labels) => {
-                    expect(labels).to.be.a('Array');
-                    expect(labels).to.have.lengthOf(2);
-                    expect(labels[0]).to.deep.equal(label);
-                    expect(labels[1]).to.deep.equal(label2);
+                return store.allEntitiesHavingLabel(ownerId)
+                    .then((labels) => {
+                        expect(labels).to.be.a('Array');
+                        expect(labels).to.have.lengthOf(4);
+                        expect(labels[0]).to.deep.equal(label1);
+                        expect(labels[1]).to.deep.equal(label2);
+                        expect(labels[2]).to.deep.equal(label3);
+                        expect(labels[3]).to.deep.equal(label4);
+                    });
+            });
+        });
+
+        describe('with label types', () => {
+            it('should return labeled entities with corresponding label types', () => {
+                const ownerId = 1;
+                const labelTypes = ['color', 'height'];
+
+                return store.allEntitiesHavingLabel(ownerId, labelTypes)
+                    .then((labels) => {
+                        expect(labels).to.be.a('Array');
+                        expect(labels).to.have.lengthOf(3);
+                        expect(labels[0]).to.deep.equal(label1);
+                        expect(labels[1]).to.deep.equal(label2);
+                        expect(labels[2]).to.deep.equal(label4);
+                    });
+            });
+        });
+
+        describe('with label types and entity types parameters', () => {
+            describe('', () => {
+                it('should return labeled entities with corresponding label types and entity types', () => {
+                    const ownerId = 1;
+                    const labelTypes = ['color', 'height'];
+                    const entityTypes = ['SomeOtherEntity'];
+
+                    return store.allEntitiesHavingLabel(ownerId, labelTypes, entityTypes)
+                        .then((labels) => {
+                            expect(labels).to.be.a('Array');
+                            expect(labels).to.have.lengthOf(2);
+                            expect(labels[0]).to.deep.equal(label2);
+                            expect(labels[1]).to.deep.equal(label4);
+                        });
                 });
+            });
         });
     });
 
