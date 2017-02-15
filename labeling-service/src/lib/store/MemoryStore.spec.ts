@@ -45,15 +45,34 @@ describe('MemoryStore', () => {
     });
 
     describe('#createLabelRelationship', () => {
-        beforeEach(() => {
-            return store.createLabelRelationship(label1);
+        describe('in case label is unique', () => {
+            beforeEach(() => {
+                memoryStorage.add(label1);
+                return store.createLabelRelationship(label2);
+            });
+
+            it('should attach label to entity', () => {
+                expect(memoryStorage).to.be.a('Set');
+                expect(memoryStorage.size).to.equal(2);
+                const sIterator = memoryStorage.values();
+                expect(sIterator.next().value).to.deep.equal(label1);
+                expect(sIterator.next().value).to.deep.equal(label2);
+            });
         });
 
-        it('should attach label to entity', () => {
-            expect(memoryStorage).to.be.a('Set');
-            expect(memoryStorage.size).to.equal(1);
-            expect(memoryStorage.values().next().value).to.deep.equal(label1);
+        describe('in case label is not unique', () => {
+            beforeEach(() => {
+                memoryStorage.add(label1);
+                memoryStorage.add(label2);
+                return store.createLabelRelationship(label1);
+            });
+
+            it('should not attach duplicate label to entity', () => {
+                expect(memoryStorage).to.be.a('Set');
+                expect(memoryStorage.size).to.equal(2);
+            });
         });
+
     });
 
     describe('#allEntitiesHavingLabel', () => {
@@ -97,7 +116,7 @@ describe('MemoryStore', () => {
         });
 
         describe('with label types and entity types parameters', () => {
-            describe('', () => {
+//            describe('', () => {
                 it('should return labeled entities with corresponding label types and entity types', () => {
                     const ownerId = 1;
                     const labelTypes = ['color', 'height'];
@@ -112,11 +131,25 @@ describe('MemoryStore', () => {
                         });
                 });
             });
-        });
+//        });
     });
 
     describe('#entityLabels', () => {
         beforeEach(() => {
+/*            const label5: Label = {
+                ownerId: 1,
+                entityId: 3,
+                entityType: 'SomeEntityWithNonUniqueId',
+                type: 'color',
+                value: 'white'
+            };
+
+            return store.createLabelRelationship(label1)
+                .then(() => store.createLabelRelationship(label2))
+                .then(() => store.createLabelRelationship(label3))
+                .then(() => store.createLabelRelationship(label4));
+//                .then(() => store.createLabelRelationship(label5));
+*/
             memoryStorage.add(label1);
             memoryStorage.add(label2);
             memoryStorage.add(label3);

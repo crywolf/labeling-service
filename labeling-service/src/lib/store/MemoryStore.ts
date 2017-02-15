@@ -10,7 +10,17 @@ class MemoryStore implements Store {
     }
 
     public createLabelRelationship (label: Label): Promise<Label> {
-        this.storage.add(label);
+        let unique: boolean = true;
+
+        for (const storedLabel of this.storage) {
+            if (this.deepEqual(label, storedLabel)) {
+                unique = false;
+            }
+        }
+
+        if (unique) {
+            this.storage.add(label);
+        }
         return Promise.resolve(label);
     }
 
@@ -97,6 +107,15 @@ class MemoryStore implements Store {
         return Promise.resolve(data);
     }
 
+    private deepEqual(x, y) {
+    const ok = Object.keys;
+    const tx = typeof x;
+    const ty = typeof y;
+    return x && y && tx === 'object' && tx === ty ? (
+            ok(x).length === ok(y).length &&
+            ok(x).every((key) => this.deepEqual(x[key], y[key]))
+        ) : (x === y);
+}
 }
 
 export default MemoryStore;
