@@ -1,4 +1,4 @@
-import Store from '../lib/store/Store';
+import CommandExecutor from './CommandExecutor';
 
 enum Method { POST, PUT, DELETE }
 
@@ -9,12 +9,12 @@ interface CommandSettings {
 
 abstract class Command {
 
-    protected store: Store;
+    protected executor: CommandExecutor;
 
     protected settings: CommandSettings;
 
-    constructor (store: Store) {
-        this.store = store;
+    constructor (executor: CommandExecutor) {
+        this.executor = executor;
     }
 
     get method (): string {

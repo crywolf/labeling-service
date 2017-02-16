@@ -1,4 +1,4 @@
-import Store from '../lib/store/Store';
+import QueryExecutor from './QueryExecutor';
 
 enum Method { GET }
 
@@ -9,12 +9,12 @@ interface QuerySettings {
 
 abstract class Query {
 
-    protected store: Store;
+    protected executor: QueryExecutor;
 
     protected settings: QuerySettings;
 
-    constructor (store: Store) {
-        this.store = store;
+    constructor (executor: QueryExecutor) {
+        this.executor = executor;
     }
 
     get method (): string {

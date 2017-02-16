@@ -15,7 +15,7 @@ class EntityLabels extends Query {
         const labelValues = req.params.labelValues ? req.params.labelValues.split(',') : [];
         const entityTypes = req.params.entityTypes ? req.params.entityTypes.split(',') : [];
 
-        return this.store.entityLabels(ownerId, entityId, labelTypes, labelValues, entityTypes);
+        return this.executor.fetch(ownerId, entityId, labelTypes, labelValues, entityTypes);
     }
 
 }

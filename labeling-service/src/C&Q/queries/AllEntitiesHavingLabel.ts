@@ -13,7 +13,7 @@ class AllEntitiesHavingLabel extends Query {
         const labelTypes = req.params.labelTypes ? req.params.labelTypes.split(',') : [];
         const entityTypes = req.params.entityTypes ? req.params.entityTypes.split(',') : [];
 
-        return this.store.allEntitiesHavingLabel(ownerId, labelTypes, entityTypes)
+        return this.executor.fetch(ownerId, labelTypes, entityTypes)
             .then(this.formatData);
     }
 

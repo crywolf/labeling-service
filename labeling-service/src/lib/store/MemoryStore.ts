@@ -107,15 +107,16 @@ class MemoryStore implements Store {
         return Promise.resolve(data);
     }
 
-    private deepEqual(x, y) {
-    const ok = Object.keys;
-    const tx = typeof x;
-    const ty = typeof y;
-    return x && y && tx === 'object' && tx === ty ? (
-            ok(x).length === ok(y).length &&
-            ok(x).every((key) => this.deepEqual(x[key], y[key]))
-        ) : (x === y);
-}
+    private deepEqual (x, y) {
+        const ok = Object.keys;
+        const tx = typeof x;
+        const ty = typeof y;
+        return x && y && tx === 'object' && tx === ty ? (
+                ok(x).length === ok(y).length &&
+                ok(x).every((key) => this.deepEqual(x[key], y[key]))
+            ) : (x === y);
+    }
+
 }
 
 export default MemoryStore;

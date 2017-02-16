@@ -13,7 +13,7 @@ class RemoveLabel extends Command {
         const labelTypes = req.params.labelTypes ? req.params.labelTypes.split(',') : [];
         const labelValues = req.params.labelValues ? req.params.labelValues.split(',') : [];
 
-        return this.store.removeLabel(entityId, labelTypes, labelValues);
+        return this.executor.execute(entityId, labelTypes, labelValues);
     }
 
 }

@@ -15,7 +15,7 @@ class CreateLabelRelationship extends Command {
             type: req.body.type,
             value: req.body.value
         };
-        return this.store.createLabelRelationship(label);
+        return this.executor.execute(label);
     }
 
 }

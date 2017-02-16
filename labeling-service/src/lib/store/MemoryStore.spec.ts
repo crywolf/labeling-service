@@ -144,11 +144,11 @@ describe('MemoryStore', () => {
                 value: 'white'
             };
 
-            return store.createLabelRelationship(label1)
-                .then(() => store.createLabelRelationship(label2))
-                .then(() => store.createLabelRelationship(label3))
-                .then(() => store.createLabelRelationship(label4));
-//                .then(() => store.createLabelRelationship(label5));
+            return executor.createLabelRelationship(label1)
+                .then(() => executor.createLabelRelationship(label2))
+                .then(() => executor.createLabelRelationship(label3))
+                .then(() => executor.createLabelRelationship(label4));
+//                .then(() => executor.createLabelRelationship(label5));
 */
             memoryStorage.add(label1);
             memoryStorage.add(label2);
