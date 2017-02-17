@@ -1,15 +1,9 @@
-import * as fs from 'fs';
+import EntityLabels from './EntityLabels';
+import AllEntitiesHavingLabel from './AllEntitiesHavingLabel';
 
-const queries = {};
+const queries = {
+    AllEntitiesHavingLabel,
+    EntityLabels
+};
 
-fs.readdirSync(__dirname + '/').forEach((fileName) => {
-    if (fileName !== 'index.ts') {
-        const queryName = fileName.replace('.ts', '');
-        const query = require(`./${fileName}`).default;
-        if (Object.getPrototypeOf(query).name === 'Query') {
-            queries[queryName] = query;
-        }
-    }
-});
-
-export = queries;
+export default queries;

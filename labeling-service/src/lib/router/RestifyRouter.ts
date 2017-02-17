@@ -1,15 +1,9 @@
 import logger from '../logger';
 import Router from './Router';
 import {RestifyHttpServer} from '../server/Server';
-
-import * as queries from '../../C&Q/queries';
-import * as commands from '../../C&Q/commands';
-
-import queryExecutors from '../../C&Q/queries/executors';
-import commandExecutors from '../../C&Q/commands/executors';
-
-import {Command} from '../../coreEntities/Command';
-import {Query} from '../../coreEntities/Query';
+import QueryBuilder from '../../coreEntities/QueryBuilder';
+import CommandBuilder from '../../coreEntities/CommandBuilder';
+import storage from '../store/memoryStorage';
 
 class RestifyRouter implements Router {
 
@@ -19,14 +13,11 @@ class RestifyRouter implements Router {
     }
 
     private registerQueries (server: RestifyHttpServer) {
-        Object.keys(queries).forEach((queryName) => {
-            const queryConstructor = queries[queryName];
-            const queryExecutor = queryExecutors[queryName];
-
-            const query = new (queryConstructor)(queryExecutor) as Query;
-
+        const queries = new QueryBuilder(storage).queries;
+        queries.forEach((query) => {
             const method = query.method.toLowerCase();
             const url = query.url;
+            const queryName = query.constructor.name;
 
             logger.info(`Registering route "${queryName}" ${method.toUpperCase()} ${url}`);
             server[method](url, query.handler.bind(query));
@@ -34,15 +25,12 @@ class RestifyRouter implements Router {
     }
 
     private registerCommands (server: RestifyHttpServer) {
-        Object.keys(commands).forEach((commandName) => {
-            const commandConstructor = commands[commandName];
-            const commandExecutor = commandExecutors[commandName];
-
-            const command = new (commandConstructor)(commandExecutor) as Command;
-
+        const commands = new CommandBuilder(storage).commands;
+        commands.forEach((command) => {
             const methodName = command.method.toLowerCase();
             const method = (methodName === 'delete') ? 'del' : methodName;
             const url = command.url;
+            const commandName = command.constructor.name;
 
             logger.info(`Registering route "${commandName}" ${methodName.toUpperCase()} ${url}`);
             server[method](url, command.handler.bind(command));
