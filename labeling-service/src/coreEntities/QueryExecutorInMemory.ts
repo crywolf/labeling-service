@@ -1,13 +1,15 @@
 import QueryExecutor from './QueryExecutor';
 import Label from './Label';
 
-abstract class QueryExecutorInMemory extends QueryExecutor {
+abstract class QueryExecutorInMemory implements QueryExecutor {
 
     protected storage: Set<Label>;
 
     constructor (storage: Set<Label>) {
-        super(storage);
+        this.storage = storage;
     }
+
+    public abstract fetch (...args): Promise<any>;
 
 }
 

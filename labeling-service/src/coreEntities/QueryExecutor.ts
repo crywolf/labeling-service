@@ -1,12 +1,6 @@
-abstract class QueryExecutor {
+interface QueryExecutor {
 
-    protected storage: any;
-
-    constructor (storage: any) {
-        this.storage = storage;
-    }
-
-    public abstract fetch (...args): Promise<any>;
+    fetch (...args): Promise<any>;
 
 }
 

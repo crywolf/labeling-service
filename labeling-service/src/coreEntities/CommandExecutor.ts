@@ -1,12 +1,6 @@
-abstract class CommandExecutor {
+interface CommandExecutor {
 
-    protected storage: any;
-
-    constructor (storage: any) {
-        this.storage = storage;
-    }
-
-    public abstract execute (...args): Promise<any>;
+    execute (...args): Promise<any>;
 
 }
 
