@@ -7,6 +7,9 @@ class QueryBuilder {
     private storage;
 
     constructor (storage) {
+        if (storage === undefined) {
+            throw new Error(`Provide valid storage! (${this.constructor.name})`);
+        }
         this.storage = storage;
     }
 

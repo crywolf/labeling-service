@@ -9,11 +9,13 @@ export class Logger {
     }
 
     public info (message: string, moduleName?: string) {
+        message = `[Info] ${message}`;
         const data = this.prepareMetadata(message, moduleName);
         console.log(data);
     }
 
     public error (message: string, moduleName?: string) {
+        message = `[Error] ${message}`;
         const data = this.prepareMetadata(message, moduleName);
         console.error(data);
     }

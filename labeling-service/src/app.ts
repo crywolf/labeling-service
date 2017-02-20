@@ -1,5 +1,22 @@
 import server from './lib/server';
-import router from './lib/router';
+import RestifyRouter from './lib/router/RestifyRouter';
+import CommandBuilder from './coreEntities/CommandBuilder';
+import QueryBuilder from './coreEntities/QueryBuilder';
 
-server.registerRoutes(router);
-server.listen();
+// import storageService from './lib/store/memoryStorageService';
+import storageService from './lib/store/sqliteStorageService';
+
+import logger from './lib/logger';
+
+storageService.init()
+    .then(() => {
+//        const storage = storageService.storage;
+        const storage = storageService.db;
+        const router = new RestifyRouter(new QueryBuilder(storage), new CommandBuilder(storage));
+
+        server.registerRoutes(router);
+        server.listen();
+    })
+    .catch((err) => {
+        logger.error(err.message, 'App');
+    });

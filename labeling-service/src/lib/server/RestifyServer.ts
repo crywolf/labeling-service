@@ -3,8 +3,6 @@ import * as restify from 'restify';
 import RestifyRouter from '../router/RestifyRouter';
 import {Server, RestifyHttpServer} from './Server';
 
-logger.module('RestifyHttpServer');
-
 export class RestifyServer implements Server {
     private server: RestifyHttpServer;
 
@@ -26,7 +24,7 @@ export class RestifyServer implements Server {
         const hostname = this.config.httpServer.hostname;
 
         this.server.listen(port, hostname, () => {
-            logger.info(`${this.server.name} listening at ${this.server.url}`);
+            logger.info(`${this.server.name} listening at ${this.server.url}`, this.constructor.name);
         });
     }
 }
