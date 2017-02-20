@@ -20,7 +20,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "restify": "^4.3.0"
+    "restify": "^4.3.0",
+    "sqlite": "^2.3.0"
   },
   "devDependencies": {
     "@types/mocha": "^2.2.39",
