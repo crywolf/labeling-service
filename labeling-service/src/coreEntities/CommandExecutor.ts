@@ -1,6 +1,6 @@
 interface CommandExecutor {
 
-    execute (...args): Promise<any>;
+    execute (...args: Array<any>): Promise<any>;
 
 }
 

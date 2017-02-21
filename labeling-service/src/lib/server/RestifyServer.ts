@@ -22,9 +22,16 @@ export class RestifyServer implements Server {
     public listen () {
         const port = this.config.httpServer.port;
         const hostname = this.config.httpServer.hostname;
+        logger.module(this.constructor.name);
 
         this.server.listen(port, hostname, () => {
-            logger.info(`${this.server.name} listening at ${this.server.url}`, this.constructor.name);
+            logger.info(`${this.server.name} listening at ${this.server.url}`);
+        });
+
+        this.server.on('InternalServer', (req, res, err, cb) => {
+            logger.error('InternalServerError! ' + err.message);
+            err.body = 'Something went wrong!';
+            return cb();
         });
     }
 }

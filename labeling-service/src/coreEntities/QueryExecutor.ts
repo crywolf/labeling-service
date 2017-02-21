@@ -1,6 +1,6 @@
 interface QueryExecutor {
 
-    fetch (...args): Promise<any>;
+    fetch (...args: Array<any>): Promise<any>;
 
 }
 

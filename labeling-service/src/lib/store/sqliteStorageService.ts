@@ -1,21 +1,33 @@
-import {open as sqlite} from 'sqlite';
-
+import * as sqlite from 'sqlite';
 import logger from '../logger';
+
+interface Config {
+    filename: string;
+}
 
 class SqliteStorageService {
 
     private static singleton;
 
-    private connection;
+    private connection: sqlite.Database;
 
-    public init () {
+    public init (config: Config) {
         logger.module(this.constructor.name);
         logger.info('Connecting to DB...');
 
-        return sqlite('./db.sqlite/labels.sqlite')
+        return sqlite.open(config.filename)
             .then((db) => {
                 logger.info('DB Connected.');
                 this.connection = db;
+                const sql = `CREATE TABLE IF NOT EXISTS labels (
+                    id INTEGER PRIMARY KEY,
+                    ownerId INTEGER,
+                    entityId INTEGER,
+                    entityType CHAR(255),
+                    type CHAR(255),
+                    value CHAR(255)          
+                );`;
+                return db.run(sql);
             });
     }
 
@@ -26,7 +38,7 @@ class SqliteStorageService {
         return this.connection;
     }
 
-    static get instance () {
+    static get instance (): SqliteStorageService {
         if (!this.singleton) {
             this.singleton = new SqliteStorageService();
         }

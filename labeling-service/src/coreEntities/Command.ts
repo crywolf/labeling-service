@@ -30,6 +30,9 @@ abstract class Command {
             .then((data) => {
                 res.send(data);
                 next();
+            })
+            .catch((err) => {
+                next(err);
             });
     }
 
