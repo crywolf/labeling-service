@@ -7,9 +7,11 @@ interface Config {
 
 class SqliteStorageService {
 
-    private static singleton;
+    private static singleton: SqliteStorageService;
 
     private connection: sqlite.Database;
+
+    private constructor () {}
 
     public init (config: Config) {
         logger.module(this.constructor.name);

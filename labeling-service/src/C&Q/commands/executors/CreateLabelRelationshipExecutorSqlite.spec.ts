@@ -4,6 +4,7 @@ import CreateLabelRelationshipExecutorSqlite from './CreateLabelRelationshipExec
 import storageService from '../../../lib/store/sqliteStorageService';
 import config from '../../../config';
 import {Database} from 'sqlite';
+import {addLabel, countRows} from '../../../lib/test/util';
 
 describe('CreateLabelRelationshipExecutorSqlite', () => {
 
@@ -54,14 +55,14 @@ describe('CreateLabelRelationshipExecutorSqlite', () => {
     describe('#execute', () => {
         describe('in case label is unique', () => {
             beforeEach(() => {
-                return addLabel(label1)
+                return addLabel(db, label1)
                     .then(() => {
                         return executor.execute(label2);
                     });
             });
 
             it('should attach label to entity', () => {
-                return countRows()
+                return countRows(db)
                     .then((count) => {
                         return expect(count).to.equal(2);
                     });
@@ -71,9 +72,9 @@ describe('CreateLabelRelationshipExecutorSqlite', () => {
 
         describe('in case label is not unique', () => {
             beforeEach(() => {
-                return addLabel(label1)
+                return addLabel(db, label1)
                     .then(() => {
-                        return addLabel(label2);
+                        return addLabel(db, label2)
                     })
                     .then(() => {
                         return executor.execute(label1);
@@ -81,7 +82,7 @@ describe('CreateLabelRelationshipExecutorSqlite', () => {
             });
 
             it('should not attach duplicate label to entity', () => {
-                return countRows()
+                return countRows(db)
                     .then((count) => {
                         return expect(count).to.equal(2);
                     });
@@ -98,15 +99,4 @@ describe('CreateLabelRelationshipExecutorSqlite', () => {
             });
     }
 
-    function addLabel (label: Label): Promise<any> {
-        const values = [label.ownerId, label.entityId, label.entityType, label.type, label.value];
-        return db.run(`INSERT INTO ${testConfig.tablename} VALUES(NULL, ?, ?, ?, ?, ?)`, values);
-    }
-
-    function countRows (): Promise<number> {
-        return db.get(`SELECT COUNT(1) AS count FROM ${testConfig.tablename}`)
-            .then((row) => {
-                return row.count;
-            });
-    }
 });

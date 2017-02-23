@@ -19,6 +19,7 @@ class QueryBuilder {
         Object.keys(queries).forEach((queryName) => {
             const executorName = `${queryName}Executor`;
             const queryExecutorClass = queryExecutors[executorName];
+console.log(queryExecutorClass);
             const queryExecutor = new (queryExecutorClass)(this.storage);
 
             const queryClass = queries[queryName];

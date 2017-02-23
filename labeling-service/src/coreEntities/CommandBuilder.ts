@@ -19,6 +19,7 @@ class CommandBuilder {
         Object.keys(commands).forEach((commandName) => {
             const executorName = `${commandName}Executor`;
             const commandExecutorClass = commandExecutors[executorName];
+console.log(commandExecutorClass);
             const commandExecutor = new (commandExecutorClass)(this.storage);
 
             const commandClass = commands[commandName];

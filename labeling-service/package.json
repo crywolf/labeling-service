@@ -21,7 +21,8 @@
   "license": "ISC",
   "dependencies": {
     "restify": "^4.3.0",
-    "sqlite": "^2.3.0"
+    "sqlite": "^2.3.0",
+    "squel": "^5.7.0"
   },
   "devDependencies": {
     "@types/mocha": "^2.2.39",
