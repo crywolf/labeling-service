@@ -21,21 +21,17 @@ class AllEntitiesHavingLabel extends Query {
             }
         }
 
-console.log(req.params.labelTypes, labelTypes);
-
         let entityTypes = [];
         let entityOperator = 'OR';
         if (req.params.entityTypes) {
             if (req.params.entityTypes.indexOf(',') !== -1) {
                 entityTypes = req.params.entityTypes.split(',');
             } else if (req.params.entityTypes.indexOf('+') !== -1) {
-                // but entity operator === 'AND' does not make sense!!!
+                // TODO but entityOperator === 'AND' does not make sense!!!
                 entityTypes = req.params.entityTypes.split('+');
                 entityOperator = 'AND';
             }
         }
-
-console.log(req.params.entityTypes, entityTypes);
 
         const executorParams = {
             labelTypes,
@@ -44,18 +40,7 @@ console.log(req.params.entityTypes, entityTypes);
             entityOperator
         };
 
-        return this.executor.fetch(ownerId, executorParams)
-        //    .then(this.formatData);
-    }
-
-    private formatData (data: Array<any>) {
-        const formattedData = data.map((label) => {
-            return {
-                entityId: label.entityId,
-                entityType: label.entityType
-            };
-        });
-        return Promise.resolve(formattedData);
+        return this.executor.fetch(ownerId, executorParams);
     }
 
 }

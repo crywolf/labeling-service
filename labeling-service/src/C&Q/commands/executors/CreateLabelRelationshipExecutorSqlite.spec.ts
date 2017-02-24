@@ -74,7 +74,7 @@ describe('CreateLabelRelationshipExecutorSqlite', () => {
             beforeEach(() => {
                 return addLabel(db, label1)
                     .then(() => {
-                        return addLabel(db, label2)
+                        return addLabel(db, label2);
                     })
                     .then(() => {
                         return executor.execute(label1);

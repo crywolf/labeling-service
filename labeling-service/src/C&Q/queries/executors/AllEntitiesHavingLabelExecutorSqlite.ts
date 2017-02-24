@@ -21,37 +21,34 @@ class AllEntitiesHavingLabelExecutorSqlite extends QueryExecutorSqlite {
         // but entity operator === 'AND' does not make sense!!!
         const entityOperator = params ? params.entityOperator || 'OR' : 'OR';
 
+        const subselectsSql = [];
         const select = squel.select()
             .from(this.tablename)
-//            .field('ownerId')
             .field('entityId')
             .field('entityType')
-            .field('count(1) as count')
-//            .field('type')
-//            .field('value')
-            .group('entityType');
+            .group('entityId');
 
         const where = squel.expr();
 
         const whereLabelTypes = squel.expr();
         if (labelTypes.length) {
             labelTypes.forEach((labelType) => {
-                whereLabelTypes.or('type = ?', labelType);
+                if (labelOperator === 'AND') {
+                    const subselect = select.clone().where(
+                        squel.expr().and('type = ?', labelType).and('ownerId = ?', ownerId)
+                    );
+//                    subselectsSql.push(subselect.toString());
+                    subselectsSql.push(subselect);
+                } else {
+                    whereLabelTypes.or('type = ?', labelType);
+                }
             });
-            if (labelOperator === 'AND') {
-                select.having('count = ?', labelTypes.length);
-            }
         }
 
         const whereEntityTypes = squel.expr();
         if (entityTypes.length) {
             entityTypes.forEach((entityType) => {
-                if (entityOperator === 'AND') {
-                    // but entity operator === 'AND' does not make sense!!!
-                    whereEntityTypes.and('entityType = ?', entityType);
-                } else {
-                    whereEntityTypes.or('entityType = ?', entityType);
-                }
+                whereEntityTypes.or('entityType = ?', entityType);
             });
         }
 
@@ -62,17 +59,20 @@ class AllEntitiesHavingLabelExecutorSqlite extends QueryExecutorSqlite {
             where.and(whereEntityTypes);
         }
 
-        where.and('ownerId = ?', ownerId);
-        const sql = select.where(where);
-
-console.log(sql.toString());
+        let sql;
+        if (subselectsSql.length) {
+            subselectsSql.map((subselect) => {
+                return subselect.where(whereEntityTypes).toString();
+            });
+            sql = subselectsSql.join(' INTERSECT ');
+            sql += ' ORDER BY entityId';
+        } else {
+            where.and('ownerId = ?', ownerId);
+            sql = select.where(where);
+        }
 
         return this.storage.all(sql.toString())
             .then((rows) => {
-//console.log('--->', sql.toString(), rows);
-                rows.map((row) => {
-                    delete row.count;
-                });
                 return rows;
             }).catch((err) => {
                 logger.error(err, this.constructor.name);
