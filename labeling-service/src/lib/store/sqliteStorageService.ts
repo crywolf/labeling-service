@@ -3,6 +3,7 @@ import logger from '../logger';
 
 interface Config {
     filename: string;
+    tablename: string;
 }
 
 class SqliteStorageService {
@@ -21,7 +22,7 @@ class SqliteStorageService {
             .then((db) => {
                 logger.info('DB Connected.');
                 this.connection = db;
-                const sql = `CREATE TABLE IF NOT EXISTS labels (
+                const sql = `CREATE TABLE IF NOT EXISTS ${config.tablename} (
                     id INTEGER PRIMARY KEY,
                     ownerId INTEGER,
                     entityId INTEGER,
@@ -29,7 +30,18 @@ class SqliteStorageService {
                     type CHAR(255),
                     value CHAR(255)          
                 );`;
-                return db.run(sql);
+                const uniqueIndexSql = `CREATE UNIQUE INDEX IF NOT EXISTS uniqueValues ON ${config.tablename} (
+                    ownerId,
+                    entityId,
+                    entityType,
+                    type,
+                    value          
+                );`;
+
+                return db.run(sql)
+                    .then(() => {
+                        db.run(uniqueIndexSql);
+                    });
             });
     }
 

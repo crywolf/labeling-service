@@ -17,7 +17,11 @@ class CreateLabelRelationshipExecutorSqlite extends CommandExecutorSqlite {
                 return label;
             }).catch((err) => {
                 logger.error(err, this.constructor.name);
-                throw new InternalServerError(err.message);
+                if (err.code === 'SQLITE_CONSTRAINT') {
+                    return label;
+                } else {
+                    throw new InternalServerError(err.message);
+                }
             });
     }
 }

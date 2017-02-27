@@ -1,10 +1,10 @@
+import {addLabel} from '../../../lib/test/util';
 import {expect} from 'chai';
 import Label from '../../../coreEntities/Label';
 import AllEntitiesHavingLabelExecutorSqlite from './AllEntitiesHavingLabelExecutorSqlite';
 import storageService from '../../../lib/store/sqliteStorageService';
 import config from '../../../config';
 import {Database} from 'sqlite';
-import {addLabel} from '../../../lib/test/util';
 
 describe('AllEntitiesHavingLabelExecutorSqlite', () => {
 

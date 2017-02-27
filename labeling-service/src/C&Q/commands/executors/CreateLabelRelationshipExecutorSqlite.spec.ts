@@ -1,10 +1,10 @@
+import {addLabel, countRows} from '../../../lib/test/util';
 import {expect} from 'chai';
 import Label from '../../../coreEntities/Label';
 import CreateLabelRelationshipExecutorSqlite from './CreateLabelRelationshipExecutorSqlite';
 import storageService from '../../../lib/store/sqliteStorageService';
 import config from '../../../config';
 import {Database} from 'sqlite';
-import {addLabel, countRows} from '../../../lib/test/util';
 
 describe('CreateLabelRelationshipExecutorSqlite', () => {
 
