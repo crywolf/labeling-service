@@ -150,7 +150,7 @@ describe('ReturnAllLabeledEntitiesExecutorSqlite', () => {
                 });
         });
 
-        describe('without label types and values parameters', () => {
+        describe('without label types and entity types parameters', () => {
             it('should return all labeled entities of a corresponding owner', () => {
                 const ownerId = 1;
 
