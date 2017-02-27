@@ -4,7 +4,7 @@ import logger from '../../../lib/logger';
 import InternalServerError from '../../../coreEntities/InternalServerError';
 import * as squel from 'squel';
 
-class AllEntitiesHavingLabelExecutorSqlite extends QueryExecutorSqlite {
+class ReturnAllLabeledEntitiesExecutorSqlite extends QueryExecutorSqlite {
 
     public fetch (
         ownerId: number,
@@ -37,7 +37,6 @@ class AllEntitiesHavingLabelExecutorSqlite extends QueryExecutorSqlite {
                     const subselect = select.clone().where(
                         squel.expr().and('type = ?', labelType).and('ownerId = ?', ownerId)
                     );
-//                    subselectsSql.push(subselect.toString());
                     subselectsSql.push(subselect);
                 } else {
                     whereLabelTypes.or('type = ?', labelType);
@@ -82,4 +81,4 @@ class AllEntitiesHavingLabelExecutorSqlite extends QueryExecutorSqlite {
 
 }
 
-export default AllEntitiesHavingLabelExecutorSqlite;
+export default ReturnAllLabeledEntitiesExecutorSqlite;

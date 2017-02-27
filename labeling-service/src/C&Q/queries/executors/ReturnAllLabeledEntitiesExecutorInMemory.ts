@@ -1,7 +1,7 @@
 import Label from '../../../coreEntities/Label';
 import QueryExecutorInMemory from '../../../coreEntities/QueryExecutorInMemory';
 
-class AllEntitiesHavingLabelExecutorInMemory extends QueryExecutorInMemory {
+class ReturnAllLabeledEntitiesExecutorInMemory extends QueryExecutorInMemory {
 
     public fetch (ownerId: number, labelTypes: Array<string> = [],
                   entityTypes: Array<string> = []): Promise<Array<Label>> {
@@ -28,4 +28,4 @@ class AllEntitiesHavingLabelExecutorInMemory extends QueryExecutorInMemory {
 
 }
 
-export default AllEntitiesHavingLabelExecutorInMemory;
+export default ReturnAllLabeledEntitiesExecutorInMemory;

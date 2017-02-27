@@ -1,9 +1,9 @@
-import EntityLabels from './EntityLabels';
-import AllEntitiesHavingLabel from './AllEntitiesHavingLabel';
+import ReturnAllLabeledEntities from './ReturnAllLabeledEntities';
+import ReturnEntityLabels from './ReturnEntityLabels';
 
 const queries = {
-    AllEntitiesHavingLabel,
-    EntityLabels
+    ReturnAllLabeledEntities,
+    ReturnEntityLabels
 };
 
 export default queries;

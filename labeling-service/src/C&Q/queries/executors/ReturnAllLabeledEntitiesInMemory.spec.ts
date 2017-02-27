@@ -1,10 +1,10 @@
 import {expect} from 'chai';
 import Label from '../../../coreEntities/Label';
-import EntityLabelsExecutorInMemory from './EntityLabelsExecutorInMemory';
+import ReturnAllLabeledEntitiesExecutorInMemory from './ReturnAllLabeledEntitiesExecutorInMemory';
 
-describe('EntityLabelsExecutorInMemory', () => {
+describe('ReturnAllLabeledEntitiesExecutorInMemory', () => {
 
-    let executor: EntityLabelsExecutorInMemory;
+    let executor: ReturnAllLabeledEntitiesExecutorInMemory;
     let memoryStorage: Set<Label>;
     let label1: Label;
     let label2: Label;
@@ -53,45 +53,45 @@ describe('EntityLabelsExecutorInMemory', () => {
         });
 
         describe('without label types and values parameters', () => {
-            it('should return all labels of entity', () => {
+            it('should return all labeled entities', () => {
                 const ownerId = 1;
-                const entityId = 3;
 
-                return executor.fetch(ownerId, entityId)
+                return executor.fetch(ownerId)
                     .then((labels) => {
                         expect(labels).to.be.a('Array');
-                        expect(labels).to.have.lengthOf(3);
-                        expect(labels[0]).to.deep.equal(label2);
-                        expect(labels[1]).to.deep.equal(label3);
-                        expect(labels[2]).to.deep.equal(label4);
+                        expect(labels).to.have.lengthOf(4);
+                        expect(labels[0]).to.deep.equal(label1);
+                        expect(labels[1]).to.deep.equal(label2);
+                        expect(labels[2]).to.deep.equal(label3);
+                        expect(labels[3]).to.deep.equal(label4);
                     });
             });
         });
 
         describe('with label types', () => {
-            it('should return labels with corresponding label types', () => {
+            it('should return labeled entities with corresponding label types', () => {
                 const ownerId = 1;
-                const entityId = 3;
                 const labelTypes = ['color', 'height'];
 
-                return executor.fetch(ownerId, entityId, labelTypes)
+                return executor.fetch(ownerId, labelTypes)
                     .then((labels) => {
                         expect(labels).to.be.a('Array');
-                        expect(labels).to.have.lengthOf(2);
-                        expect(labels[0]).to.deep.equal(label2);
-                        expect(labels[1]).to.deep.equal(label4);
+                        expect(labels).to.have.lengthOf(3);
+                        expect(labels[0]).to.deep.equal(label1);
+                        expect(labels[1]).to.deep.equal(label2);
+                        expect(labels[2]).to.deep.equal(label4);
                     });
             });
         });
 
         describe('with label types and entity types parameters', () => {
-            it('should return labels with corresponding label types and entity types', () => {
+//            describe('', () => {
+            it('should return labeled entities with corresponding label types and entity types', () => {
                 const ownerId = 1;
-                const entityId = 3;
                 const labelTypes = ['color', 'height'];
                 const entityTypes = ['SomeOtherEntity'];
 
-                return executor.fetch(ownerId, entityId, labelTypes, entityTypes)
+                return executor.fetch(ownerId, labelTypes, entityTypes)
                     .then((labels) => {
                         expect(labels).to.be.a('Array');
                         expect(labels).to.have.lengthOf(2);
@@ -100,11 +100,12 @@ describe('EntityLabelsExecutorInMemory', () => {
                     });
             });
         });
+//        });
     });
 
-    function initializeExecutor (): EntityLabelsExecutorInMemory {
+    function initializeExecutor (): ReturnAllLabeledEntitiesExecutorInMemory {
         memoryStorage = new Set();
-        return new EntityLabelsExecutorInMemory(memoryStorage);
+        return new ReturnAllLabeledEntitiesExecutorInMemory(memoryStorage);
     }
 
 });

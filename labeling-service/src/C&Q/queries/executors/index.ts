@@ -1,10 +1,10 @@
-// import AllEntitiesHavingLabelExecutor from './AllEntitiesHavingLabelExecutorInMemory';
-import AllEntitiesHavingLabelExecutor from './AllEntitiesHavingLabelExecutorSqlite';
-import EntityLabelsExecutor from './EntityLabelsExecutorInMemory';
+// import ReturnAllLabeledEntitiesExecutor from './ReturnAllLabeledEntitiesExecutorInMemory';
+import ReturnAllLabeledEntitiesExecutor from './ReturnAllLabeledEntitiesExecutorSqlite';
+import ReturnEntityLabelsExecutor from './ReturnEntityLabelsExecutorInMemory';
 
 const queryExecutors = {
-    AllEntitiesHavingLabelExecutor,
-    EntityLabelsExecutor
+    ReturnAllLabeledEntitiesExecutor,
+    ReturnEntityLabelsExecutor
 };
 
 export default queryExecutors;

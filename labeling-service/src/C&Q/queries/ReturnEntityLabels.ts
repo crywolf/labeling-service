@@ -1,6 +1,6 @@
 import {Query, Method} from '../../coreEntities/Query';
 
-class EntityLabels extends Query {
+class ReturnEntityLabels extends Query {
 
     protected readonly settings = {
         method: Method.GET,
@@ -20,4 +20,4 @@ class EntityLabels extends Query {
 
 }
 
-export default EntityLabels;
+export default ReturnEntityLabels;

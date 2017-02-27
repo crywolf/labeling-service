@@ -1,6 +1,6 @@
 import QueryExecutorInMemory from '../../../coreEntities/QueryExecutorInMemory';
 
-class EntityLabelsExecutorInMemory extends QueryExecutorInMemory {
+class ReturnEntityLabelsExecutorInMemory extends QueryExecutorInMemory {
 
     public fetch (
         ownerId: number,
@@ -28,4 +28,4 @@ class EntityLabelsExecutorInMemory extends QueryExecutorInMemory {
 
 }
 
-export default EntityLabelsExecutorInMemory;
+export default ReturnEntityLabelsExecutorInMemory;
