@@ -1,3 +1,4 @@
+import logger from './lib/logger';
 import config from './config';
 import server from './lib/server';
 import RestifyRouter from './lib/router/RestifyRouter';
@@ -6,8 +7,6 @@ import QueryBuilder from './coreEntities/QueryBuilder';
 
 // import storageService from './lib/store/memoryStorageService';
 import storageService from './lib/store/sqliteStorageService';
-
-import logger from './lib/logger';
 
 storageService.init(config.sqlite)
     .then(() => {

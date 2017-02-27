@@ -1,3 +1,5 @@
+process.env.NODE_ENV = 'test';
+
 import Label from '../../coreEntities/Label';
 import {Database} from 'sqlite';
 import config from '../../config';

@@ -2,7 +2,12 @@
 
 export class Logger {
 
+    protected logger;
     private moduleName;
+
+    constructor (logger: { log (); error (); }) {
+        this.logger = logger;
+    }
 
     public module (moduleName: string) {
         this.moduleName = moduleName;
@@ -11,13 +16,13 @@ export class Logger {
     public info (message: string, moduleName?: string) {
         message = `[Info] ${message}`;
         const data = this.prepareMetadata(message, moduleName);
-        console.log(data);
+        this.logger.log(data);
     }
 
     public error (message: string, moduleName?: string) {
         message = `[Error] ${message}`;
         const data = this.prepareMetadata(message, moduleName);
-        console.error(data);
+        this.logger.error(data);
     }
 
     private prepareMetadata (message: string, moduleName?: string): string {
