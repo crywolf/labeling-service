@@ -15,9 +15,11 @@ class ReturnAllLabeledEntities extends Query {
         if (req.params.labelTypes) {
             if (req.params.labelTypes.indexOf(',') !== -1) {
                 labelTypes = req.params.labelTypes.split(',');
-            } else if (req.params.labelTypes.indexOf('+') !== -1) {
-                labelTypes = req.params.labelTypes.split('+');
+            } else if (req.params.labelTypes.indexOf(';') !== -1) {
+                labelTypes = req.params.labelTypes.split(';');
                 labelOperator = 'AND';
+            } else {
+                labelTypes.push(req.params.labelTypes);
             }
         }
 
@@ -26,10 +28,12 @@ class ReturnAllLabeledEntities extends Query {
         if (req.params.entityTypes) {
             if (req.params.entityTypes.indexOf(',') !== -1) {
                 entityTypes = req.params.entityTypes.split(',');
-            } else if (req.params.entityTypes.indexOf('+') !== -1) {
+            } else if (req.params.entityTypes.indexOf(';') !== -1) {
                 // TODO but entityOperator === 'AND' does not make sense!!!
-                entityTypes = req.params.entityTypes.split('+');
+                entityTypes = req.params.entityTypes.split(';');
                 entityOperator = 'AND';
+            } else {
+                entityTypes.push(req.params.entityTypes);
             }
         }
 
