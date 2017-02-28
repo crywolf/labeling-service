@@ -1,4 +1,5 @@
 import {Command, Method} from '../../coreEntities/Command';
+import UnprocessableEntityError from '../../coreEntities/UnprocessableEntityError';
 
 class CreateLabelRelationship extends Command {
 
@@ -13,8 +14,13 @@ class CreateLabelRelationship extends Command {
             entityId: req.body.entityId,
             entityType: req.body.entityType,
             type: req.body.type,
-            value: req.body.value
+            value: req.body.value || ''
         };
+
+        if (!label.type) {
+            return Promise.reject(new UnprocessableEntityError('Label type is missing!'));
+        }
+
         return this.executor.execute(label)
             .then(() => {
                 return;

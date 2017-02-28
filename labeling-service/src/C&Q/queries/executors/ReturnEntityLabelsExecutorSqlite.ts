@@ -54,8 +54,8 @@ class ReturnEntityLabelsExecutorSqlite extends QueryExecutorSqlite {
             .then((rows) => {
                 return rows;
             }).catch((err) => {
-                logger.error(err, this.constructor.name);
-                throw new InternalServerError(err.message);
+                const message = `${this.constructor.name}: ${err.message}`;
+                throw new InternalServerError(message);
             });
     }
 

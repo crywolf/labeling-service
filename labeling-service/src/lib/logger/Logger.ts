@@ -25,6 +25,12 @@ export class Logger {
         this.logger.error(data);
     }
 
+    public warn (message: string, moduleName?: string) {
+        message = `[Warning] ${message}`;
+        const data = this.prepareMetadata(message, moduleName);
+        this.logger.warn(data);
+    }
+
     private prepareMetadata (message: string, moduleName?: string): string {
         moduleName = moduleName || this.moduleName;
         return `${moduleName}: ${message}`;

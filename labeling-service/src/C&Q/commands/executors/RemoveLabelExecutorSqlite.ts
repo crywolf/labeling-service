@@ -50,8 +50,8 @@ class RemoveLabelExecutorSqlite extends CommandExecutorSqlite {
             .then(() => {
                 return;
             }).catch((err) => {
-                logger.error(err, this.constructor.name);
-                throw new InternalServerError(err.message);
+                const message = `${this.constructor.name}: ${err.message}`;
+                throw new InternalServerError(message);
             });
     }
 }

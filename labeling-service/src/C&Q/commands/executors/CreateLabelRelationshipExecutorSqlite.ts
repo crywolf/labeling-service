@@ -16,11 +16,11 @@ class CreateLabelRelationshipExecutorSqlite extends CommandExecutorSqlite {
             .then(() => {
                 return label;
             }).catch((err) => {
-                logger.error(err, this.constructor.name);
                 if (err.code === 'SQLITE_CONSTRAINT') {
                     return label;
                 } else {
-                    throw new InternalServerError(err.message);
+                    const message = `${this.constructor.name}: ${err.message}`;
+                    throw new InternalServerError(message);
                 }
             });
     }

@@ -30,7 +30,7 @@ export class RestifyServer implements Server {
 
         this.server.on('InternalServer', (req, res, err, cb) => {
             logger.error('InternalServerError! ' + err.message);
-            err.body = 'Something went wrong!';
+            err.body.message = 'Something went wrong!';
             return cb();
         });
     }
