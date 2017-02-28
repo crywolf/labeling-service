@@ -15,7 +15,10 @@ class CreateLabelRelationship extends Command {
             type: req.body.type,
             value: req.body.value
         };
-        return this.executor.execute(label);
+        return this.executor.execute(label)
+            .then(() => {
+                return;
+            });
     }
 
 }

@@ -12,7 +12,7 @@ class RemoveLabelExecutorSqlite extends CommandExecutorSqlite {
         params?: {
             labelTypes?: Array<string>,
             labelValues?: Array<string>
-        }): Promise<Array<Label>> {
+        }): Promise<void> {
 
         const labelTypes = params ? params.labelTypes || [] : [];
         const labelValues = params ? params.labelValues || [] : [];
@@ -46,9 +46,9 @@ class RemoveLabelExecutorSqlite extends CommandExecutorSqlite {
 
         sql.where(where);
 
-        return this.storage.all(sql.toString())
-            .then((rows) => {
-                return rows;
+        return this.storage.run(sql.toString())
+            .then(() => {
+                return;
             }).catch((err) => {
                 logger.error(err, this.constructor.name);
                 throw new InternalServerError(err.message);
