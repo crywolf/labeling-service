@@ -1,5 +1,5 @@
 import CreateLabelRelationshipExecutor from './CreateLabelRelationshipExecutorSqlite';
-import RemoveLabelExecutor from './RemoveLabelExecutorInMemory';
+import RemoveLabelExecutor from './RemoveLabelExecutorSqlite';
 
 const commandExecutors = {
     CreateLabelRelationshipExecutor,

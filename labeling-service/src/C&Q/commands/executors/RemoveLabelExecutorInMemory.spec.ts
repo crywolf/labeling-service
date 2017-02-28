@@ -13,7 +13,7 @@ describe('RemoveLabelExecutorInMemory', () => {
     let labelD: Label;
     let labelE: Label;
     let labelF: Label;
-    let origStorageSize: number;
+    let storedEntitiesCount: number;
 
     beforeEach(() => {
         executor = initializeExecutor();
@@ -71,7 +71,7 @@ describe('RemoveLabelExecutorInMemory', () => {
             memoryStorage.add(labelD);
             memoryStorage.add(labelE);
             memoryStorage.add(labelF);
-            origStorageSize = memoryStorage.size;
+            storedEntitiesCount = memoryStorage.size;
         });
 
         it('should return removed labels', () => {
@@ -96,7 +96,7 @@ describe('RemoveLabelExecutorInMemory', () => {
             it('should remove all labels of entity and let labels of other entities untouched', () => {
                 expect(memoryStorage).to.be.a('Set');
                 const removedEntitiesCount = 4;
-                expect(memoryStorage.size).to.equal(origStorageSize - removedEntitiesCount);
+                expect(memoryStorage.size).to.equal(storedEntitiesCount - removedEntitiesCount);
 
                 const sIterator = memoryStorage.values();
                 expect(sIterator.next().value).to.deep.equal(labelB);
@@ -113,7 +113,7 @@ describe('RemoveLabelExecutorInMemory', () => {
 
             it('should remove only labels of that types', () => {
                 const removedEntitiesCount = 3;
-                expect(memoryStorage.size).to.equal(origStorageSize - removedEntitiesCount);
+                expect(memoryStorage.size).to.equal(storedEntitiesCount - removedEntitiesCount);
 
                 const sIterator = memoryStorage.values();
                 expect(sIterator.next().value).to.deep.equal(labelB);
@@ -132,7 +132,7 @@ describe('RemoveLabelExecutorInMemory', () => {
 
             it('should remove only labels of that types and values', () => {
                 const removedEntitiesCount = 2;
-                expect(memoryStorage.size).to.equal(origStorageSize - removedEntitiesCount);
+                expect(memoryStorage.size).to.equal(storedEntitiesCount - removedEntitiesCount);
 
                 const sIterator = memoryStorage.values();
                 expect(sIterator.next().value).to.deep.equal(labelB);

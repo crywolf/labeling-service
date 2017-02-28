@@ -66,7 +66,6 @@ describe('CreateLabelRelationshipExecutorSqlite', () => {
                     .then((count) => {
                         return expect(count).to.equal(2);
                     });
-
             });
         });
 

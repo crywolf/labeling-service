@@ -18,4 +18,8 @@ function countRows (db: Database): Promise<number> {
         });
 }
 
-export {addLabel, countRows};
+function getAllLabels (db: Database): Promise<any> {
+    return db.all(`SELECT ownerId, entityId, entityType, type, value FROM ${testConfig.tablename} ORDER BY 'id'`);
+}
+
+export {addLabel, countRows, getAllLabels};

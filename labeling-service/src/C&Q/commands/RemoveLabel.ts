@@ -8,12 +8,18 @@ class RemoveLabel extends Command {
     };
 
     protected process (req) {
+        const ownerId = parseInt(req.params.ownerId, 10);
         const entityId = parseInt(req.params.entityId, 10);
 
         const labelTypes = req.params.labelTypes ? req.params.labelTypes.split(',') : [];
         const labelValues = req.params.labelValues ? req.params.labelValues.split(',') : [];
 
-        return this.executor.execute(entityId, labelTypes, labelValues);
+        const executorParams = {
+            labelTypes,
+            labelValues
+        };
+
+        return this.executor.execute(ownerId, entityId, executorParams);
     }
 
 }
