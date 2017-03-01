@@ -11,39 +11,60 @@ describe('CreateLabelRelationshipExecutorSqlite', () => {
     const testConfig = config.sqlite;
     let executor: CreateLabelRelationshipExecutorSqlite;
     let db: Database;
-    let label1: Label;
-    let label2: Label;
-    let label3: Label;
-    let label4: Label;
+
+    let entityA200Label1: Label;
+    let entityA200Label2: Label;
+    let entityA200Label1DifferentOwner: Label;
+
+    let entityB200Label: Label;
+    let entityA210Label: Label;
+    let entityB300label: Label;
 
     beforeEach(() => {
-        label1 = {
+        entityA200Label1 = {
             ownerId: 1,
-            entityId: 2,
-            entityType: 'SomeEntity',
+            entityId: 200,
+            entityType: 'entityA',
             type: 'color',
             value: 'blue'
         };
-        label2 = {
+        entityA200Label2 = {
             ownerId: 1,
-            entityId: 3,
-            entityType: 'SomeOtherEntity',
-            type: 'height',
-            value: '3'
-        };
-        label3 = {
-            ownerId: 1,
-            entityId: 3,
-            entityType: 'SomeOtherEntity',
-            type: 'width',
-            value: '6'
-        };
-        label4 = {
-            ownerId: 1,
-            entityId: 3,
-            entityType: 'SomeOtherEntity',
+            entityId: 200,
+            entityType: 'entityA',
             type: 'color',
-            value: 'black'
+            value: 'red'
+        };
+
+        entityA200Label1DifferentOwner = {
+            ownerId: 99,
+            entityId: 200,
+            entityType: 'entityA',
+            type: 'color',
+            value: 'blue'
+        };
+
+        entityA210Label = {
+            ownerId: 1,
+            entityId: 210,
+            entityType: 'entityA',
+            type: 'color',
+            value: 'blue'
+        };
+
+        entityB200Label = {
+            ownerId: 1,
+            entityId: 200,
+            entityType: 'entityB',
+            type: 'color',
+            value: 'blue'
+        };
+        entityB300label = {
+            ownerId: 1,
+            entityId: 300,
+            entityType: 'entityB',
+            type: 'color',
+            value: 'blue'
         };
 
         return initializeExecutor()
@@ -52,12 +73,12 @@ describe('CreateLabelRelationshipExecutorSqlite', () => {
             });
     });
 
-    describe('#execute', () => {
-        describe('in case label is unique', () => {
+    describe('#execute (trying to add new label to entity)', () => {
+        describe('in case entityType and entityId is unique', () => {
             beforeEach(() => {
-                return addLabel(db, label1)
+                return addLabel(db, entityA200Label1)
                     .then(() => {
-                        return executor.execute(label2);
+                        return executor.execute(entityB300label);
                     });
             });
 
@@ -69,14 +90,46 @@ describe('CreateLabelRelationshipExecutorSqlite', () => {
             });
         });
 
-        describe('in case label is not unique', () => {
+        describe('in case entityType is different and entityId is the same', () => {
             beforeEach(() => {
-                return addLabel(db, label1)
+                return addLabel(db, entityA200Label1)
                     .then(() => {
-                        return addLabel(db, label2);
+                        return executor.execute(entityB200Label);
+                    });
+            });
+
+            it('should attach label to entity', () => {
+                return countRows(db, testConfig.labelsTable)
+                    .then((count) => {
+                        return expect(count).to.equal(2);
+                    });
+            });
+        });
+
+        describe('in case entityType is the same and entityId is different', () => {
+            beforeEach(() => {
+                return addLabel(db, entityA200Label1)
+                    .then(() => {
+                        return executor.execute(entityA210Label);
+                    });
+            });
+
+            it('should attach label to entity', () => {
+                return countRows(db, testConfig.labelsTable)
+                    .then((count) => {
+                        return expect(count).to.equal(2);
+                    });
+            });
+        });
+
+        describe('in case label is completely the same (not unique)', () => {
+            beforeEach(() => {
+                return addLabel(db, entityA200Label1)
+                    .then(() => {
+                        return addLabel(db, entityB300label);
                     })
                     .then(() => {
-                        return executor.execute(label1);
+                        return executor.execute(entityA200Label1);
                     });
             });
 
@@ -87,6 +140,39 @@ describe('CreateLabelRelationshipExecutorSqlite', () => {
                     });
             });
         });
+
+        describe('in case only label value is different', () => {
+            beforeEach(() => {
+                return addLabel(db, entityA200Label1)
+                    .then(() => {
+                        return executor.execute(entityA200Label2);
+                    });
+            });
+
+            it('should attach label to entity', () => {
+                return countRows(db, testConfig.labelsTable)
+                    .then((count) => {
+                        return expect(count).to.equal(2);
+                    });
+            });
+        });
+
+        describe('in case label is the same but different owner', () => {
+            beforeEach(() => {
+                return addLabel(db, entityA200Label1)
+                    .then(() => {
+                        return executor.execute(entityA200Label1DifferentOwner);
+                    });
+            });
+
+            it('should attach label to entity', () => {
+                return countRows(db, testConfig.labelsTable)
+                    .then((count) => {
+                        return expect(count).to.equal(2);
+                    });
+            });
+        });
+
     });
 
     function initializeExecutor (): Promise<CreateLabelRelationshipExecutorSqlite> {
