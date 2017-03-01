@@ -6,7 +6,8 @@ const config = {
     sqlite: {
         filename: ':memory:',
 //        filename: './db.sqlite/labels.sqlite',
-        tablename: 'Labels'
+        labelsTable: 'Labels',
+        restrictionsTable: 'Restrictions'
     }
 };
 

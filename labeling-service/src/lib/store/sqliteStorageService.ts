@@ -3,7 +3,8 @@ import logger from '../logger';
 
 interface Config {
     filename: string;
-    tablename: string;
+    labelsTable: string;
+    restrictionsTable: string;
 }
 
 class SqliteStorageService {
@@ -11,6 +12,7 @@ class SqliteStorageService {
     private static singleton: SqliteStorageService;
 
     private connection: sqlite.Database;
+    private config: Config;
 
     private constructor () {}
 
@@ -20,28 +22,10 @@ class SqliteStorageService {
 
         return sqlite.open(config.filename)
             .then((db) => {
-                logger.info('DB Connected.');
                 this.connection = db;
-                const sql = `CREATE TABLE IF NOT EXISTS ${config.tablename} (
-                    id INTEGER PRIMARY KEY,
-                    ownerId INTEGER,
-                    entityId INTEGER,
-                    entityType CHAR(255),
-                    type CHAR(255),
-                    value CHAR(255)          
-                );`;
-                const uniqueIndexSql = `CREATE UNIQUE INDEX IF NOT EXISTS uniqueValues ON ${config.tablename} (
-                    ownerId,
-                    entityId,
-                    entityType,
-                    type,
-                    value          
-                );`;
-
-                return db.run(sql)
-                    .then(() => {
-                        db.run(uniqueIndexSql);
-                    });
+                this.config = config;
+                logger.info('DB Connected.');
+                return this.createLabelsDb();
             });
     }
 
@@ -57,6 +41,30 @@ class SqliteStorageService {
             this.singleton = new SqliteStorageService();
         }
         return this.singleton;
+    }
+
+    private createLabelsDb () {
+        const sql = `CREATE TABLE IF NOT EXISTS ${this.config.labelsTable} (
+                    id INTEGER PRIMARY KEY,
+                    ownerId INTEGER,
+                    entityId INTEGER,
+                    entityType CHAR(255),
+                    type CHAR(255),
+                    value CHAR(255)          
+                );`;
+
+        const uniqueIndexSql = `CREATE UNIQUE INDEX IF NOT EXISTS uniqueValues ON ${this.config.labelsTable} (
+                    ownerId,
+                    entityId,
+                    entityType,
+                    type,
+                    value          
+                );`;
+
+        return this.db.run(sql)
+            .then(() => {
+                return this.db.run(uniqueIndexSql);
+            });
     }
 
 }

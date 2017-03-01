@@ -23,7 +23,7 @@ class ReturnAllLabeledEntitiesExecutorSqlite extends QueryExecutorSqlite {
 
         const subselectsSql = [];
         const select = squel.select()
-            .from(this.tablename)
+            .from(this.tables.labelsTable)
             .field('entityId')
             .field('entityType')
             .group('entityId');

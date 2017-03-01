@@ -62,7 +62,7 @@ describe('CreateLabelRelationshipExecutorSqlite', () => {
             });
 
             it('should attach label to entity', () => {
-                return countRows(db)
+                return countRows(db, testConfig.labelsTable)
                     .then((count) => {
                         return expect(count).to.equal(2);
                     });
@@ -81,7 +81,7 @@ describe('CreateLabelRelationshipExecutorSqlite', () => {
             });
 
             it('should not attach duplicate label to entity', () => {
-                return countRows(db)
+                return countRows(db, testConfig.labelsTable)
                     .then((count) => {
                         return expect(count).to.equal(2);
                     });

@@ -6,7 +6,7 @@ import InternalServerError from '../../../coreEntities/InternalServerError';
 class CreateLabelRelationshipExecutorSqlite extends CommandExecutorSqlite {
 
     public execute (label: Label): Promise<Label> {
-        const sql = `INSERT INTO ${this.tablename}
+        const sql = `INSERT INTO ${this.tables.labelsTable}
                     (id, ownerId, entityId, entityType, type, value) 
                     VALUES(NULL, ?, ?, ?, ?, ?);`;
 

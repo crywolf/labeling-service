@@ -121,7 +121,7 @@ describe('RemoveLabelExecutorSqlite', () => {
                     return addLabel(db, entityADifferentOwnerLabel1);
                 })
                 .then(() => {
-                    return countRows(db);
+                    return countRows(db, testConfig.labelsTable);
                 })
                 .then((count) => {
                     storedEntitiesCount = count;
@@ -135,7 +135,7 @@ describe('RemoveLabelExecutorSqlite', () => {
 
             it('should remove all labels of entity and let labels of other entities untouched', () => {
                 const removedEntitiesCount = 5;
-                return countRows(db)
+                return countRows(db, testConfig.labelsTable)
                     .then((count) => {
                         expect(count).to.equal(storedEntitiesCount - removedEntitiesCount);
                     })
@@ -154,7 +154,7 @@ describe('RemoveLabelExecutorSqlite', () => {
 
             it(`should remove all labels of the entity belonging to that different owner`, () => {
                 const removedEntitiesCount = 1;
-                return countRows(db)
+                return countRows(db, testConfig.labelsTable)
                     .then((count) => {
                         expect(count).to.equal(storedEntitiesCount - removedEntitiesCount);
                     });
@@ -172,7 +172,7 @@ describe('RemoveLabelExecutorSqlite', () => {
 
             it('should remove only labels of that types', () => {
                 const removedEntitiesCount = 4;
-                return countRows(db)
+                return countRows(db, testConfig.labelsTable)
                     .then((count) => {
                         return expect(count).to.equal(storedEntitiesCount - removedEntitiesCount);
                     })
@@ -196,7 +196,7 @@ describe('RemoveLabelExecutorSqlite', () => {
 
             it('should remove only labels of that values', () => {
                 const removedEntitiesCount = 3;
-                return countRows(db)
+                return countRows(db, testConfig.labelsTable)
                     .then((count) => {
                         return expect(count).to.equal(storedEntitiesCount - removedEntitiesCount);
                     })
@@ -223,7 +223,7 @@ describe('RemoveLabelExecutorSqlite', () => {
 
             it('should remove only labels of that types and values', () => {
                 const removedEntitiesCount = 2;
-                return countRows(db)
+                return countRows(db, testConfig.labelsTable)
                     .then((count) => {
                         return expect(count).to.equal(storedEntitiesCount - removedEntitiesCount);
                     })

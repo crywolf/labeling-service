@@ -17,7 +17,7 @@ class RemoveLabelExecutorSqlite extends CommandExecutorSqlite {
         const labelTypes = params ? params.labelTypes || [] : [];
         const labelValues = params ? params.labelValues || [] : [];
 
-        const sql = squel.delete().from(this.tablename);
+        const sql = squel.delete().from(this.tables.labelsTable);
 
         const where = squel.expr();
 

@@ -1,6 +1,5 @@
 import Label from '../../../coreEntities/Label';
 import QueryExecutorSqlite from '../../../coreEntities/QueryExecutorSqlite';
-import logger from '../../../lib/logger';
 import InternalServerError from '../../../coreEntities/InternalServerError';
 import * as squel from 'squel';
 
@@ -18,7 +17,7 @@ class ReturnEntityLabelsExecutorSqlite extends QueryExecutorSqlite {
         const labelValues = params ? params.labelValues || [] : [];
 
         const select = squel.select()
-            .from(this.tablename)
+            .from(this.tables.labelsTable)
             .field('type')
             .field('value')
             .order('id');

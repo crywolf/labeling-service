@@ -8,18 +8,18 @@ const testConfig = config.sqlite;
 
 function addLabel (db: Database, label: Label): Promise<any> {
     const values = [label.ownerId, label.entityId, label.entityType, label.type, label.value];
-    return db.run(`INSERT INTO ${testConfig.tablename} VALUES(NULL, ?, ?, ?, ?, ?)`, values);
+    return db.run(`INSERT INTO ${testConfig.labelsTable} VALUES(NULL, ?, ?, ?, ?, ?)`, values);
 }
 
-function countRows (db: Database): Promise<number> {
-    return db.get(`SELECT COUNT(1) AS count FROM ${testConfig.tablename}`)
+function countRows (db: Database, tablename: string): Promise<number> {
+    return db.get(`SELECT COUNT(1) AS count FROM ${tablename}`)
         .then((row) => {
             return row.count;
         });
 }
 
 function getAllLabels (db: Database): Promise<any> {
-    return db.all(`SELECT ownerId, entityId, entityType, type, value FROM ${testConfig.tablename} ORDER BY 'id'`);
+    return db.all(`SELECT ownerId, entityId, entityType, type, value FROM ${testConfig.labelsTable} ORDER BY 'id'`);
 }
 
 export {addLabel, countRows, getAllLabels};
