@@ -25,7 +25,10 @@ class SqliteStorageService {
                 this.connection = db;
                 this.config = config;
                 logger.info('DB Connected.');
-                return this.createLabelsDb();
+                return this.createLabelsDb()
+                    .then(() => {
+                        return this.createRestrictionsDb();
+                    });
             });
     }
 
@@ -44,7 +47,8 @@ class SqliteStorageService {
     }
 
     private createLabelsDb () {
-        const sql = `CREATE TABLE IF NOT EXISTS ${this.config.labelsTable} (
+        const sql = `
+                CREATE TABLE IF NOT EXISTS ${this.config.labelsTable} (
                     id INTEGER PRIMARY KEY,
                     ownerId INTEGER,
                     entityId INTEGER,
@@ -53,7 +57,9 @@ class SqliteStorageService {
                     value CHAR(255)          
                 );`;
 
-        const uniqueIndexSql = `CREATE UNIQUE INDEX IF NOT EXISTS uniqueValues ON ${this.config.labelsTable} (
+        const uniqueIndexSql = `
+                CREATE UNIQUE INDEX IF NOT EXISTS uniqueLabels 
+                ON ${this.config.labelsTable} (
                     ownerId,
                     entityId,
                     entityType,
@@ -67,6 +73,29 @@ class SqliteStorageService {
             });
     }
 
+    private createRestrictionsDb () {
+        const sql = `
+                CREATE TABLE IF NOT EXISTS ${this.config.restrictionsTable} (
+                    id INTEGER PRIMARY KEY,
+                    ownerId INTEGER,
+                    labelType CHAR(255),
+                    entityType CHAR(255),
+                    hash CHAR(255)
+                );`;
+
+        const uniqueIndexSql = `
+                CREATE UNIQUE INDEX IF NOT EXISTS uniqueRestrictions 
+                ON ${this.config.restrictionsTable} (
+                    ownerId,
+                    labelType,
+                    entityType
+                );`;
+
+        return this.db.run(sql)
+            .then(() => {
+                return this.db.run(uniqueIndexSql);
+            });
+    }
 }
 
 const sqlStorageService = SqliteStorageService.instance;

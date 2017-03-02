@@ -1,6 +1,7 @@
 process.env.NODE_ENV = 'test';
 
 import Label from '../../coreEntities/Label';
+import Restriction from '../../coreEntities/Restriction';
 import {Database} from 'sqlite';
 import config from '../../config';
 
@@ -11,6 +12,15 @@ function addLabel (db: Database, label: Label): Promise<any> {
     return db.run(`INSERT INTO ${testConfig.labelsTable} VALUES(NULL, ?, ?, ?, ?, ?)`, values);
 }
 
+function addRestriction (db: Database, restriction: Restriction, hash): Promise<any> {
+    const values = [restriction.ownerId, restriction.labelType, restriction.entityType, hash];
+    return db.run(`INSERT INTO ${testConfig.restrictionsTable} VALUES(NULL, ?, ?, ?, ?)`, values);
+}
+
+function getAllLabels (db: Database): Promise<any> {
+    return db.all(`SELECT ownerId, entityId, entityType, type, value FROM ${testConfig.labelsTable} ORDER BY 'id'`);
+}
+
 function countRows (db: Database, tablename: string): Promise<number> {
     return db.get(`SELECT COUNT(1) AS count FROM ${tablename}`)
         .then((row) => {
@@ -18,8 +28,4 @@ function countRows (db: Database, tablename: string): Promise<number> {
         });
 }
 
-function getAllLabels (db: Database): Promise<any> {
-    return db.all(`SELECT ownerId, entityId, entityType, type, value FROM ${testConfig.labelsTable} ORDER BY 'id'`);
-}
-
-export {addLabel, countRows, getAllLabels};
+export {addLabel, addRestriction, getAllLabels, countRows};

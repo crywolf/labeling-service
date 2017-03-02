@@ -1,6 +1,5 @@
 import Label from '../../../coreEntities/Label';
 import CommandExecutorSqlite from '../../../coreEntities/CommandExecutorSqlite';
-import logger from '../../../lib/logger';
 import InternalServerError from '../../../coreEntities/InternalServerError';
 
 class CreateLabelRelationshipExecutorSqlite extends CommandExecutorSqlite {
