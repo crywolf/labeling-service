@@ -3,7 +3,7 @@ interface Label {
     entityId: number;
     entityType: string;
     type: string;
-    value: string;
+    value?: string;
 }
 
 export default Label;

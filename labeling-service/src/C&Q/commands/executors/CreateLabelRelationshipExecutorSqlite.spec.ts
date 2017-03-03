@@ -1,4 +1,4 @@
-import {addLabel, countRows} from '../../../lib/test/util';
+import {addLabel, countRows, getAllLabels} from '../../../lib/test/util';
 import {expect} from 'chai';
 import Label from '../../../coreEntities/Label';
 import CreateLabelRelationshipExecutorSqlite from './CreateLabelRelationshipExecutorSqlite';
@@ -170,6 +170,39 @@ describe('CreateLabelRelationshipExecutorSqlite', () => {
                     .then((count) => {
                         return expect(count).to.equal(2);
                     });
+            });
+        });
+
+        describe('in case label value is missing', () => {
+            let labelWithoutValue: Label;
+
+            beforeEach(() => {
+                labelWithoutValue = {
+                    ownerId: 1,
+                    entityId: 68,
+                    entityType: 'someEntity',
+                    type: 'color'
+                };
+
+                return addLabel(db, labelWithoutValue);
+            });
+
+            it('should attach label to entity with labelValue set to null', () => {
+                return countRows(db, testConfig.labelsTable)
+                    .then((count) => {
+                        return expect(count).to.equal(1);
+                    })
+                    .then(() => getAllLabels(db))
+                    .then((labels) => {
+                        expect(labels[0]).to.deep.equal({
+                            ownerId: labelWithoutValue.ownerId,
+                            entityId: labelWithoutValue.entityId,
+                            entityType: labelWithoutValue.entityType,
+                            type: labelWithoutValue.type,
+                            value: null
+                        });
+                    });
+
             });
         });
 

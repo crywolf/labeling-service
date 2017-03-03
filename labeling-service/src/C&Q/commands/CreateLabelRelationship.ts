@@ -14,7 +14,7 @@ class CreateLabelRelationship extends Command {
             entityId: req.body.entityId,
             entityType: req.body.entityType,
             type: req.body.type,
-            value: req.body.value || ''
+            value: req.body.value
         };
 
         if (!label.type) {
