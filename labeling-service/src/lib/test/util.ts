@@ -18,7 +18,11 @@ function addRestriction (db: Database, restriction: Restriction, hash): Promise<
 }
 
 function getAllLabels (db: Database): Promise<any> {
-    return db.all(`SELECT ownerId, entityId, entityType, type, value FROM ${testConfig.labelsTable} ORDER BY 'id'`);
+    return db.all(`SELECT ownerId, entityId, entityType, type, value FROM ${testConfig.labelsTable} ORDER BY id`);
+}
+
+function getAllRestrictions (db: Database): Promise<any> {
+    return db.all(`SELECT ownerId, labelType, entityType FROM ${testConfig.restrictionsTable} ORDER BY id`);
 }
 
 function countRows (db: Database, tablename: string): Promise<number> {
@@ -28,4 +32,4 @@ function countRows (db: Database, tablename: string): Promise<number> {
         });
 }
 
-export {addLabel, addRestriction, getAllLabels, countRows};
+export {addLabel, addRestriction, getAllLabels, getAllRestrictions, countRows};

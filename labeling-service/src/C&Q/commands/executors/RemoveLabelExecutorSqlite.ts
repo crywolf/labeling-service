@@ -1,6 +1,4 @@
-import Label from '../../../coreEntities/Label';
 import CommandExecutorSqlite from '../../../coreEntities/CommandExecutorSqlite';
-import logger from '../../../lib/logger';
 import InternalServerError from '../../../coreEntities/InternalServerError';
 import * as squel from 'squel';
 

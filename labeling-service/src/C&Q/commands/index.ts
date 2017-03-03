@@ -1,11 +1,13 @@
 import CreateLabelRelationship from './CreateLabelRelationship';
 import RemoveLabel from './RemoveLabel';
 import CreateLabelRestriction from './CreateLabelRestriction';
+import RemoveLabelRestriction from './RemoveLabelRestriction';
 
 const commands = {
     CreateLabelRelationship,
     RemoveLabel,
-    CreateLabelRestriction
+    CreateLabelRestriction,
+    RemoveLabelRestriction
 };
 
 export default commands;

@@ -1,4 +1,4 @@
-import {addRestriction, countRows} from '../../../lib/test/util';
+import {addRestriction, countRows, getAllRestrictions} from '../../../lib/test/util';
 import {expect} from 'chai';
 import Restriction from '../../../coreEntities/Restriction';
 import CreateLabelRestrictionExecutorSqlite from './CreateLabelRestrictionExecutorSqlite';
@@ -64,7 +64,7 @@ describe('CreateLabelRestrictionExecutorSqlite', () => {
             it('should add restriction', () => {
                 return countRows(db, testConfig.restrictionsTable)
                     .then((count) => {
-                        return expect(count).to.equal(2);
+                        expect(count).to.equal(2);
                     });
             });
         });
@@ -80,7 +80,7 @@ describe('CreateLabelRestrictionExecutorSqlite', () => {
             it('should add restriction', () => {
                 return countRows(db, testConfig.restrictionsTable)
                     .then((count) => {
-                        return expect(count).to.equal(2);
+                        expect(count).to.equal(2);
                     });
             });
         });
@@ -93,10 +93,38 @@ describe('CreateLabelRestrictionExecutorSqlite', () => {
                     });
             });
 
-            it('should attach label to entity', () => {
+            it('should add restriction', () => {
                 return countRows(db, testConfig.restrictionsTable)
                     .then((count) => {
-                        return expect(count).to.equal(2);
+                        expect(count).to.equal(2);
+                    });
+            });
+        });
+
+        describe('in case entityType is missing', () => {
+            let restrictionWithoutEntityType: Restriction;
+
+            beforeEach(() => {
+                restrictionWithoutEntityType = {
+                    ownerId: 1,
+                    labelType: 'color'
+                };
+
+                return executor.execute(restrictionWithoutEntityType);
+            });
+
+            it('should add restriction wit entityType set to null', () => {
+                return countRows(db, testConfig.restrictionsTable)
+                    .then((count) => {
+                        expect(count).to.equal(1);
+                    })
+                    .then(() => getAllRestrictions(db))
+                    .then((restrictions) => {
+                        expect(restrictions[0]).to.deep.equal({
+                            ownerId: restrictionWithoutEntityType.ownerId,
+                            labelType: restrictionWithoutEntityType.labelType,
+                            entityType: null
+                        });
                     });
             });
         });
@@ -115,7 +143,7 @@ describe('CreateLabelRestrictionExecutorSqlite', () => {
             it('should not attach duplicate label to entity', () => {
                 return countRows(db, testConfig.restrictionsTable)
                     .then((count) => {
-                        return expect(count).to.equal(2);
+                        expect(count).to.equal(2);
                     });
             });
         });
@@ -128,10 +156,10 @@ describe('CreateLabelRestrictionExecutorSqlite', () => {
                     });
             });
 
-            it('should attach label to entity', () => {
+            it('should add restriction', () => {
                 return countRows(db, testConfig.restrictionsTable)
                     .then((count) => {
-                        return expect(count).to.equal(2);
+                        expect(count).to.equal(2);
                     });
             });
         });
