@@ -50,26 +50,40 @@ class SqliteStorageService {
         const sql = `
                 CREATE TABLE IF NOT EXISTS ${this.config.labelsTable} (
                     id INTEGER PRIMARY KEY,
-                    ownerId INTEGER,
-                    entityId INTEGER,
-                    entityType CHAR(255),
-                    type CHAR(255),
+                    ownerId INTEGER NOT NULL,
+                    entityId INTEGER NOT NULL,
+                    entityType CHAR(255) NOT NULL,
+                    type CHAR(255) NOT NULL,
                     value CHAR(255)          
                 );`;
 
-        const uniqueIndexSql = `
-                CREATE UNIQUE INDEX IF NOT EXISTS uniqueLabels 
-                ON ${this.config.labelsTable} (
-                    ownerId,
-                    entityId,
-                    entityType,
-                    type,
-                    value          
-                );`;
+        const uniqueIndexSql1 = `
+                CREATE UNIQUE INDEX IF NOT EXISTS uniqueLabelsWithValue 
+                    ON ${this.config.labelsTable} (
+                        ownerId,
+                        entityId,
+                        entityType,
+                        type,
+                        value          
+                    ) WHERE value IS NOT NULL;
+                `;
+
+        const uniqueIndexSql2 = `
+                CREATE UNIQUE INDEX IF NOT EXISTS uniqueLabelsWoValue 
+                    ON ${this.config.labelsTable} (
+                        ownerId,
+                        entityId,
+                        entityType,
+                        type  
+                    ) WHERE value IS NULL;
+                `;
 
         return this.db.run(sql)
             .then(() => {
-                return this.db.run(uniqueIndexSql);
+                return this.db.run(uniqueIndexSql1);
+            })
+            .then(() => {
+                return this.db.run(uniqueIndexSql2);
             });
     }
 
@@ -77,23 +91,35 @@ class SqliteStorageService {
         const sql = `
                 CREATE TABLE IF NOT EXISTS ${this.config.restrictionsTable} (
                     id INTEGER PRIMARY KEY,
-                    ownerId INTEGER,
-                    labelType CHAR(255),
+                    ownerId INTEGER NOT NULL,
+                    labelType CHAR(255) NOT NULL,
                     entityType CHAR(255),
-                    hash CHAR(255)
+                    hash CHAR(255) NOT NULL
                 );`;
 
-        const uniqueIndexSql = `
-                CREATE UNIQUE INDEX IF NOT EXISTS uniqueRestrictions 
-                ON ${this.config.restrictionsTable} (
-                    ownerId,
-                    labelType,
-                    entityType
-                );`;
+        const uniqueIndexSql1 = `
+                CREATE UNIQUE INDEX IF NOT EXISTS uniqueRestrictionsWithEntityType 
+                    ON ${this.config.restrictionsTable} (
+                        ownerId,
+                        labelType,
+                        entityType
+                    ) WHERE entityType IS NOT NULL;
+                `;
+
+        const uniqueIndexSql2 = `
+                CREATE UNIQUE INDEX IF NOT EXISTS uniqueRestrictionsWoEntityType 
+                    ON ${this.config.restrictionsTable} (
+                        ownerId,
+                        labelType
+                    ) WHERE entityType IS NULL;
+                `;
 
         return this.db.run(sql)
             .then(() => {
-                return this.db.run(uniqueIndexSql);
+                return this.db.run(uniqueIndexSql1);
+            })
+            .then(() => {
+                return this.db.run(uniqueIndexSql2);
             });
     }
 }

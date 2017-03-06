@@ -127,6 +127,18 @@ describe('CreateLabelRestrictionExecutorSqlite', () => {
                         });
                     });
             });
+
+            describe('and trying to add the same restriction', () => {
+                it('should not add duplicate restriction', () => {
+                    return executor.execute(restrictionWithoutEntityType)
+                        .then(() => {
+                            return countRows(db, testConfig.restrictionsTable);
+                        })
+                        .then((count) => {
+                            expect(count).to.equal(1);
+                        });
+                });
+            });
         });
 
         describe('in case restriction is completely the same (not unique)', () => {
@@ -140,7 +152,7 @@ describe('CreateLabelRestrictionExecutorSqlite', () => {
                     });
             });
 
-            it('should not attach duplicate label to entity', () => {
+            it('should not add duplicate restriction', () => {
                 return countRows(db, testConfig.restrictionsTable)
                     .then((count) => {
                         expect(count).to.equal(2);

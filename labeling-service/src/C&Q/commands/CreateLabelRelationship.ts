@@ -17,6 +17,12 @@ class CreateLabelRelationship extends Command {
             value: req.body.value
         };
 
+        if (!label.entityId) {
+            return Promise.reject(new UnprocessableEntityError('EntityId is missing!'));
+        }
+        if (!label.entityType) {
+            return Promise.reject(new UnprocessableEntityError('EntityType is missing!'));
+        }
         if (!label.type) {
             return Promise.reject(new UnprocessableEntityError('Label type is missing!'));
         }
