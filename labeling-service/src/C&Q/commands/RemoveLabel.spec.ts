@@ -56,8 +56,6 @@ describe('RemoveLabel command', () => {
             });
 
             it('calls execute() with correct parameters', () => {
-                expect(process).to.be.calledOnce;
-                expect(process).to.be.calledWith(req);
                 expect(execute).to.be.calledOnce;
                 expect(execute).to.be.calledWith(2, 100, {labelTypes: [], labelValues: []});
             });
@@ -70,8 +68,6 @@ describe('RemoveLabel command', () => {
             });
 
             it('calls execute() with correct parameters', () => {
-                expect(process).to.be.calledOnce;
-                expect(process).to.be.calledWith(req);
                 expect(execute).to.be.calledOnce;
                 expect(execute).to.be.calledWith(2, 100, {labelTypes: ['someType'], labelValues: []});
             });
@@ -84,8 +80,6 @@ describe('RemoveLabel command', () => {
             });
 
             it('calls execute() with correct parameters', () => {
-                expect(process).to.be.calledOnce;
-                expect(process).to.be.calledWith(req);
                 expect(execute).to.be.calledOnce;
                 expect(execute).to.be.calledWith(2, 100, {labelTypes: ['someType', 'anotherType'], labelValues: []});
             });
@@ -98,8 +92,6 @@ describe('RemoveLabel command', () => {
             });
 
             it('calls execute() with correct parameters', () => {
-                expect(process).to.be.calledOnce;
-                expect(process).to.be.calledWith(req);
                 expect(execute).to.be.calledOnce;
                 expect(execute).to.be.calledWith(2, 100, {labelTypes: [], labelValues: ['someValue']});
             });
@@ -112,13 +104,10 @@ describe('RemoveLabel command', () => {
             });
 
             it('calls execute() with correct parameters', () => {
-                expect(process).to.be.calledOnce;
-                expect(process).to.be.calledWith(req);
                 expect(execute).to.be.calledOnce;
                 expect(execute).to.be.calledWith(2, 100, {labelTypes: [], labelValues: ['someValue', 'anotherValue']});
             });
         });
-
     });
 
 });
