@@ -1,6 +1,6 @@
 import * as chai from 'chai';
 import {expect} from 'chai';
-import CreateLabelRelationship from './CreateLabelRelationship';
+import CreateLabelRestriction from './CreateLabelRestriction';
 import {Command} from '../../coreEntities/Command';
 import CommandExecutor from '../../coreEntities/CommandExecutor';
 import UnprocessableEntityError from '../../coreEntities/UnprocessableEntityError';
@@ -11,7 +11,7 @@ import * as chaiAsPromised from 'chai-as-promised';
 chai.use(chaiSinon);
 chai.use(chaiAsPromised);
 
-describe('CreateLabelRelationship command', () => {
+describe('CreateLabelRestriction command', () => {
 
     let command: Command;
     const executor: CommandExecutor = { execute: () => Promise.resolve() };
@@ -24,7 +24,7 @@ describe('CreateLabelRelationship command', () => {
     let execute;
 
     beforeEach(() => {
-        command = new CreateLabelRelationship(executor);
+        command = new CreateLabelRestriction(executor);
         process = sinon.spy(command, 'process');
         execute = sinon.spy(executor, 'execute');
     });
@@ -45,7 +45,7 @@ describe('CreateLabelRelationship command', () => {
 
     describe('#process', () => {
         const entityType = 'entityA';
-        const entityId = '4';
+        const labelType = 'someLabelType';
         const params = { ownerId: '2' };
 
         describe('with complete request data', () => {
@@ -53,10 +53,8 @@ describe('CreateLabelRelationship command', () => {
                 req = {
                     params,
                     body: {
-                        entityId,
                         entityType,
-                        type: 'color',
-                        value: 'black'
+                        labelType
                     }
                 };
                 command.handler(req, res, next);
@@ -67,23 +65,19 @@ describe('CreateLabelRelationship command', () => {
 
                 const expected = {
                     ownerId: 2,
-                    entityId: 4,
                     entityType,
-                    type: 'color',
-                    value: 'black'
+                    labelType
                 };
                 expect(execute).to.be.calledWith(expected);
             });
         });
 
-        describe('without entityId value in request', () => {
+        describe('without labelType in request', () => {
             beforeEach(() => {
                 req = {
                     params,
                     body: {
-                        entityType,
-                        type: 'color',
-                        value: 'black'
+                        entityType
                     }
                 };
                 command.handler(req, res, next);
@@ -95,52 +89,12 @@ describe('CreateLabelRelationship command', () => {
             });
         });
 
-        describe('without entityType value in request', () => {
+        describe('without entityType in request', () => {
             beforeEach(() => {
                 req = {
                     params,
                     body: {
-                        entityId,
-                        type: 'color',
-                        value: 'black'
-                    }
-                };
-                command.handler(req, res, next);
-            });
-
-            it('should reject with validation error', () => {
-                expect(execute).not.to.be.called;
-                return expect(process.getCall(0).returnValue).to.be.rejectedWith(UnprocessableEntityError);
-            });
-        });
-
-        describe('without label type in request', () => {
-            beforeEach(() => {
-                req = {
-                    params,
-                    body: {
-                        entityId,
-                        entityType,
-                        value: 'black'
-                    }
-                };
-                command.handler(req, res, next);
-            });
-
-            it('should reject with validation error', () => {
-                expect(execute).not.to.be.called;
-                return expect(process.getCall(0).returnValue).to.be.rejectedWith(UnprocessableEntityError);
-            });
-        });
-
-        describe('without label value in request', () => {
-            beforeEach(() => {
-                req = {
-                    params,
-                    body: {
-                        entityId,
-                        entityType,
-                        type: 'color'
+                        labelType
                     }
                 };
                 command.handler(req, res, next);
