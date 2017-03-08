@@ -24,14 +24,9 @@ class ReturnAllLabeledEntities extends Query {
         }
 
         let entityTypes = [];
-        let entityOperator = 'OR';
         if (req.params.entityTypes) {
             if (req.params.entityTypes.indexOf(',') !== -1) {
                 entityTypes = req.params.entityTypes.split(',');
-            } else if (req.params.entityTypes.indexOf(';') !== -1) {
-                // TODO but entityOperator === 'AND' does not make sense!!!
-                entityTypes = req.params.entityTypes.split(';');
-                entityOperator = 'AND';
             } else {
                 entityTypes.push(req.params.entityTypes);
             }
@@ -40,8 +35,7 @@ class ReturnAllLabeledEntities extends Query {
         const executorParams = {
             labelTypes,
             labelOperator,
-            entityTypes,
-            entityOperator
+            entityTypes
         };
 
         return this.executor.fetch(ownerId, executorParams);

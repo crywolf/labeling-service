@@ -11,15 +11,12 @@ class ReturnAllLabeledEntitiesExecutorSqlite extends QueryExecutorSqlite {
         params?: {
             labelTypes?: Array<string>,
             labelOperator?: string,
-            entityTypes?: Array<string>,
-            entityOperator?: string
+            entityTypes?: Array<string>
         }): Promise<Array<Label>> {
 
         const labelTypes = params ? params.labelTypes || [] : [];
         const labelOperator = params ? params.labelOperator || 'OR' : 'OR';
         const entityTypes = params ? params.entityTypes || [] : [];
-        // but entity operator === 'AND' does not make sense!!!
-        const entityOperator = params ? params.entityOperator || 'OR' : 'OR';
 
         const subselectsSql = [];
         const select = squel.select()
