@@ -4,8 +4,8 @@ const config = {
         port: 8080
     },
     sqlite: {
-        filename: ':memory:',
-//        filename: './db.sqlite/labels.sqlite',
+//        filename: ':memory:',
+        filename: './db.sqlite/labels.sqlite',
         labelsTable: 'Labels',
         restrictionsTable: 'Restrictions'
     }

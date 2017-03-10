@@ -15,7 +15,7 @@
     "prepush": "npm run test:push --silent",
     "security": "nsp check",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post",
-    "start": "ts-node src/app.ts"
+    "start": "ts-node src/main.ts"
   },
   "author": "",
   "license": "ISC",
@@ -29,6 +29,7 @@
     "@types/node": "^7.0.5",
     "chai": "^3.5.0",
     "chai-as-promised": "^6.0.0",
+    "chai-http": "^3.0.0",
     "chai-sinon": "^2.8.1",
     "commitizen": "^2.9.5",
     "mocha": "^3.2.0",

@@ -16,7 +16,7 @@ class SqliteStorageService {
 
     private constructor () {}
 
-    public init (config: Config) {
+    public init (config: Config): Promise<sqlite.Database> {
         logger.module(this.constructor.name);
         logger.info('Connecting to DB...');
 
@@ -28,6 +28,9 @@ class SqliteStorageService {
                 return this.createLabelsDb()
                     .then(() => {
                         return this.createRestrictionsDb();
+                    })
+                    .then(() => {
+                        return this.db;
                     });
             });
     }
@@ -44,6 +47,18 @@ class SqliteStorageService {
             this.singleton = new SqliteStorageService();
         }
         return this.singleton;
+    }
+
+    public truncate () {
+        const sql1 = `DELETE FROM ${this.config.labelsTable}`;
+        const sql2 = `DELETE FROM ${this.config.restrictionsTable}`;
+        return this.db.run(sql1)
+            .then(() => {
+                return this.db.run(sql2);
+            })
+            .then(() => {
+                logger.info('Tables truncated.');
+            });
     }
 
     private createLabelsDb () {
