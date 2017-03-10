@@ -75,6 +75,7 @@ describe('RemoveLabel route', () => {
                     .delete(`/owner/${ownerId}/labeled-entities/${entityAId}/labels${querystring}`)
                     .then((res) => {
                         expect(res).to.have.status(200);
+                        expect(res.body).to.be.empty;
                         return countRows(db, testConfig.labelsTable)
                             .then((count) => {
                                 expect(count).to.equal(storedEntitiesCount - removedEntitiesCount);
