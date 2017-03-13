@@ -1,13 +1,10 @@
 import {initApp, request, expect} from '../lib/test/integration';
-import {countRows, addLabel} from '../lib/test/util';
+import {countRows, addLabel, testConfig} from '../lib/test/util';
 import Label from '../coreEntities/Label';
 import storageService from '../lib/store/sqliteStorageService';
 import {Database} from 'sqlite';
 
-import config from '../config';
-const testConfig = config.sqlite;
-
-describe('CreateLabelRelationship route', () => {
+describe('Integration::CreateLabelRelationship route', () => {
 
     let db: Database;
 
@@ -41,7 +38,7 @@ describe('CreateLabelRelationship route', () => {
                     .then((res) => {
                         expect(res).to.have.status(200);
                         expect(res.body).to.be.empty;
-                        return countRows(db, testConfig.labelsTable)
+                        return countRows(db, testConfig.db.labelsTable)
                             .then((count) => {
                                 expect(count).to.equal(1);
                             });
@@ -61,7 +58,7 @@ describe('CreateLabelRelationship route', () => {
                     .then((res) => {
                         expect(res).to.have.status(200);
                         expect(res.body).to.be.empty;
-                        return countRows(db, testConfig.labelsTable)
+                        return countRows(db, testConfig.db.labelsTable)
                             .then((count) => {
                                 expect(count).to.equal(1);
                             });

@@ -1,14 +1,12 @@
-import {addLabel} from '../../../lib/test/util';
+import {addLabel, testConfig} from '../../../lib/test/util';
 import {expect} from 'chai';
 import Label from '../../../coreEntities/Label';
 import ReturnEntityLabelsExecutorSqlite from './ReturnEntityLabelsExecutorSqlite';
 import storageService from '../../../lib/store/sqliteStorageService';
-import config from '../../../config';
 import {Database} from 'sqlite';
 
 describe('ReturnEntityLabelsExecutorSqlite', () => {
 
-    const testConfig = config.sqlite;
     let executor: ReturnEntityLabelsExecutorSqlite;
     let db: Database;
 
@@ -31,128 +29,10 @@ describe('ReturnEntityLabelsExecutorSqlite', () => {
     let entityALabel3DifferentOwner: Label;
 
     beforeEach(() => {
-        entityALabel1 = {
-            ownerId: 1,
-            entityId: entityAId,
-            entityType: 'EntityA',
-            type: 'color',
-            value: 'blue'
-        };
-        entityALabel2 = {
-            ownerId: 1,
-            entityId: entityAId,
-            entityType: 'EntityA',
-            type: 'color',
-            value: 'black'
-        };
-        entityALabel3 = {
-            ownerId: 1,
-            entityId: entityAId,
-            entityType: 'EntityA',
-            type: 'someLabel',
-            value: ''
-        };
-        entityALabel4 = {
-            ownerId: 1,
-            entityId: entityAId,
-            entityType: 'EntityA',
-            type: 'size',
-            value: 'big'
-        };
-
-        entityBLabel1 = {
-            ownerId: 1,
-            entityId: entityBId,
-            entityType: 'EntityB',
-            type: 'height',
-            value: '3'
-        };
-        entityBLabel2 = {
-            ownerId: 1,
-            entityId: entityBId,
-            entityType: 'EntityB',
-            type: 'width',
-            value: '6'
-        };
-        entityBLabel3 = {
-            ownerId: 1,
-            entityId: entityBId,
-            entityType: 'EntityB',
-            type: 'color',
-            value: 'black'
-        };
-        entityBLabel4 = {
-            ownerId: 1,
-            entityId: entityBId,
-            entityType: 'EntityB',
-            type: 'size',
-            value: 'small'
-        };
-
-        entityCLabel1 = {
-            ownerId: 1,
-            entityId: entityCId,
-            entityType: 'EntityC',
-            type: 'size',
-            value: 'medium'
-        };
-        entityCLabel2 = {
-            ownerId: 1,
-            entityId: entityCId,
-            entityType: 'EntityC',
-            type: 'shape',
-            value: 'square'
-        };
-
-        entityALabel3DifferentOwner = {
-            ownerId: 99,
-            entityId: 2,
-            entityType: 'EntityA',
-            type: 'color',
-            value: 'black'
-        };
-
-        return initializeExecutor()
-            .then((sqlExecutor) => {
-                executor = sqlExecutor;
-            });
+        return initializetTest();
     });
 
     describe('#fetch', () => {
-        beforeEach(() => {
-            return addLabel(db, entityALabel1)
-                .then(() => {
-                    return addLabel(db, entityALabel2);
-                })
-                .then(() => {
-                    return addLabel(db, entityALabel3);
-                })
-                .then(() => {
-                    return addLabel(db, entityBLabel1);
-                })
-                .then(() => {
-                    return addLabel(db, entityBLabel2);
-                })
-                .then(() => {
-                    return addLabel(db, entityBLabel3);
-                })
-                .then(() => {
-                    return addLabel(db, entityCLabel1);
-                })
-                .then(() => {
-                    return addLabel(db, entityCLabel2);
-                })
-                .then(() => {
-                    return addLabel(db, entityALabel4);
-                })
-                .then(() => {
-                    return addLabel(db, entityBLabel4);
-                })
-                .then(() => {
-                    return addLabel(db, entityALabel3DifferentOwner);
-                });
-        });
-
         describe('without label types and values parameters', () => {
             describe('for specific entity', () => {
                 it('should return all labels of the entity', () => {
@@ -294,9 +174,131 @@ describe('ReturnEntityLabelsExecutorSqlite', () => {
         });
     });
 
+    function initializetTest () {
+        return initializeExecutor()
+            .then((sqlExecutor) => {
+                executor = sqlExecutor;
+            })
+            .then(insertLabels);
+    }
+
+    function insertLabels () {
+        entityALabel1 = {
+            ownerId: 1,
+            entityId: entityAId,
+            entityType: 'EntityA',
+            type: 'color',
+            value: 'blue'
+        };
+        entityALabel2 = {
+            ownerId: 1,
+            entityId: entityAId,
+            entityType: 'EntityA',
+            type: 'color',
+            value: 'black'
+        };
+        entityALabel3 = {
+            ownerId: 1,
+            entityId: entityAId,
+            entityType: 'EntityA',
+            type: 'someLabel',
+            value: ''
+        };
+        entityALabel4 = {
+            ownerId: 1,
+            entityId: entityAId,
+            entityType: 'EntityA',
+            type: 'size',
+            value: 'big'
+        };
+
+        entityBLabel1 = {
+            ownerId: 1,
+            entityId: entityBId,
+            entityType: 'EntityB',
+            type: 'height',
+            value: '3'
+        };
+        entityBLabel2 = {
+            ownerId: 1,
+            entityId: entityBId,
+            entityType: 'EntityB',
+            type: 'width',
+            value: '6'
+        };
+        entityBLabel3 = {
+            ownerId: 1,
+            entityId: entityBId,
+            entityType: 'EntityB',
+            type: 'color',
+            value: 'black'
+        };
+        entityBLabel4 = {
+            ownerId: 1,
+            entityId: entityBId,
+            entityType: 'EntityB',
+            type: 'size',
+            value: 'small'
+        };
+
+        entityCLabel1 = {
+            ownerId: 1,
+            entityId: entityCId,
+            entityType: 'EntityC',
+            type: 'size',
+            value: 'medium'
+        };
+        entityCLabel2 = {
+            ownerId: 1,
+            entityId: entityCId,
+            entityType: 'EntityC',
+            type: 'shape',
+            value: 'square'
+        };
+
+        entityALabel3DifferentOwner = {
+            ownerId: 99,
+            entityId: 2,
+            entityType: 'EntityA',
+            type: 'color',
+            value: 'black'
+        };
+
+        return addLabel(db, entityALabel1)
+            .then(() => {
+                return addLabel(db, entityALabel2);
+            })
+            .then(() => {
+                return addLabel(db, entityALabel3);
+            })
+            .then(() => {
+                return addLabel(db, entityBLabel1);
+            })
+            .then(() => {
+                return addLabel(db, entityBLabel2);
+            })
+            .then(() => {
+                return addLabel(db, entityBLabel3);
+            })
+            .then(() => {
+                return addLabel(db, entityCLabel1);
+            })
+            .then(() => {
+                return addLabel(db, entityCLabel2);
+            })
+            .then(() => {
+                return addLabel(db, entityALabel4);
+            })
+            .then(() => {
+                return addLabel(db, entityBLabel4);
+            })
+            .then(() => {
+                return addLabel(db, entityALabel3DifferentOwner);
+            });
+    }
+
     function initializeExecutor (): Promise<ReturnEntityLabelsExecutorSqlite> {
-        testConfig.filename = ':memory:';
-        return storageService.init(testConfig)
+        return storageService.init(testConfig.db)
             .then(() => {
                 db = storageService.db;
                 return new ReturnEntityLabelsExecutorSqlite(db);

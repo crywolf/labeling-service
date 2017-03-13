@@ -4,7 +4,7 @@ import Restriction from '../coreEntities/Restriction';
 import storageService from '../lib/store/sqliteStorageService';
 import {Database} from 'sqlite';
 
-describe('ReturnAllLabelRestrictions route', () => {
+describe('Integration::ReturnAllLabelRestrictions route', () => {
 
     let db: Database;
 

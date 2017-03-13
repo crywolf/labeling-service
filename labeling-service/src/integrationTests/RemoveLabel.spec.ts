@@ -7,7 +7,7 @@ import {Database} from 'sqlite';
 import config from '../config';
 const testConfig = config.sqlite;
 
-describe('RemoveLabel route', () => {
+describe('Integration::RemoveLabel route', () => {
 
     let db: Database;
 

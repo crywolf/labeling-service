@@ -7,7 +7,7 @@ import {Database} from 'sqlite';
 import config from '../config';
 const testConfig = config.sqlite;
 
-describe('RemoveLabelRestriction route', () => {
+describe('Integration::RemoveLabelRestriction route', () => {
 
     let db: Database;
 

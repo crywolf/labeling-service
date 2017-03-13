@@ -1,15 +1,11 @@
-import {addRestriction, countRows, getAllRestrictions} from '../../../lib/test/util';
+import {addRestriction, countRows, getAllRestrictions, testConfig} from '../../../lib/test/util';
 import {expect} from 'chai';
 import Restriction from '../../../coreEntities/Restriction';
 import RemoveLabelRestrictionExecutorSqlite from './RemoveLabelRestrictionExecutorSqlite';
 import storageService from '../../../lib/store/sqliteStorageService';
-import config from '../../../config';
 import {Database} from 'sqlite';
 
 describe('RemoveLabelRestrictionExecutorSqlite', () => {
-
-    const testConfig = config.sqlite;
-    testConfig.filename = ':memory:';
 
     let executor: RemoveLabelRestrictionExecutorSqlite;
     let db: Database;
@@ -35,6 +31,75 @@ describe('RemoveLabelRestrictionExecutorSqlite', () => {
     let storedEntitiesCount: number;
 
     beforeEach(() => {
+        return initializeTest();
+    });
+
+    describe('#execute', () => {
+
+        describe('without valueHash', () => {
+            beforeEach(() => {
+                return executor.execute(ownerId);
+            });
+
+            it('should remove all restrictions for the owner and let restrictions of other owner untouched', () => {
+                const removedEntitiesCount = 5;
+                return countRows(db, testConfig.db.restrictionsTable)
+                    .then((count) => {
+                        expect(count).to.equal(storedEntitiesCount - removedEntitiesCount);
+                    })
+                    .then(() => getAllRestrictions(db))
+                    .then((restrictions) => {
+                        expect(restrictions[0]).to.deep.equal(entityADifferentOwnerRestriction1);
+                    });
+            });
+        });
+
+        describe('with correct valueHash', () => {
+            beforeEach(() => {
+                return executor.execute(ownerId, entityBRestriction1Hash);
+            });
+
+            it(`should remove restriction`, () => {
+                const removedEntitiesCount = 1;
+                return countRows(db, testConfig.db.restrictionsTable)
+                    .then((count) => {
+                        expect(count).to.equal(storedEntitiesCount - removedEntitiesCount);
+                    })
+                    .then(() => getAllRestrictions(db))
+                    .then((restrictions) => {
+                        expect(restrictions[0]).to.deep.equal(entityARestriction1);
+                        expect(restrictions[1]).to.deep.equal(entityARestriction2);
+                        expect(restrictions[2]).to.deep.equal(entityBRestriction2);
+                        expect(restrictions[3]).to.deep.equal(entityARestriction3);
+                        expect(restrictions[4]).to.deep.equal(entityADifferentOwnerRestriction1);
+                    });
+            });
+        });
+
+        describe('with valueHash of the restriction for the other user', () => {
+            beforeEach(() => {
+                return executor.execute(ownerId, entityADifferentOwnerRestriction1Hash);
+            });
+
+            it(`should not remove anything`, () => {
+                return countRows(db, testConfig.db.restrictionsTable)
+                    .then((count) => {
+                        expect(count).to.equal(storedEntitiesCount);
+                    });
+            });
+        });
+
+    });
+
+    function initializeTest () {
+        return initializeExecutor()
+            .then((sqlExecutor) => {
+                executor = sqlExecutor;
+            })
+            .then(insertRestrictions);
+    }
+
+    function insertRestrictions () {
         entityARestriction1 = {
             ownerId,
             labelType: 'color',
@@ -68,96 +133,32 @@ describe('RemoveLabelRestrictionExecutorSqlite', () => {
             entityType: 'EntityA'
         };
 
-        return initializeExecutor()
-            .then((sqlExecutor) => {
-                executor = sqlExecutor;
+        return addRestriction(db, entityARestriction1, entityARestriction1Hash)
+            .then(() => {
+                return addRestriction(db, entityBRestriction1, entityBRestriction1Hash);
+            })
+            .then(() => {
+                return addRestriction(db, entityARestriction2, entityARestriction2Hash);
+            })
+            .then(() => {
+                return addRestriction(db, entityBRestriction2, entityBRestriction2Hash);
+            })
+            .then(() => {
+                return addRestriction(db, entityARestriction3, entityARestriction3Hash);
+            })
+            .then(() => {
+                return addRestriction(db, entityADifferentOwnerRestriction1, entityADifferentOwnerRestriction1Hash);
+            })
+            .then(() => {
+                return countRows(db, testConfig.db.restrictionsTable);
+            })
+            .then((count) => {
+                storedEntitiesCount = count;
             });
-    });
-
-    describe('#execute', () => {
-
-        beforeEach(() => {
-            return addRestriction(db, entityARestriction1, entityARestriction1Hash)
-                .then(() => {
-                    return addRestriction(db, entityBRestriction1, entityBRestriction1Hash);
-                })
-                .then(() => {
-                    return addRestriction(db, entityARestriction2, entityARestriction2Hash);
-                })
-                .then(() => {
-                    return addRestriction(db, entityBRestriction2, entityBRestriction2Hash);
-                })
-                .then(() => {
-                    return addRestriction(db, entityARestriction3, entityARestriction3Hash);
-                })
-                .then(() => {
-                    return addRestriction(db, entityADifferentOwnerRestriction1, entityADifferentOwnerRestriction1Hash);
-                })
-                .then(() => {
-                    return countRows(db, testConfig.restrictionsTable);
-                })
-                .then((count) => {
-                    storedEntitiesCount = count;
-                });
-        });
-
-        describe('without valueHash', () => {
-            beforeEach(() => {
-                return executor.execute(ownerId);
-            });
-
-            it('should remove all restrictions for the owner and let restrictions of other owner untouched', () => {
-                const removedEntitiesCount = 5;
-                return countRows(db, testConfig.restrictionsTable)
-                    .then((count) => {
-                        expect(count).to.equal(storedEntitiesCount - removedEntitiesCount);
-                    })
-                    .then(() => getAllRestrictions(db))
-                    .then((restrictions) => {
-                        expect(restrictions[0]).to.deep.equal(entityADifferentOwnerRestriction1);
-                    });
-            });
-        });
-
-        describe('with correct valueHash', () => {
-            beforeEach(() => {
-                return executor.execute(ownerId, entityBRestriction1Hash);
-            });
-
-            it(`should remove restriction`, () => {
-                const removedEntitiesCount = 1;
-                return countRows(db, testConfig.restrictionsTable)
-                    .then((count) => {
-                        expect(count).to.equal(storedEntitiesCount - removedEntitiesCount);
-                    })
-                    .then(() => getAllRestrictions(db))
-                    .then((restrictions) => {
-                        expect(restrictions[0]).to.deep.equal(entityARestriction1);
-                        expect(restrictions[1]).to.deep.equal(entityARestriction2);
-                        expect(restrictions[2]).to.deep.equal(entityBRestriction2);
-                        expect(restrictions[3]).to.deep.equal(entityARestriction3);
-                        expect(restrictions[4]).to.deep.equal(entityADifferentOwnerRestriction1);
-                    });
-            });
-        });
-
-        describe('with valueHash of the restriction for the other user', () => {
-            beforeEach(() => {
-                return executor.execute(ownerId, entityADifferentOwnerRestriction1Hash);
-            });
-
-            it(`should not remove anything`, () => {
-                return countRows(db, testConfig.restrictionsTable)
-                    .then((count) => {
-                        expect(count).to.equal(storedEntitiesCount);
-                    });
-            });
-        });
-
-    });
+    }
 
     function initializeExecutor (): Promise<RemoveLabelRestrictionExecutorSqlite> {
-        return storageService.init(testConfig)
+        return storageService.init(testConfig.db)
             .then(() => {
                 db = storageService.db;
                 return new RemoveLabelRestrictionExecutorSqlite(db);

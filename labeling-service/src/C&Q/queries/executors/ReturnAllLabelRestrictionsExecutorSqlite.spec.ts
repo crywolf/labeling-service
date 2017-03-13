@@ -1,15 +1,11 @@
-import {addRestriction} from '../../../lib/test/util';
+import {addRestriction, testConfig} from '../../../lib/test/util';
 import {expect} from 'chai';
 import Restriction from '../../../coreEntities/Restriction';
 import ReturnAllLabelRestrictionsExecutorSqlite from './ReturnAllLabelRestrictionsExecutorSqlite';
 import storageService from '../../../lib/store/sqliteStorageService';
-import config from '../../../config';
 import {Database} from 'sqlite';
 
 describe('ReturnAllLabelRestrictionsExecutorSqlite', () => {
-
-    const testConfig = config.sqlite;
-    testConfig.filename = ':memory:';
 
     let executor: ReturnAllLabelRestrictionsExecutorSqlite;
     let db: Database;
@@ -34,106 +30,10 @@ describe('ReturnAllLabelRestrictionsExecutorSqlite', () => {
     let entityARestriction3DifferentOwner: Restriction;
 
     beforeEach(() => {
-        entityARestriction1 = {
-            ownerId,
-            labelType: 'color',
-            entityType: 'EntityA'
-        };
-        entityARestriction2 = {
-            ownerId,
-            labelType: 'producer',
-            entityType: 'EntityA'
-        };
-        entityARestriction3 = {
-            ownerId,
-            labelType: 'someLabel',
-            entityType: 'EntityA'
-        };
-        entityARestriction4 = {
-            ownerId,
-            labelType: 'size',
-            entityType: 'EntityA'
-        };
-
-        entityBRestriction1 = {
-            ownerId,
-            labelType: 'height',
-            entityType: 'EntityB'
-        };
-        entityBRestriction2 = {
-            ownerId,
-            labelType: 'width',
-            entityType: 'EntityB'
-        };
-        entityBRestriction3 = {
-            ownerId,
-            labelType: 'color',
-            entityType: 'EntityB'
-        };
-        entityBRestriction4 = {
-            ownerId,
-            labelType: 'size',
-            entityType: 'EntityB'
-        };
-
-        entityCRestriction1 = {
-            ownerId,
-            entityType: 'EntityC',
-            labelType: 'size'
-        };
-        entityCRestriction2 = {
-            ownerId,
-            labelType: 'shape',
-            entityType: 'EntityC'
-        };
-
-        entityARestriction3DifferentOwner = {
-            ownerId: differentOwnerId,
-            labelType: 'color',
-            entityType: 'EntityA'
-        };
-
-        return initializeExecutor()
-            .then((sqlExecutor) => {
-                executor = sqlExecutor;
-            });
+        return initializeTest();
     });
 
     describe('#fetch', () => {
-        beforeEach(() => {
-            return addRestriction(db, entityARestriction1, whateverHash)
-                .then(() => {
-                    return addRestriction(db, entityARestriction2, whateverHash);
-                })
-                .then(() => {
-                    return addRestriction(db, entityARestriction3, whateverHash);
-                })
-                .then(() => {
-                    return addRestriction(db, entityBRestriction1, whateverHash);
-                })
-                .then(() => {
-                    return addRestriction(db, entityBRestriction2, whateverHash);
-                })
-                .then(() => {
-                    return addRestriction(db, entityBRestriction3, whateverHash);
-                })
-                .then(() => {
-                    return addRestriction(db, entityCRestriction1, whateverHash);
-                })
-                .then(() => {
-                    return addRestriction(db, entityCRestriction2, whateverHash);
-                })
-                .then(() => {
-                    return addRestriction(db, entityARestriction4, whateverHash);
-                })
-                .then(() => {
-                    return addRestriction(db, entityBRestriction4, whateverHash);
-                })
-                .then(() => {
-                    return addRestriction(db, entityARestriction3DifferentOwner, whateverHash);
-                });
-        });
-
         describe('without any parameters', () => {
             describe('for specified owner', () => {
                 it('should return all restrictions for the specified owner', () => {
@@ -312,8 +212,109 @@ describe('ReturnAllLabelRestrictionsExecutorSqlite', () => {
         });
     });
 
+    function initializeTest () {
+        return initializeExecutor()
+            .then((sqlExecutor) => {
+                executor = sqlExecutor;
+            })
+            .then(insertRestrictions);
+    }
+
+    function insertRestrictions () {
+        entityARestriction1 = {
+            ownerId,
+            labelType: 'color',
+            entityType: 'EntityA'
+        };
+        entityARestriction2 = {
+            ownerId,
+            labelType: 'producer',
+            entityType: 'EntityA'
+        };
+        entityARestriction3 = {
+            ownerId,
+            labelType: 'someLabel',
+            entityType: 'EntityA'
+        };
+        entityARestriction4 = {
+            ownerId,
+            labelType: 'size',
+            entityType: 'EntityA'
+        };
+
+        entityBRestriction1 = {
+            ownerId,
+            labelType: 'height',
+            entityType: 'EntityB'
+        };
+        entityBRestriction2 = {
+            ownerId,
+            labelType: 'width',
+            entityType: 'EntityB'
+        };
+        entityBRestriction3 = {
+            ownerId,
+            labelType: 'color',
+            entityType: 'EntityB'
+        };
+        entityBRestriction4 = {
+            ownerId,
+            labelType: 'size',
+            entityType: 'EntityB'
+        };
+
+        entityCRestriction1 = {
+            ownerId,
+            entityType: 'EntityC',
+            labelType: 'size'
+        };
+        entityCRestriction2 = {
+            ownerId,
+            labelType: 'shape',
+            entityType: 'EntityC'
+        };
+
+        entityARestriction3DifferentOwner = {
+            ownerId: differentOwnerId,
+            labelType: 'color',
+            entityType: 'EntityA'
+        };
+
+        return addRestriction(db, entityARestriction1, whateverHash)
+            .then(() => {
+                return addRestriction(db, entityARestriction2, whateverHash);
+            })
+            .then(() => {
+                return addRestriction(db, entityARestriction3, whateverHash);
+            })
+            .then(() => {
+                return addRestriction(db, entityBRestriction1, whateverHash);
+            })
+            .then(() => {
+                return addRestriction(db, entityBRestriction2, whateverHash);
+            })
+            .then(() => {
+                return addRestriction(db, entityBRestriction3, whateverHash);
+            })
+            .then(() => {
+                return addRestriction(db, entityCRestriction1, whateverHash);
+            })
+            .then(() => {
+                return addRestriction(db, entityCRestriction2, whateverHash);
+            })
+            .then(() => {
+                return addRestriction(db, entityARestriction4, whateverHash);
+            })
+            .then(() => {
+                return addRestriction(db, entityBRestriction4, whateverHash);
+            })
+            .then(() => {
+                return addRestriction(db, entityARestriction3DifferentOwner, whateverHash);
+            });
+    }
+
     function initializeExecutor (): Promise<ReturnAllLabelRestrictionsExecutorSqlite> {
-        return storageService.init(testConfig)
+        return storageService.init(testConfig.db)
             .then(() => {
                 db = storageService.db;
                 return new ReturnAllLabelRestrictionsExecutorSqlite(db);

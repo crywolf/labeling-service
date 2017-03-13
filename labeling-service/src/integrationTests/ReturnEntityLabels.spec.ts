@@ -4,7 +4,7 @@ import Label from '../coreEntities/Label';
 import storageService from '../lib/store/sqliteStorageService';
 import {Database} from 'sqlite';
 
-describe('ReturnEntityLabels route', () => {
+describe('Integration::ReturnEntityLabels route', () => {
 
     let db: Database;
 

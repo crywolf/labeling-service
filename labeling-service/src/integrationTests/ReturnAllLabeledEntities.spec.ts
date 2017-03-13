@@ -4,7 +4,7 @@ import Label from '../coreEntities/Label';
 import storageService from '../lib/store/sqliteStorageService';
 import {Database} from 'sqlite';
 
-describe('ReturnAllLabeledEntities route', () => {
+describe('Integration::ReturnAllLabeledEntities route', () => {
 
     let db: Database;
 
@@ -107,7 +107,6 @@ describe('ReturnAllLabeledEntities route', () => {
 
                         expect(body[0]).to.deep.equal(entityA);
                         expect(body[1]).to.deep.equal(entityB);
-
                     });
             });
         });

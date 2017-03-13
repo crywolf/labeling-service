@@ -6,8 +6,11 @@
   "scripts": {
     "commit": "git-cz",
     "lint": "tslint ./src/{,**/}*.ts",
-    "test": "mocha --opts ./mocha.opts",
-    "test:watch": "mocha -w --opts ./mocha.opts",
+    "test": "npm run test:all",
+    "test:all": "mocha --opts ./mocha.opts",
+    "test:unit": "mocha -g ^Integration:: --invert --opts ./mocha.opts",
+    "test:integration": "mocha -g ^Integration:: --opts ./mocha.opts",
+    "test:watch": "npm run test:unit -- -w",
     "test:commit": "npm run lint --silent",
     "test:push": "npm run test --silent && npm run lint --silent",
     "coverage": "nyc npm run test",

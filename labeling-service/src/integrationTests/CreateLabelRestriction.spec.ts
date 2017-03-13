@@ -1,13 +1,10 @@
 import {initApp, request, expect} from '../lib/test/integration';
-import {countRows, addRestriction} from '../lib/test/util';
+import {countRows, addRestriction, testConfig} from '../lib/test/util';
 import Restriction from '../coreEntities/Restriction';
 import storageService from '../lib/store/sqliteStorageService';
 import {Database} from 'sqlite';
 
-import config from '../config';
-const testConfig = config.sqlite;
-
-describe('CreateLabelRestriction route', () => {
+describe('Integration::CreateLabelRestriction route', () => {
 
     let db: Database;
 
@@ -40,7 +37,7 @@ describe('CreateLabelRestriction route', () => {
                     .then((res) => {
                         expect(res).to.have.status(200);
                         expect(res.body).to.be.empty;
-                        return countRows(db, testConfig.restrictionsTable)
+                        return countRows(db, testConfig.db.restrictionsTable)
                             .then((count) => {
                                 expect(count).to.equal(1);
                             });
@@ -60,7 +57,7 @@ describe('CreateLabelRestriction route', () => {
                     .then((res) => {
                         expect(res).to.have.status(200);
                         expect(res.body).to.be.empty;
-                        return countRows(db, testConfig.restrictionsTable)
+                        return countRows(db, testConfig.db.restrictionsTable)
                             .then((count) => {
                                 expect(count).to.equal(1);
                             });
