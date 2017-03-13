@@ -1,14 +1,14 @@
 import {addLabel, testConfig} from '../../../lib/test/util';
 import {expect} from 'chai';
 import Label from '../../../coreEntities/Label';
-import ReturnAllLabeledEntitiesExecutorSqlite from './ReturnAllLabeledEntitiesExecutorSqlite';
+import ReturnAllLabeledEntitiesExecutorSql from './ReturnAllLabeledEntitiesExecutorSql';
 import storageService from '../../../lib/store/sqliteStorageService';
-import {Database} from 'sqlite';
+import SqlDatabase from '../../../coreEntities/SqlDatabase';
 
-describe('ReturnAllLabeledEntitiesExecutorSqlite', () => {
+describe('ReturnAllLabeledEntitiesExecutorSql', () => {
 
-    let executor: ReturnAllLabeledEntitiesExecutorSqlite;
-    let db: Database;
+    let executor: ReturnAllLabeledEntitiesExecutorSql;
+    let db: SqlDatabase;
 
     let entityALabel1: Label;
     let entityALabel2: Label;
@@ -352,11 +352,11 @@ describe('ReturnAllLabeledEntitiesExecutorSqlite', () => {
             });
     }
 
-    function initializeExecutor (): Promise<ReturnAllLabeledEntitiesExecutorSqlite> {
+    function initializeExecutor (): Promise<ReturnAllLabeledEntitiesExecutorSql> {
         return storageService.init(testConfig.db)
             .then(() => {
                 db = storageService.db;
-                return new ReturnAllLabeledEntitiesExecutorSqlite(db);
+                return new ReturnAllLabeledEntitiesExecutorSql(db);
             });
     }
 

@@ -1,14 +1,14 @@
 import {addRestriction, testConfig} from '../../../lib/test/util';
 import {expect} from 'chai';
 import Restriction from '../../../coreEntities/Restriction';
-import ReturnAllLabelRestrictionsExecutorSqlite from './ReturnAllLabelRestrictionsExecutorSqlite';
+import ReturnAllLabelRestrictionsExecutorSql from './ReturnAllLabelRestrictionsExecutorSql';
 import storageService from '../../../lib/store/sqliteStorageService';
-import {Database} from 'sqlite';
+import SqlDatabase from '../../../coreEntities/SqlDatabase';
 
-describe('ReturnAllLabelRestrictionsExecutorSqlite', () => {
+describe('ReturnAllLabelRestrictionsExecutorSql', () => {
 
-    let executor: ReturnAllLabelRestrictionsExecutorSqlite;
-    let db: Database;
+    let executor: ReturnAllLabelRestrictionsExecutorSql;
+    let db: SqlDatabase;
 
     const whateverHash = '56d2f7e59b5b4716a88ca5c4ddc0791d';
 
@@ -313,11 +313,11 @@ describe('ReturnAllLabelRestrictionsExecutorSqlite', () => {
             });
     }
 
-    function initializeExecutor (): Promise<ReturnAllLabelRestrictionsExecutorSqlite> {
+    function initializeExecutor (): Promise<ReturnAllLabelRestrictionsExecutorSql> {
         return storageService.init(testConfig.db)
             .then(() => {
                 db = storageService.db;
-                return new ReturnAllLabelRestrictionsExecutorSqlite(db);
+                return new ReturnAllLabelRestrictionsExecutorSql(db);
             });
     }
 

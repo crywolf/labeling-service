@@ -2,7 +2,7 @@ import Label from '../../../coreEntities/Label';
 import CommandExecutorSql from '../../../coreEntities/CommandExecutorSql';
 import InternalServerError from '../../../coreEntities/InternalServerError';
 
-class CreateLabelRelationshipExecutorSqlite extends CommandExecutorSql {
+class CreateLabelRelationshipExecutorSql extends CommandExecutorSql {
 
     public execute (label: Label): Promise<Label> {
         const sql = `INSERT INTO ${this.tables.labelsTable}
@@ -25,4 +25,4 @@ class CreateLabelRelationshipExecutorSqlite extends CommandExecutorSql {
     }
 }
 
-export default CreateLabelRelationshipExecutorSqlite;
+export default CreateLabelRelationshipExecutorSql;

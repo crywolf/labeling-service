@@ -1,14 +1,14 @@
 import {addRestriction, countRows, getAllRestrictions, testConfig} from '../../../lib/test/util';
 import {expect} from 'chai';
 import Restriction from '../../../coreEntities/Restriction';
-import RemoveLabelRestrictionExecutorSqlite from './RemoveLabelRestrictionExecutorSqlite';
+import RemoveLabelRestrictionExecutorSql from './RemoveLabelRestrictionExecutorSql';
 import storageService from '../../../lib/store/sqliteStorageService';
-import {Database} from 'sqlite';
+import SqlDatabase from '../../../coreEntities/SqlDatabase';
 
-describe('RemoveLabelRestrictionExecutorSqlite', () => {
+describe('RemoveLabelRestrictionExecutorSql', () => {
 
-    let executor: RemoveLabelRestrictionExecutorSqlite;
-    let db: Database;
+    let executor: RemoveLabelRestrictionExecutorSql;
+    let db: SqlDatabase;
 
     const ownerId = 10;
     const differentOwnerId = 99;
@@ -157,11 +157,11 @@ describe('RemoveLabelRestrictionExecutorSqlite', () => {
             });
     }
 
-    function initializeExecutor (): Promise<RemoveLabelRestrictionExecutorSqlite> {
+    function initializeExecutor (): Promise<RemoveLabelRestrictionExecutorSql> {
         return storageService.init(testConfig.db)
             .then(() => {
                 db = storageService.db;
-                return new RemoveLabelRestrictionExecutorSqlite(db);
+                return new RemoveLabelRestrictionExecutorSql(db);
             });
     }
 

@@ -1,7 +1,7 @@
-import CreateLabelRelationshipExecutor from './CreateLabelRelationshipExecutorSqlite';
-import RemoveLabelExecutor from './RemoveLabelExecutorSqlite';
-import CreateLabelRestrictionExecutor from './CreateLabelRestrictionExecutorSqlite';
-import RemoveLabelRestrictionExecutor from './RemoveLabelRestrictionExecutorSqlite';
+import CreateLabelRelationshipExecutor from './CreateLabelRelationshipExecutorSql';
+import RemoveLabelExecutor from './RemoveLabelExecutorSql';
+import CreateLabelRestrictionExecutor from './CreateLabelRestrictionExecutorSql';
+import RemoveLabelRestrictionExecutor from './RemoveLabelRestrictionExecutorSql';
 
 const commandExecutors = {
     CreateLabelRelationshipExecutor,

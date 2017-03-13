@@ -1,14 +1,14 @@
 import {addRestriction, countRows, getAllRestrictions, testConfig} from '../../../lib/test/util';
 import {expect} from 'chai';
 import Restriction from '../../../coreEntities/Restriction';
-import CreateLabelRestrictionExecutorSqlite from './CreateLabelRestrictionExecutorSqlite';
+import CreateLabelRestrictionExecutorSql from './CreateLabelRestrictionExecutorSql';
 import storageService from '../../../lib/store/sqliteStorageService';
-import {Database} from 'sqlite';
+import SqlDatabase from '../../../coreEntities/SqlDatabase';
 
-describe('CreateLabelRestrictionExecutorSqlite', () => {
+describe('CreateLabelRestrictionExecutorSql', () => {
 
-    let executor: CreateLabelRestrictionExecutorSqlite;
-    let db: Database;
+    let executor: CreateLabelRestrictionExecutorSql;
+    let db: SqlDatabase;
 
     let entityARestriction1: Restriction;
     const whateverHash = '56d2f7e59b5b4716a88ca5c4ddc0791d';
@@ -163,11 +163,11 @@ describe('CreateLabelRestrictionExecutorSqlite', () => {
             });
     }
 
-    function initializeExecutor (): Promise<CreateLabelRestrictionExecutorSqlite> {
+    function initializeExecutor (): Promise<CreateLabelRestrictionExecutorSql> {
         return storageService.init(testConfig.db)
             .then(() => {
                 db = storageService.db;
-                return new CreateLabelRestrictionExecutorSqlite(db);
+                return new CreateLabelRestrictionExecutorSql(db);
             });
     }
 

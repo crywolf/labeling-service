@@ -3,7 +3,7 @@ import QueryExecutorSql from '../../../coreEntities/QueryExecutorSql';
 import InternalServerError from '../../../coreEntities/InternalServerError';
 import * as squel from 'squel';
 
-class ReturnAllLabeledEntitiesExecutorSqlite extends QueryExecutorSql {
+class ReturnAllLabeledEntitiesExecutorSql extends QueryExecutorSql {
 
     public fetch (
         ownerId: number,
@@ -77,4 +77,4 @@ class ReturnAllLabeledEntitiesExecutorSqlite extends QueryExecutorSql {
 
 }
 
-export default ReturnAllLabeledEntitiesExecutorSqlite;
+export default ReturnAllLabeledEntitiesExecutorSql;

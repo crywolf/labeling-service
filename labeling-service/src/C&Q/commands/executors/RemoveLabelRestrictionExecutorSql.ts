@@ -2,7 +2,7 @@ import CommandExecutorSql from '../../../coreEntities/CommandExecutorSql';
 import InternalServerError from '../../../coreEntities/InternalServerError';
 import * as squel from 'squel';
 
-class RemoveLabelRestrictionExecutorSqlite extends CommandExecutorSql {
+class RemoveLabelRestrictionExecutorSql extends CommandExecutorSql {
 
     public execute (ownerId: number, valueHash?: string): Promise<void> {
 
@@ -24,4 +24,4 @@ class RemoveLabelRestrictionExecutorSqlite extends CommandExecutorSql {
     }
 }
 
-export default RemoveLabelRestrictionExecutorSqlite;
+export default RemoveLabelRestrictionExecutorSql;

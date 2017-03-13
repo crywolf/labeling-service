@@ -1,19 +1,19 @@
 import {addLabel, countRows, getAllLabels, testConfig} from '../../../lib/test/util';
 import {expect} from 'chai';
 import Label from '../../../coreEntities/Label';
-import RemoveLabelExecutorSqlite from './RemoveLabelExecutorSqlite';
+import RemoveLabelExecutorSql from './RemoveLabelExecutorSql';
 import storageService from '../../../lib/store/sqliteStorageService';
-import {Database} from 'sqlite';
+import SqlDatabase from '../../../coreEntities/SqlDatabase';
 
-describe('RemoveLabelExecutorSqlite', () => {
+describe('RemoveLabelExecutorSql', () => {
 
-    let executor: RemoveLabelExecutorSqlite;
-    let db: Database;
+    let executor: RemoveLabelExecutorSql;
+    let db: SqlDatabase;
 
     const entityAId = 3;
     const entityBId = 4;
     const ownerId = 10;
-    const diffenrentOwnerId = 99;
+    const differentOwnerId = 99;
 
     let entityALabel1: Label;
     let entityALabel2: Label;
@@ -55,7 +55,7 @@ describe('RemoveLabelExecutorSqlite', () => {
 
         describe('without labelTypes and labelValues parameters and different ownerId', () => {
             beforeEach(() => {
-                return executor.execute(diffenrentOwnerId, entityAId);
+                return executor.execute(differentOwnerId, entityAId);
             });
 
             it(`should remove all labels of the entity belonging to that different owner`, () => {
@@ -197,7 +197,7 @@ describe('RemoveLabelExecutorSqlite', () => {
         };
 
         entityADifferentOwnerLabel1 = {
-            ownerId: diffenrentOwnerId,
+            ownerId: differentOwnerId,
             entityId: entityAId,
             entityType: 'EntityA',
             type: 'color',
@@ -242,11 +242,11 @@ describe('RemoveLabelExecutorSqlite', () => {
             });
     }
 
-    function initializeExecutor (): Promise<RemoveLabelExecutorSqlite> {
+    function initializeExecutor (): Promise<RemoveLabelExecutorSql> {
         return storageService.init(testConfig.db)
             .then(() => {
                 db = storageService.db;
-                return new RemoveLabelExecutorSqlite(db);
+                return new RemoveLabelExecutorSql(db);
             });
     }
 

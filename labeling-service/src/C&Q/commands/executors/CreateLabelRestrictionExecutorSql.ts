@@ -3,7 +3,7 @@ import CommandExecutorSql from '../../../coreEntities/CommandExecutorSql';
 import InternalServerError from '../../../coreEntities/InternalServerError';
 import RestrictionHasher from '../../../coreEntities/RestrictionHasher';
 
-class CreateLabelRestrictionExecutorSqlite extends CommandExecutorSql {
+class CreateLabelRestrictionExecutorSql extends CommandExecutorSql {
 
     public execute (restriction: Restriction): Promise<Restriction> {
 
@@ -34,4 +34,4 @@ class CreateLabelRestrictionExecutorSqlite extends CommandExecutorSql {
 
 }
 
-export default CreateLabelRestrictionExecutorSqlite;
+export default CreateLabelRestrictionExecutorSql;

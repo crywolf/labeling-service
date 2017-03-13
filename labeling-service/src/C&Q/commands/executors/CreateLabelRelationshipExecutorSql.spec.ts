@@ -1,14 +1,14 @@
 import {addLabel, countRows, getAllLabels, testConfig} from '../../../lib/test/util';
 import {expect} from 'chai';
 import Label from '../../../coreEntities/Label';
-import CreateLabelRelationshipExecutorSqlite from './CreateLabelRelationshipExecutorSqlite';
+import CreateLabelRelationshipExecutorSql from './CreateLabelRelationshipExecutorSql';
 import storageService from '../../../lib/store/sqliteStorageService';
-import {Database} from 'sqlite';
+import SqlDatabase from '../../../coreEntities/SqlDatabase';
 
-describe('CreateLabelRelationshipExecutorSqlite', () => {
+describe('CreateLabelRelationshipExecutorSql', () => {
 
-    let executor: CreateLabelRelationshipExecutorSqlite;
-    let db: Database;
+    let executor: CreateLabelRelationshipExecutorSql;
+    let db: SqlDatabase;
 
     let entityA200Label1: Label;
     let entityA200Label2: Label;
@@ -222,11 +222,11 @@ describe('CreateLabelRelationshipExecutorSqlite', () => {
             });
     }
 
-    function initializeExecutor (): Promise<CreateLabelRelationshipExecutorSqlite> {
+    function initializeExecutor (): Promise<CreateLabelRelationshipExecutorSql> {
         return storageService.init(testConfig.db)
             .then(() => {
                 db = storageService.db;
-                return new CreateLabelRelationshipExecutorSqlite(db);
+                return new CreateLabelRelationshipExecutorSql(db);
             });
     }
 

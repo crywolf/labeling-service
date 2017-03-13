@@ -1,21 +1,26 @@
-import CommandExecutorSql from '../../../coreEntities/CommandExecutorSql';
+import Label from '../../../coreEntities/Label';
+import QueryExecutorSql from '../../../coreEntities/QueryExecutorSql';
 import InternalServerError from '../../../coreEntities/InternalServerError';
 import * as squel from 'squel';
 
-class RemoveLabelExecutorSqlite extends CommandExecutorSql {
+class ReturnEntityLabelsExecutorSql extends QueryExecutorSql {
 
-    public execute (
+    public fetch (
         ownerId: number,
         entityId: number,
         params?: {
             labelTypes?: Array<string>,
             labelValues?: Array<string>
-        }): Promise<void> {
+        }): Promise<Array<Label>> {
 
         const labelTypes = params ? params.labelTypes || [] : [];
         const labelValues = params ? params.labelValues || [] : [];
 
-        const sql = squel.delete().from(this.tables.labelsTable);
+        const select = squel.select()
+            .from(this.tables.labelsTable)
+            .field('type')
+            .field('value')
+            .order('id');
 
         const where = squel.expr();
 
@@ -42,16 +47,17 @@ class RemoveLabelExecutorSqlite extends CommandExecutorSql {
         where.and('ownerId = ?', ownerId);
         where.and('entityId = ?', entityId);
 
-        sql.where(where);
+        const sql = select.where(where);
 
-        return this.storage.run(sql.toString())
-            .then(() => {
-                return;
+        return this.storage.all(sql.toString())
+            .then((rows) => {
+                return rows;
             }).catch((err) => {
                 const message = `${this.constructor.name}: ${err.message}`;
                 throw new InternalServerError(message);
             });
     }
+
 }
 
-export default RemoveLabelExecutorSqlite;
+export default ReturnEntityLabelsExecutorSql;
