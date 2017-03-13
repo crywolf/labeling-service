@@ -1,10 +1,9 @@
 import Label from '../../../coreEntities/Label';
-import QueryExecutorSqlite from '../../../coreEntities/QueryExecutorSqlite';
-import logger from '../../../lib/logger';
+import QueryExecutorSql from '../../../coreEntities/QueryExecutorSql';
 import InternalServerError from '../../../coreEntities/InternalServerError';
 import * as squel from 'squel';
 
-class ReturnAllLabeledEntitiesExecutorSqlite extends QueryExecutorSqlite {
+class ReturnAllLabeledEntitiesExecutorSqlite extends QueryExecutorSql {
 
     public fetch (
         ownerId: number,

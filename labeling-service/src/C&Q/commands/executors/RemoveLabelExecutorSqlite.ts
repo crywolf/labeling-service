@@ -1,8 +1,8 @@
-import CommandExecutorSqlite from '../../../coreEntities/CommandExecutorSqlite';
+import CommandExecutorSql from '../../../coreEntities/CommandExecutorSql';
 import InternalServerError from '../../../coreEntities/InternalServerError';
 import * as squel from 'squel';
 
-class RemoveLabelExecutorSqlite extends CommandExecutorSqlite {
+class RemoveLabelExecutorSqlite extends CommandExecutorSql {
 
     public execute (
         ownerId: number,

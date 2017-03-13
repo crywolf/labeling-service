@@ -1,8 +1,8 @@
-import CommandExecutorSqlite from '../../../coreEntities/CommandExecutorSqlite';
+import CommandExecutorSql from '../../../coreEntities/CommandExecutorSql';
 import InternalServerError from '../../../coreEntities/InternalServerError';
 import * as squel from 'squel';
 
-class RemoveLabelRestrictionExecutorSqlite extends CommandExecutorSqlite {
+class RemoveLabelRestrictionExecutorSqlite extends CommandExecutorSql {
 
     public execute (ownerId: number, valueHash?: string): Promise<void> {
 

@@ -1,9 +1,9 @@
 import Restriction from '../../../coreEntities/Restriction';
-import QueryExecutorSqlite from '../../../coreEntities/QueryExecutorSqlite';
+import QueryExecutorSql from '../../../coreEntities/QueryExecutorSql';
 import InternalServerError from '../../../coreEntities/InternalServerError';
 import * as squel from 'squel';
 
-class ReturnAllLabelRestrictionsExecutorSqlite extends QueryExecutorSqlite {
+class ReturnAllLabelRestrictionsExecutorSqlite extends QueryExecutorSql {
 
     public fetch (
         ownerId: number,

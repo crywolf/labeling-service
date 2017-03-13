@@ -1,8 +1,8 @@
 import Label from '../../../coreEntities/Label';
-import CommandExecutorSqlite from '../../../coreEntities/CommandExecutorSqlite';
+import CommandExecutorSql from '../../../coreEntities/CommandExecutorSql';
 import InternalServerError from '../../../coreEntities/InternalServerError';
 
-class CreateLabelRelationshipExecutorSqlite extends CommandExecutorSqlite {
+class CreateLabelRelationshipExecutorSqlite extends CommandExecutorSql {
 
     public execute (label: Label): Promise<Label> {
         const sql = `INSERT INTO ${this.tables.labelsTable}
@@ -15,7 +15,7 @@ class CreateLabelRelationshipExecutorSqlite extends CommandExecutorSqlite {
             .then(() => {
                 return label;
             }).catch((err) => {
-                if (err.code === 'SQLITE_CONSTRAINT') {
+                if (this.isUniqueConstraintError(err)) {
                     return label;
                 } else {
                     const message = `${this.constructor.name}: ${err.message}`;

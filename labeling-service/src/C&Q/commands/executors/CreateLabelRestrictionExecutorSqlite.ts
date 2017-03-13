@@ -1,9 +1,9 @@
 import Restriction from '../../../coreEntities/Restriction';
-import CommandExecutorSqlite from '../../../coreEntities/CommandExecutorSqlite';
+import CommandExecutorSql from '../../../coreEntities/CommandExecutorSql';
 import InternalServerError from '../../../coreEntities/InternalServerError';
 import RestrictionHasher from '../../../coreEntities/RestrictionHasher';
 
-class CreateLabelRestrictionExecutorSqlite extends CommandExecutorSqlite {
+class CreateLabelRestrictionExecutorSqlite extends CommandExecutorSql {
 
     public execute (restriction: Restriction): Promise<Restriction> {
 
@@ -20,16 +20,16 @@ class CreateLabelRestrictionExecutorSqlite extends CommandExecutorSqlite {
                 return this.storage.run(sql, values)
                     .then(() => {
                         return restriction;
-                    }).catch((err) => {
-                        if (err.code === 'SQLITE_CONSTRAINT') {
+                    })
+                    .catch((err) => {
+                        if (this.isUniqueConstraintError(err)) {
                             return restriction;
                         } else {
                             const message = `${this.constructor.name}: ${err.message}`;
                             throw new InternalServerError(message);
                         }
-                    });
+                    }) as Promise<Restriction>;
             });
-
     }
 
 }

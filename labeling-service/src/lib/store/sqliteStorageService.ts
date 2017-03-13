@@ -42,11 +42,8 @@ class SqliteStorageService {
         return this.connection;
     }
 
-    static get instance (): SqliteStorageService {
-        if (!this.singleton) {
-            this.singleton = new SqliteStorageService();
-        }
-        return this.singleton;
+    public isUniqueConstraintError (err): boolean {
+        return err.code === 'SQLITE_CONSTRAINT';
     }
 
     public truncate () {
@@ -59,6 +56,13 @@ class SqliteStorageService {
             .then(() => {
                 logger.info('Tables truncated.');
             });
+    }
+
+    static get instance (): SqliteStorageService {
+        if (!this.singleton) {
+            this.singleton = new SqliteStorageService();
+        }
+        return this.singleton;
     }
 
     private createLabelsDb () {
