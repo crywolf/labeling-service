@@ -10,9 +10,15 @@ Then just run `yarn`.
 
 ## Usage
 
-`yarn test:watch` (`npm run test:watch`) runs tests and starts watching for changes
+`yarn test` (`npm test`) runs all tests once (without watching)
 
-`yarn test` (`npm test`) runs tests once (without watching)
+`yarn test:unit` runs all unit tests
+
+`yarn test:integration` runs all integration tests
+
+`yarn test:all` the same as `yarn test`
+
+`yarn test:watch` (`npm run test:watch`) runs unit tests and starts watching for changes
 
 `yarn lint` (`npm run lint`) runs linter
 
