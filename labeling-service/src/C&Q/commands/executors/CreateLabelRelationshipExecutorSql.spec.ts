@@ -1,9 +1,10 @@
-import {addLabel, countRows, getAllLabels, testConfig} from '../../../lib/test/util';
+import {addLabel, countRows, getAllLabels, testConfig, initializeStorageService} from '../../../lib/test/util';
 import {expect} from 'chai';
 import Label from '../../../coreEntities/Label';
 import CreateLabelRelationshipExecutorSql from './CreateLabelRelationshipExecutorSql';
-import storageService from '../../../lib/store/sqliteStorageService';
 import SqlDatabase from '../../../coreEntities/SqlDatabase';
+import * as sinon from 'sinon';
+import InternalServerError from '../../../coreEntities/InternalServerError';
 
 describe('CreateLabelRelationshipExecutorSql', () => {
 
@@ -24,7 +25,7 @@ describe('CreateLabelRelationshipExecutorSql', () => {
 
     describe('#execute (trying to add new label to entity)', () => {
 
-        describe('in case entityType and entityId is unique', () => {
+        context('in case entityType and entityId is unique', () => {
             beforeEach(() => {
                 return addLabel(db, entityA200Label1)
                     .then(() => {
@@ -40,7 +41,7 @@ describe('CreateLabelRelationshipExecutorSql', () => {
             });
         });
 
-        describe('in case entityType is different and entityId is the same', () => {
+        context('in case entityType is different and entityId is the same', () => {
             beforeEach(() => {
                 return addLabel(db, entityA200Label1)
                     .then(() => {
@@ -56,7 +57,7 @@ describe('CreateLabelRelationshipExecutorSql', () => {
             });
         });
 
-        describe('in case entityType is the same and entityId is different', () => {
+        context('in case entityType is the same and entityId is different', () => {
             beforeEach(() => {
                 return addLabel(db, entityA200Label1)
                     .then(() => {
@@ -72,7 +73,7 @@ describe('CreateLabelRelationshipExecutorSql', () => {
             });
         });
 
-        describe('in case label is completely the same (not unique)', () => {
+        context('in case label is completely the same (not unique)', () => {
             beforeEach(() => {
                 return addLabel(db, entityA200Label1)
                     .then(() => {
@@ -91,7 +92,7 @@ describe('CreateLabelRelationshipExecutorSql', () => {
             });
         });
 
-        describe('in case only label value is different', () => {
+        context('in case only label value is different', () => {
             beforeEach(() => {
                 return addLabel(db, entityA200Label1)
                     .then(() => {
@@ -107,7 +108,7 @@ describe('CreateLabelRelationshipExecutorSql', () => {
             });
         });
 
-        describe('in case label is the same but different owner', () => {
+        context('in case label is the same but different owner', () => {
             beforeEach(() => {
                 return addLabel(db, entityA200Label1)
                     .then(() => {
@@ -123,7 +124,7 @@ describe('CreateLabelRelationshipExecutorSql', () => {
             });
         });
 
-        describe('in case label value is missing', () => {
+        context('in case label value is missing', () => {
             let labelWithoutValue: Label;
 
             beforeEach(() => {
@@ -164,6 +165,23 @@ describe('CreateLabelRelationshipExecutorSql', () => {
                             return expect(count).to.equal(1);
                         });
                 });
+            });
+        });
+
+        context('in case of database error', () => {
+            beforeEach(() => {
+                return initializeStorageService()
+                    .then((sqlDb) => {
+                        db = sqlDb;
+                        sinon.stub(db, 'run').returns(Promise.reject(new Error('Some SQL error')));
+                        return new CreateLabelRelationshipExecutorSql(db);
+                    })
+                    .then((sqlExecutor) => {
+                        executor = sqlExecutor;
+                    });
+            });
+            it('should throw InternalServerError', () => {
+                return expect(executor.execute(entityA200Label1)).to.be.rejectedWith(InternalServerError);
             });
         });
 
@@ -223,9 +241,9 @@ describe('CreateLabelRelationshipExecutorSql', () => {
     }
 
     function initializeExecutor (): Promise<CreateLabelRelationshipExecutorSql> {
-        return storageService.init(testConfig.db)
-            .then(() => {
-                db = storageService.db;
+        return initializeStorageService()
+            .then((sqlDb) => {
+                db = sqlDb;
                 return new CreateLabelRelationshipExecutorSql(db);
             });
     }

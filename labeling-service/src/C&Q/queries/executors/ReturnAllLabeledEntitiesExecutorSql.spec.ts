@@ -1,9 +1,10 @@
-import {addLabel, testConfig} from '../../../lib/test/util';
+import {addLabel, initializeStorageService} from '../../../lib/test/util';
 import {expect} from 'chai';
 import Label from '../../../coreEntities/Label';
 import ReturnAllLabeledEntitiesExecutorSql from './ReturnAllLabeledEntitiesExecutorSql';
-import storageService from '../../../lib/store/sqliteStorageService';
 import SqlDatabase from '../../../coreEntities/SqlDatabase';
+import * as sinon from 'sinon';
+import InternalServerError from '../../../coreEntities/InternalServerError';
 
 describe('ReturnAllLabeledEntitiesExecutorSql', () => {
 
@@ -30,7 +31,7 @@ describe('ReturnAllLabeledEntitiesExecutorSql', () => {
     });
 
     describe('#fetch', () => {
-        describe('without label types and entity types parameters', () => {
+        context('without label types and entity types parameters', () => {
             it('should return all labeled entities of a corresponding owner', () => {
                 const ownerId = 1;
 
@@ -65,10 +66,27 @@ describe('ReturnAllLabeledEntitiesExecutorSql', () => {
                     });
             });
 
+            context('in case of database error', () => {
+                beforeEach(() => {
+                    return initializeStorageService()
+                        .then((sqlDb) => {
+                            db = sqlDb;
+                            sinon.stub(db, 'all').returns(Promise.reject(new Error('Some SQL error')));
+                            return new ReturnAllLabeledEntitiesExecutorSql(db);
+                        })
+                        .then((sqlExecutor) => {
+                            executor = sqlExecutor;
+                        });
+                });
+                it('should throw InternalServerError', () => {
+                    const ownerId = 1;
+                    return expect(executor.fetch(ownerId)).to.be.rejectedWith(InternalServerError);
+                });
+            });
         });
 
-        describe('with label types', () => {
-            describe('and OR condition', () => {
+        context('with label types', () => {
+            context('and OR condition', () => {
                 it('should return labeled entities with corresponding label types', () => {
                     const ownerId = 1;
                     const labelTypes = ['color', 'height'];
@@ -91,7 +109,7 @@ describe('ReturnAllLabeledEntitiesExecutorSql', () => {
                 });
             });
 
-            describe('and AND condition', () => {
+            context('and AND condition', () => {
                 it('should return labeled entities with corresponding label types', () => {
                     const ownerId = 1;
                     const labelTypes = ['color', 'height'];
@@ -113,8 +131,8 @@ describe('ReturnAllLabeledEntitiesExecutorSql', () => {
             });
         });
 
-        describe('with', () => {
-            describe('one label type and entity type param', () => {
+        context('with', () => {
+            context('one label type and entity type param', () => {
                 it('should return labeled entities with corresponding label type and entity type', () => {
                     const ownerId = 1;
                     const labelTypes = ['color'];
@@ -131,7 +149,7 @@ describe('ReturnAllLabeledEntitiesExecutorSql', () => {
                 });
             });
 
-            describe('more label types joined with OR condition and more entity types', () => {
+            context('more label types joined with OR condition and more entity types', () => {
                 it('should return labeled entities with corresponding label types and entity types', () => {
                     const ownerId = 1;
                     const labelTypes = ['color', 'someNonexistentLabel'];
@@ -156,8 +174,8 @@ describe('ReturnAllLabeledEntitiesExecutorSql', () => {
                 });
             });
 
-            describe('more label types joined with AND condition and more entity types', () => {
-                describe('if no entity of required types with all required labels does not exist', () => {
+            context('more label types joined with AND condition and more entity types', () => {
+                context('if no entity of required types with all required labels does not exist', () => {
                     it('should not return anything', () => {
                         const ownerId = 1;
                         const labelTypes = ['color', 'shape'];
@@ -178,7 +196,7 @@ describe('ReturnAllLabeledEntitiesExecutorSql', () => {
                 });
             });
 
-            describe('if entity of one the required types with all required labels exists', () => {
+            context('if entity of one the required types with all required labels exists', () => {
                 it('should return that entity', () => {
                     const ownerId = 1;
                     const labelTypes = ['color', 'height'];
@@ -201,7 +219,7 @@ describe('ReturnAllLabeledEntitiesExecutorSql', () => {
                 });
             });
 
-            describe('if entities of required types with all required labels exists', () => {
+            context('if entities of required types with all required labels exists', () => {
                 it('should return those entities', () => {
                     const ownerId = 1;
                     const labelTypes = ['color', 'size'];
@@ -353,9 +371,9 @@ describe('ReturnAllLabeledEntitiesExecutorSql', () => {
     }
 
     function initializeExecutor (): Promise<ReturnAllLabeledEntitiesExecutorSql> {
-        return storageService.init(testConfig.db)
-            .then(() => {
-                db = storageService.db;
+        return initializeStorageService()
+            .then((sqlDb) => {
+                db = sqlDb;
                 return new ReturnAllLabeledEntitiesExecutorSql(db);
             });
     }

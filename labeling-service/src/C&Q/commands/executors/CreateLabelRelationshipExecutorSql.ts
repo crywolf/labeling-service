@@ -14,7 +14,8 @@ class CreateLabelRelationshipExecutorSql extends CommandExecutorSql {
         return this.storage.run(sql, values)
             .then(() => {
                 return label;
-            }).catch((err) => {
+            })
+            .catch((err) => {
                 if (this.isUniqueConstraintError(err)) {
                     return label;
                 } else {

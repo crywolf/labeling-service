@@ -1,9 +1,13 @@
-import {addRestriction, countRows, getAllRestrictions, testConfig} from '../../../lib/test/util';
+import {
+    addRestriction, countRows, getAllRestrictions, testConfig,
+    initializeStorageService
+} from '../../../lib/test/util';
 import {expect} from 'chai';
 import Restriction from '../../../coreEntities/Restriction';
 import CreateLabelRestrictionExecutorSql from './CreateLabelRestrictionExecutorSql';
-import storageService from '../../../lib/store/sqliteStorageService';
 import SqlDatabase from '../../../coreEntities/SqlDatabase';
+import * as sinon from 'sinon';
+import InternalServerError from '../../../coreEntities/InternalServerError';
 
 describe('CreateLabelRestrictionExecutorSql', () => {
 
@@ -24,7 +28,7 @@ describe('CreateLabelRestrictionExecutorSql', () => {
 
     describe('#execute (trying to add new restriction)', () => {
 
-        describe('in case entityType is different and labelType is the same', () => {
+        context('in case entityType is different and labelType is the same', () => {
             beforeEach(() => {
                 return addRestriction(db, entityARestriction1, whateverHash)
                     .then(() => {
@@ -40,7 +44,7 @@ describe('CreateLabelRestrictionExecutorSql', () => {
             });
         });
 
-        describe('in case entityType is the same and labelType is different', () => {
+        context('in case entityType is the same and labelType is different', () => {
             beforeEach(() => {
                 return addRestriction(db, entityARestriction1, whateverHash)
                     .then(() => {
@@ -56,7 +60,7 @@ describe('CreateLabelRestrictionExecutorSql', () => {
             });
         });
 
-        describe('in case entityType is missing', () => {
+        context('in case entityType is missing', () => {
             let restrictionWithoutEntityType: Restriction;
 
             beforeEach(() => {
@@ -83,7 +87,7 @@ describe('CreateLabelRestrictionExecutorSql', () => {
                     });
             });
 
-            describe('and trying to add the same restriction', () => {
+            context('and trying to add the same restriction', () => {
                 it('should not add duplicate restriction', () => {
                     return executor.execute(restrictionWithoutEntityType)
                         .then(() => {
@@ -96,7 +100,7 @@ describe('CreateLabelRestrictionExecutorSql', () => {
             });
         });
 
-        describe('in case restriction is completely the same (not unique)', () => {
+        context('in case restriction is completely the same (not unique)', () => {
             beforeEach(() => {
                 return addRestriction(db, entityARestriction1, whateverHash)
                     .then(() => {
@@ -115,7 +119,7 @@ describe('CreateLabelRestrictionExecutorSql', () => {
             });
         });
 
-        describe('in case restriction is the same but different owner', () => {
+        context('in case restriction is the same but different owner', () => {
             beforeEach(() => {
                 return addRestriction(db, entityARestriction1, whateverHash)
                     .then(() => {
@@ -128,6 +132,23 @@ describe('CreateLabelRestrictionExecutorSql', () => {
                     .then((count) => {
                         expect(count).to.equal(2);
                     });
+            });
+        });
+
+        context('in case of database error', () => {
+            beforeEach(() => {
+                return initializeStorageService()
+                    .then((sqlDb) => {
+                        db = sqlDb;
+                        sinon.stub(db, 'run').returns(Promise.reject(new Error('Some SQL error')));
+                        return new CreateLabelRestrictionExecutorSql(db);
+                    })
+                    .then((sqlExecutor) => {
+                        executor = sqlExecutor;
+                    });
+            });
+            it('should throw InternalServerError', () => {
+                return expect(executor.execute(entityARestriction1)).to.be.rejectedWith(InternalServerError);
             });
         });
 
@@ -164,9 +185,9 @@ describe('CreateLabelRestrictionExecutorSql', () => {
     }
 
     function initializeExecutor (): Promise<CreateLabelRestrictionExecutorSql> {
-        return storageService.init(testConfig.db)
-            .then(() => {
-                db = storageService.db;
+        return initializeStorageService()
+            .then((sqlDb) => {
+                db = sqlDb;
                 return new CreateLabelRestrictionExecutorSql(db);
             });
     }

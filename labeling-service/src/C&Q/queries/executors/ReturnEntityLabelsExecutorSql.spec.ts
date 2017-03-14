@@ -1,9 +1,10 @@
-import {addLabel, testConfig} from '../../../lib/test/util';
+import {addLabel, initializeStorageService} from '../../../lib/test/util';
 import {expect} from 'chai';
 import Label from '../../../coreEntities/Label';
 import ReturnEntityLabelsExecutorSql from './ReturnEntityLabelsExecutorSql';
-import storageService from '../../../lib/store/sqliteStorageService';
 import SqlDatabase from '../../../coreEntities/SqlDatabase';
+import * as sinon from 'sinon';
+import InternalServerError from '../../../coreEntities/InternalServerError';
 
 describe('ReturnEntityLabelsExecutorSql', () => {
 
@@ -29,12 +30,12 @@ describe('ReturnEntityLabelsExecutorSql', () => {
     let entityALabel3DifferentOwner: Label;
 
     beforeEach(() => {
-        return initializetTest();
+        return initializeTest();
     });
 
     describe('#fetch', () => {
-        describe('without label types and values parameters', () => {
-            describe('for specific entity', () => {
+        context('without label types and values parameters', () => {
+            context('for specific entity', () => {
                 it('should return all labels of the entity', () => {
                     const ownerId = 1;
 
@@ -72,7 +73,7 @@ describe('ReturnEntityLabelsExecutorSql', () => {
                 });
             });
 
-            describe('for another entity', () => {
+            context('for another entity', () => {
                 it('should return all labels of the entity', () => {
                     const ownerId = 1;
 
@@ -93,10 +94,28 @@ describe('ReturnEntityLabelsExecutorSql', () => {
                         });
                 });
             });
+
+            context('in case of database error', () => {
+                beforeEach(() => {
+                    return initializeStorageService()
+                        .then((sqlDb) => {
+                            db = sqlDb;
+                            sinon.stub(db, 'all').returns(Promise.reject(new Error('Some SQL error')));
+                            return new ReturnEntityLabelsExecutorSql(db);
+                        })
+                        .then((sqlExecutor) => {
+                            executor = sqlExecutor;
+                        });
+                });
+                it('should throw InternalServerError', () => {
+                    const ownerId = 1;
+                    return expect(executor.fetch(ownerId, entityBId)).to.be.rejectedWith(InternalServerError);
+                });
+            });
         });
 
-        describe('with label types', () => {
-            describe('and no label values', () => {
+        context('with label types', () => {
+            context('and no label values', () => {
                 it('should return labels of specified entity with corresponding label types', () => {
                     const ownerId = 1;
                     const labelTypes = ['color', 'size', 'height'];
@@ -121,7 +140,7 @@ describe('ReturnEntityLabelsExecutorSql', () => {
                 });
            });
 
-            describe('and label values', () => {
+            context('and label values', () => {
                 it('should return labels of specified entity with corresponding label types and label values', () => {
                     const ownerId = 1;
                     const labelTypes = ['color', 'size'];
@@ -147,8 +166,8 @@ describe('ReturnEntityLabelsExecutorSql', () => {
             });
         });
 
-        describe('with label values', () => {
-            describe('and no label types', () => {
+        context('with label values', () => {
+            context('and no label types', () => {
                 it('should return labels of specified entity with corresponding label values', () => {
                     const ownerId = 1;
                     const labelValues = ['black', 'blue', 'red'];
@@ -174,7 +193,7 @@ describe('ReturnEntityLabelsExecutorSql', () => {
         });
     });
 
-    function initializetTest () {
+    function initializeTest () {
         return initializeExecutor()
             .then((sqlExecutor) => {
                 executor = sqlExecutor;
@@ -298,9 +317,9 @@ describe('ReturnEntityLabelsExecutorSql', () => {
     }
 
     function initializeExecutor (): Promise<ReturnEntityLabelsExecutorSql> {
-        return storageService.init(testConfig.db)
-            .then(() => {
-                db = storageService.db;
+        return initializeStorageService()
+            .then((sqlDb) => {
+                db = sqlDb;
                 return new ReturnEntityLabelsExecutorSql(db);
             });
     }

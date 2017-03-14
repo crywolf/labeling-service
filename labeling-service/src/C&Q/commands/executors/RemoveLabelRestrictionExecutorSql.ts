@@ -17,7 +17,8 @@ class RemoveLabelRestrictionExecutorSql extends CommandExecutorSql {
         return this.storage.run(sql.toString())
             .then(() => {
                 return;
-            }).catch((err) => {
+            })
+            .catch((err) => {
                 const message = `${this.constructor.name}: ${err.message}`;
                 throw new InternalServerError(message);
             });

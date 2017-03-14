@@ -1,9 +1,13 @@
-import {addRestriction, countRows, getAllRestrictions, testConfig} from '../../../lib/test/util';
+import {
+    addRestriction, countRows, getAllRestrictions, testConfig,
+    initializeStorageService
+} from '../../../lib/test/util';
 import {expect} from 'chai';
 import Restriction from '../../../coreEntities/Restriction';
 import RemoveLabelRestrictionExecutorSql from './RemoveLabelRestrictionExecutorSql';
-import storageService from '../../../lib/store/sqliteStorageService';
 import SqlDatabase from '../../../coreEntities/SqlDatabase';
+import * as sinon from 'sinon';
+import InternalServerError from '../../../coreEntities/InternalServerError';
 
 describe('RemoveLabelRestrictionExecutorSql', () => {
 
@@ -36,7 +40,7 @@ describe('RemoveLabelRestrictionExecutorSql', () => {
 
     describe('#execute', () => {
 
-        describe('without valueHash', () => {
+        context('without valueHash', () => {
             beforeEach(() => {
                 return executor.execute(ownerId);
             });
@@ -54,7 +58,7 @@ describe('RemoveLabelRestrictionExecutorSql', () => {
             });
         });
 
-        describe('with correct valueHash', () => {
+        context('with correct valueHash', () => {
             beforeEach(() => {
                 return executor.execute(ownerId, entityBRestriction1Hash);
             });
@@ -76,7 +80,7 @@ describe('RemoveLabelRestrictionExecutorSql', () => {
             });
         });
 
-        describe('with valueHash of the restriction for the other user', () => {
+        context('with valueHash of the restriction for the other user', () => {
             beforeEach(() => {
                 return executor.execute(ownerId, entityADifferentOwnerRestriction1Hash);
             });
@@ -86,6 +90,24 @@ describe('RemoveLabelRestrictionExecutorSql', () => {
                     .then((count) => {
                         expect(count).to.equal(storedEntitiesCount);
                     });
+            });
+        });
+
+        context('in case of database error', () => {
+            beforeEach(() => {
+                return initializeStorageService()
+                    .then((sqlDb) => {
+                        db = sqlDb;
+                        sinon.stub(db, 'run').returns(Promise.reject(new Error('Some SQL error')));
+                        return new RemoveLabelRestrictionExecutorSql(db);
+                    })
+                    .then((sqlExecutor) => {
+                        executor = sqlExecutor;
+                    });
+            });
+            it('should throw InternalServerError', () => {
+                return expect(executor.execute(ownerId, entityARestriction1Hash))
+                    .to.be.rejectedWith(InternalServerError);
             });
         });
 
@@ -158,9 +180,9 @@ describe('RemoveLabelRestrictionExecutorSql', () => {
     }
 
     function initializeExecutor (): Promise<RemoveLabelRestrictionExecutorSql> {
-        return storageService.init(testConfig.db)
-            .then(() => {
-                db = storageService.db;
+        return initializeStorageService()
+            .then((sqlDb) => {
+                db = sqlDb;
                 return new RemoveLabelRestrictionExecutorSql(db);
             });
     }

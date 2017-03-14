@@ -1,9 +1,10 @@
-import {addLabel, countRows, getAllLabels, testConfig} from '../../../lib/test/util';
+import {addLabel, countRows, getAllLabels, testConfig, initializeStorageService} from '../../../lib/test/util';
 import {expect} from 'chai';
 import Label from '../../../coreEntities/Label';
 import RemoveLabelExecutorSql from './RemoveLabelExecutorSql';
-import storageService from '../../../lib/store/sqliteStorageService';
 import SqlDatabase from '../../../coreEntities/SqlDatabase';
+import * as sinon from 'sinon';
+import InternalServerError from '../../../coreEntities/InternalServerError';
 
 describe('RemoveLabelExecutorSql', () => {
 
@@ -34,7 +35,7 @@ describe('RemoveLabelExecutorSql', () => {
 
     describe('#execute', () => {
 
-        describe('without labelTypes and labelValues parameters', () => {
+        context('without labelTypes and labelValues parameters', () => {
             beforeEach(() => {
                 return executor.execute(ownerId, entityAId);
             });
@@ -53,7 +54,7 @@ describe('RemoveLabelExecutorSql', () => {
             });
         });
 
-        describe('without labelTypes and labelValues parameters and different ownerId', () => {
+        context('without labelTypes and labelValues parameters and different ownerId', () => {
             beforeEach(() => {
                 return executor.execute(differentOwnerId, entityAId);
             });
@@ -67,7 +68,7 @@ describe('RemoveLabelExecutorSql', () => {
             });
         });
 
-        describe('with labelTypes parameters', () => {
+        context('with labelTypes parameters', () => {
             beforeEach(() => {
                 const labelTypes = ['color', 'height'];
                 const params = {
@@ -91,7 +92,7 @@ describe('RemoveLabelExecutorSql', () => {
             });
         });
 
-        describe('with labelValues parameters', () => {
+        context('with labelValues parameters', () => {
             beforeEach(() => {
                 const labelValues = ['black', 'red', '6'];
                 const params = {
@@ -116,7 +117,7 @@ describe('RemoveLabelExecutorSql', () => {
             });
         });
 
-        describe('with labelTypes and labelValues parameters', () => {
+        context('with labelTypes and labelValues parameters', () => {
             beforeEach(() => {
                 const labelTypes = ['color'];
                 const labelValues = ['black', 'red'];
@@ -143,9 +144,34 @@ describe('RemoveLabelExecutorSql', () => {
             });
         });
 
+        context('in case of database error', () => {
+            beforeEach(() => {
+                return initializeStorageService()
+                    .then((sqlDb) => {
+                        db = sqlDb;
+                        sinon.stub(db, 'run').returns(Promise.reject(new Error('Some SQL error')));
+                        return new RemoveLabelExecutorSql(db);
+                    })
+                    .then((sqlExecutor) => {
+                        executor = sqlExecutor;
+                    });
+            });
+            it('should throw InternalServerError', () => {
+                return expect(executor.execute(ownerId, entityAId)).to.be.rejectedWith(InternalServerError);
+            });
+        });
+
     });
 
     function initializeTest () {
+        return initializeExecutor()
+            .then((sqlExecutor) => {
+                executor = sqlExecutor;
+            })
+            .then(insertLabels);
+    }
+
+    function insertLabels () {
         entityALabel1 = {
             ownerId,
             entityId: entityAId,
@@ -204,14 +230,6 @@ describe('RemoveLabelExecutorSql', () => {
             value: 'blue'
         };
 
-        return initializeExecutor()
-            .then((sqlExecutor) => {
-                executor = sqlExecutor;
-            })
-            .then(insertLabels);
-    }
-
-    function insertLabels () {
         return addLabel(db, entityALabel1)
             .then(() => {
                 return addLabel(db, entityBLabel1);
@@ -243,9 +261,9 @@ describe('RemoveLabelExecutorSql', () => {
     }
 
     function initializeExecutor (): Promise<RemoveLabelExecutorSql> {
-        return storageService.init(testConfig.db)
-            .then(() => {
-                db = storageService.db;
+        return initializeStorageService()
+            .then((sqlDb) => {
+                db = sqlDb;
                 return new RemoveLabelExecutorSql(db);
             });
     }
