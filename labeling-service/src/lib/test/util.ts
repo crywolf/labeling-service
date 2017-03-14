@@ -3,6 +3,7 @@ process.env.NODE_ENV = 'test';
 import Label from '../../coreEntities/Label';
 import Restriction from '../../coreEntities/Restriction';
 import SqlDatabase from '../../coreEntities/SqlDatabase';
+import storageService from '../../lib/store/sqliteStorageService';
 import config from '../../config';
 
 const testConfig = {
@@ -36,4 +37,14 @@ function countRows (db: SqlDatabase, tablename: string): Promise<number> {
         });
 }
 
-export {addLabel, addRestriction, getAllLabels, getAllRestrictions, countRows, testConfig};
+function initializeStorageService (): Promise<SqlDatabase> {
+    return storageService.init(testConfig.db)
+        .then(() => {
+            return storageService.db;
+        });
+}
+
+export {
+    addLabel, addRestriction, getAllLabels, getAllRestrictions, countRows,
+    initializeStorageService, testConfig
+};

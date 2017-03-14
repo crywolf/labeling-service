@@ -40,7 +40,8 @@ class ReturnAllLabelRestrictionsExecutorSql extends QueryExecutorSql {
         return this.storage.all(sql.toString())
             .then((rows) => {
                 return rows;
-            }).catch((err) => {
+            })
+            .catch((err) => {
                 const message = `${this.constructor.name}: ${err.message}`;
                 throw new InternalServerError(message);
             });

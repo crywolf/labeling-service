@@ -1,9 +1,10 @@
-import {addRestriction, testConfig} from '../../../lib/test/util';
+import {addRestriction, initializeStorageService} from '../../../lib/test/util';
 import {expect} from 'chai';
 import Restriction from '../../../coreEntities/Restriction';
 import ReturnAllLabelRestrictionsExecutorSql from './ReturnAllLabelRestrictionsExecutorSql';
-import storageService from '../../../lib/store/sqliteStorageService';
 import SqlDatabase from '../../../coreEntities/SqlDatabase';
+import * as sinon from 'sinon';
+import InternalServerError from '../../../coreEntities/InternalServerError';
 
 describe('ReturnAllLabelRestrictionsExecutorSql', () => {
 
@@ -34,8 +35,8 @@ describe('ReturnAllLabelRestrictionsExecutorSql', () => {
     });
 
     describe('#fetch', () => {
-        describe('without any parameters', () => {
-            describe('for specified owner', () => {
+        context('without any parameters', () => {
+            context('for specified owner', () => {
                 it('should return all restrictions for the specified owner', () => {
                     return executor.fetch(ownerId)
                         .then((restrictions) => {
@@ -107,7 +108,7 @@ describe('ReturnAllLabelRestrictionsExecutorSql', () => {
                 });
             });
 
-            describe('for another owner', () => {
+            context('for another owner', () => {
                 it('should return all restrictions for that owner', () => {
 
                     return executor.fetch(differentOwnerId)
@@ -126,90 +127,108 @@ describe('ReturnAllLabelRestrictionsExecutorSql', () => {
                 });
             });
 
-            describe('with specified entity type parameter', () => {
-                it('should return all restrictions only for specified entity type', () => {
-                    const entityTypes = ['EntityC'];
-
-                    const params = {
-                        entityTypes
-                    };
-
-                    return executor.fetch(ownerId, params)
-                        .then((restrictions) => {
-                            expect(restrictions).to.be.a('Array');
-                            expect(restrictions).to.have.lengthOf(2);
-
-                            const restriction1 = {
-                                hashValue: whateverHash,
-                                labelType: entityCRestriction1.labelType,
-                                entityType: entityCRestriction1.entityType
-                            };
-                            const restriction2 = {
-                                hashValue: whateverHash,
-                                labelType: entityCRestriction2.labelType,
-                                entityType: entityCRestriction2.entityType
-                            };
-
-                            expect(restrictions[0]).to.deep.equal(restriction1);
-                            expect(restrictions[1]).to.deep.equal(restriction2);
-                    });
-                });
-            });
-
-            describe('with specified more entity types parameters', () => {
-                it('should return all restrictions for all specified entity types', () => {
-                    const entityTypes = ['EntityC', 'EntityB'];
-
-                    const params = {
-                        entityTypes
-                    };
-
-                    return executor.fetch(ownerId, params)
-                        .then((restrictions) => {
-                            expect(restrictions).to.be.a('Array');
-                            expect(restrictions).to.have.lengthOf(6);
-
-                            const restriction1 = {
-                                hashValue: whateverHash,
-                                labelType: entityBRestriction1.labelType,
-                                entityType: entityBRestriction1.entityType
-                            };
-                            const restriction2 = {
-                                hashValue: whateverHash,
-                                labelType: entityBRestriction2.labelType,
-                                entityType: entityBRestriction2.entityType
-                            };
-                            const restriction3 = {
-                                hashValue: whateverHash,
-                                labelType: entityBRestriction3.labelType,
-                                entityType: entityBRestriction3.entityType
-                            };
-                            const restriction4 = {
-                                hashValue: whateverHash,
-                                labelType: entityCRestriction1.labelType,
-                                entityType: entityCRestriction1.entityType
-                            };
-                            const restriction5 = {
-                                hashValue: whateverHash,
-                                labelType: entityCRestriction2.labelType,
-                                entityType: entityCRestriction2.entityType
-                            };
-                            const restriction6 = {
-                                hashValue: whateverHash,
-                                labelType: entityBRestriction4.labelType,
-                                entityType: entityBRestriction4.entityType
-                            };
-
-                            expect(restrictions[0]).to.deep.equal(restriction1);
-                            expect(restrictions[1]).to.deep.equal(restriction2);
-                            expect(restrictions[2]).to.deep.equal(restriction3);
-                            expect(restrictions[3]).to.deep.equal(restriction4);
-                            expect(restrictions[4]).to.deep.equal(restriction5);
-                            expect(restrictions[5]).to.deep.equal(restriction6);
+            context('in case of database error', () => {
+                beforeEach(() => {
+                    return initializeStorageService()
+                        .then((sqlDb) => {
+                            db = sqlDb;
+                            sinon.stub(db, 'all').returns(Promise.reject(new Error('Some SQL error')));
+                            return new ReturnAllLabelRestrictionsExecutorSql(db);
+                        })
+                        .then((sqlExecutor) => {
+                            executor = sqlExecutor;
                         });
+                });
+                it('should throw InternalServerError', () => {
+                    return expect(executor.fetch(ownerId)).to.be.rejectedWith(InternalServerError);
                 });
             });
         });
+
+        context('with specified entity type parameter', () => {
+            it('should return all restrictions only for specified entity type', () => {
+                const entityTypes = ['EntityC'];
+
+                const params = {
+                    entityTypes
+                };
+
+                return executor.fetch(ownerId, params)
+                    .then((restrictions) => {
+                        expect(restrictions).to.be.a('Array');
+                        expect(restrictions).to.have.lengthOf(2);
+
+                        const restriction1 = {
+                            hashValue: whateverHash,
+                            labelType: entityCRestriction1.labelType,
+                            entityType: entityCRestriction1.entityType
+                        };
+                        const restriction2 = {
+                            hashValue: whateverHash,
+                            labelType: entityCRestriction2.labelType,
+                            entityType: entityCRestriction2.entityType
+                        };
+
+                        expect(restrictions[0]).to.deep.equal(restriction1);
+                        expect(restrictions[1]).to.deep.equal(restriction2);
+                });
+            });
+        });
+
+        context('with specified more entity types parameters', () => {
+            it('should return all restrictions for all specified entity types', () => {
+                const entityTypes = ['EntityC', 'EntityB'];
+
+                const params = {
+                    entityTypes
+                };
+
+                return executor.fetch(ownerId, params)
+                    .then((restrictions) => {
+                        expect(restrictions).to.be.a('Array');
+                        expect(restrictions).to.have.lengthOf(6);
+
+                        const restriction1 = {
+                            hashValue: whateverHash,
+                            labelType: entityBRestriction1.labelType,
+                            entityType: entityBRestriction1.entityType
+                        };
+                        const restriction2 = {
+                            hashValue: whateverHash,
+                            labelType: entityBRestriction2.labelType,
+                            entityType: entityBRestriction2.entityType
+                        };
+                        const restriction3 = {
+                            hashValue: whateverHash,
+                            labelType: entityBRestriction3.labelType,
+                            entityType: entityBRestriction3.entityType
+                        };
+                        const restriction4 = {
+                            hashValue: whateverHash,
+                            labelType: entityCRestriction1.labelType,
+                            entityType: entityCRestriction1.entityType
+                        };
+                        const restriction5 = {
+                            hashValue: whateverHash,
+                            labelType: entityCRestriction2.labelType,
+                            entityType: entityCRestriction2.entityType
+                        };
+                        const restriction6 = {
+                            hashValue: whateverHash,
+                            labelType: entityBRestriction4.labelType,
+                            entityType: entityBRestriction4.entityType
+                        };
+
+                        expect(restrictions[0]).to.deep.equal(restriction1);
+                        expect(restrictions[1]).to.deep.equal(restriction2);
+                        expect(restrictions[2]).to.deep.equal(restriction3);
+                        expect(restrictions[3]).to.deep.equal(restriction4);
+                        expect(restrictions[4]).to.deep.equal(restriction5);
+                        expect(restrictions[5]).to.deep.equal(restriction6);
+                    });
+            });
+        });
+
     });
 
     function initializeTest () {
@@ -314,9 +333,9 @@ describe('ReturnAllLabelRestrictionsExecutorSql', () => {
     }
 
     function initializeExecutor (): Promise<ReturnAllLabelRestrictionsExecutorSql> {
-        return storageService.init(testConfig.db)
-            .then(() => {
-                db = storageService.db;
+        return initializeStorageService()
+            .then((sqlDb) => {
+                db = sqlDb;
                 return new ReturnAllLabelRestrictionsExecutorSql(db);
             });
     }
