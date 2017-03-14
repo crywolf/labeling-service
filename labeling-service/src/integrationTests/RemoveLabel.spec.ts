@@ -2,14 +2,14 @@ import {initApp, request, expect} from '../lib/test/integration';
 import {addLabel, countRows, getAllLabels} from '../lib/test/util';
 import Label from '../coreEntities/Label';
 import storageService from '../lib/store/sqliteStorageService';
-import {Database} from 'sqlite';
+import SqlDatabase from '../coreEntities/SqlDatabase';
 
 import config from '../config';
 const testConfig = config.sqlite;
 
 describe('Integration::RemoveLabel route', () => {
 
-    let db: Database;
+    let db: SqlDatabase;
 
     const entityAId = 3;
     const entityBId = 4;

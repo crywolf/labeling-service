@@ -2,14 +2,14 @@ import {initApp, request, expect} from '../lib/test/integration';
 import {addRestriction, countRows, getAllRestrictions} from '../lib/test/util';
 import Restriction from '../coreEntities/Restriction';
 import storageService from '../lib/store/sqliteStorageService';
-import {Database} from 'sqlite';
+import SqlDatabase from '../coreEntities/SqlDatabase';
 
 import config from '../config';
 const testConfig = config.sqlite;
 
 describe('Integration::RemoveLabelRestriction route', () => {
 
-    let db: Database;
+    let db: SqlDatabase;
 
     const ownerId = 10;
     const differentOwnerId = 99;

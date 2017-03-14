@@ -2,11 +2,11 @@ import {initApp, request, expect} from '../lib/test/integration';
 import {addLabel} from '../lib/test/util';
 import Label from '../coreEntities/Label';
 import storageService from '../lib/store/sqliteStorageService';
-import {Database} from 'sqlite';
+import SqlDatabase from '../coreEntities/SqlDatabase';
 
 describe('Integration::ReturnAllLabeledEntities route', () => {
 
-    let db: Database;
+    let db: SqlDatabase;
 
     let entityALabel1: Label;
     let entityALabel2: Label;

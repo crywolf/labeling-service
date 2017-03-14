@@ -2,11 +2,11 @@ import {initApp, request, expect} from '../lib/test/integration';
 import {addRestriction} from '../lib/test/util';
 import Restriction from '../coreEntities/Restriction';
 import storageService from '../lib/store/sqliteStorageService';
-import {Database} from 'sqlite';
+import SqlDatabase from '../coreEntities/SqlDatabase';
 
 describe('Integration::ReturnAllLabelRestrictions route', () => {
 
-    let db: Database;
+    let db: SqlDatabase;
 
     const whateverHash = '56d2f7e59b5b4716a88ca5c4ddc0791d';
 

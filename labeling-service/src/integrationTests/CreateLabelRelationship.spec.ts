@@ -2,11 +2,11 @@ import {initApp, request, expect} from '../lib/test/integration';
 import {countRows, addLabel, testConfig} from '../lib/test/util';
 import Label from '../coreEntities/Label';
 import storageService from '../lib/store/sqliteStorageService';
-import {Database} from 'sqlite';
+import SqlDatabase from '../coreEntities/SqlDatabase';
 
 describe('Integration::CreateLabelRelationship route', () => {
 
-    let db: Database;
+    let db: SqlDatabase;
 
     let entityA200Label1: Label;
 
