@@ -29,9 +29,18 @@ export class RestifyServer implements Server {
         });
 
         this.server.on('InternalServer', (req, res, err, cb) => {
-            logger.error('InternalServerError! ' + err.message);
+            logger.error(err.stack);
             err.body.message = 'Something went wrong!';
             return cb();
+        });
+
+        this.server.on('uncaughtException', (req, res, route, err) => {
+            logger.error('UncaughtException! ' + err.stack);
+            err.body = {
+                code: 'InternalServerError',
+                message: 'Something went wrong!'
+            };
+            res.send(err);
         });
     }
 }
