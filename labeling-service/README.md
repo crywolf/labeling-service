@@ -10,6 +10,8 @@ Then just run `yarn`.
 
 ## Usage
 
+`yarn start` (`npm start`) starts application
+
 `yarn test` (`npm test`) runs all tests once (without watching)
 
 `yarn test:unit` runs all unit tests

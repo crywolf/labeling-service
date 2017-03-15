@@ -1,6 +1,6 @@
 interface StorageService {
     readonly db;
-    init (config: {});
+    init (config: {}): Promise<any>;
     truncate (): Promise<any>;
 }
 

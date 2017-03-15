@@ -5,7 +5,8 @@ import * as chaiHttp from 'chai-http';
 import {expect} from 'chai';
 import {app} from '../app';
 import testConfig from '../../config';
-import storageService from '../store/sqliteStorageService';
+import StorageService from '../store/StorageService';
+import sqliteStorageService from '../store/sqliteStorageService';
 
 chai.use(chaiHttp);
 
@@ -16,7 +17,7 @@ testConfig.sqlite.filename = ':memory:';
 
 let started;
 
-const initApp = () => {
+const initApp = (storageService: StorageService = sqliteStorageService) => {
     if (started) {
         return Promise.resolve();
     }
