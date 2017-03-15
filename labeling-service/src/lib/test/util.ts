@@ -1,4 +1,4 @@
-process.env.NODE_ENV = 'test';
+process.env.NODE_ENV = 'testing';
 
 import Label from '../../coreEntities/Label';
 import Restriction from '../../coreEntities/Restriction';
@@ -9,8 +9,6 @@ import config from '../../config';
 const testConfig = {
     db: config.sqlite
 };
-
-testConfig.db.filename = ':memory:';
 
 function addLabel (db: SqlDatabase, label: Label): Promise<any> {
     const values = [label.ownerId, label.entityId, label.entityType, label.type, label.value];

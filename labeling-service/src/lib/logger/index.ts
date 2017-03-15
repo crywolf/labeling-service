@@ -4,7 +4,7 @@ import {createWriteStream} from 'fs';
 
 let cons;
 
-if (process.env.NODE_ENV === 'test') {
+if (process.env.NODE_ENV === 'testing') {
     const nullStream = createWriteStream('/dev/null');
     cons = new Console(nullStream, nullStream);
 } else {
