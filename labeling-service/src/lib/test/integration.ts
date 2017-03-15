@@ -25,4 +25,6 @@ const port = config.httpServer.port;
 
 const request = chai.request(`http://${hostname}:${port}`);
 
-export {initApp, request, expect}
+const storageService = sqliteStorageService;
+
+export {initApp, request, expect, storageService}

@@ -1,7 +1,6 @@
-import {initApp, request, expect} from '../lib/test/integration';
+import {initApp, request, expect, storageService} from '../lib/test/integration';
 import {addRestriction, countRows, getAllRestrictions} from '../lib/test/util';
 import Restriction from '../coreEntities/Restriction';
-import storageService from '../lib/store/sqliteStorageService';
 import SqlDatabase from '../coreEntities/SqlDatabase';
 
 import config from '../config';

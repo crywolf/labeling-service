@@ -1,7 +1,6 @@
-import {initApp, request, expect} from '../lib/test/integration';
+import {initApp, request, expect, storageService} from '../lib/test/integration';
 import {addLabel, countRows, getAllLabels} from '../lib/test/util';
 import Label from '../coreEntities/Label';
-import storageService from '../lib/store/sqliteStorageService';
 import SqlDatabase from '../coreEntities/SqlDatabase';
 
 import config from '../config';
