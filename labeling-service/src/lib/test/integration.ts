@@ -5,6 +5,7 @@ import * as chaiHttp from 'chai-http';
 import {expect} from 'chai';
 import {app} from '../app';
 import testConfig from '../../config';
+import storageService from '../store/sqliteStorageService';
 
 chai.use(chaiHttp);
 
@@ -20,7 +21,7 @@ const initApp = () => {
         return Promise.resolve();
     }
     started = true;
-    return app(testConfig);
+    return app(storageService, testConfig);
 };
 
 const request = chai.request(`http://${hostname}:${port}`);

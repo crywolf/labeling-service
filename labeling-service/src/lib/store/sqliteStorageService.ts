@@ -1,5 +1,7 @@
 import * as sqlite from 'sqlite';
 import logger from '../logger';
+import SqlStorageServiceSingleton from './SqlStorageServiceSingleton';
+import SqlStorageService from './SqlStorageService';
 
 interface Config {
     filename: string;
@@ -7,7 +9,11 @@ interface Config {
     restrictionsTable: string;
 }
 
-class SqliteStorageService {
+// this "hack" is used to be able to declare static field named "instance"
+// (to force the implementation of singleton pattern)
+let sqliteStorageServiceClass: SqlStorageServiceSingleton;
+
+sqliteStorageServiceClass = class SqliteStorageService implements SqlStorageService {
 
     private static singleton: SqliteStorageService;
 
@@ -35,7 +41,7 @@ class SqliteStorageService {
             });
     }
 
-    get db () {
+    get db (): sqlite.Database {
         if (!this.connection) {
             throw new Error('Sqlite not connected. Run #init() first!');
         }
@@ -46,7 +52,7 @@ class SqliteStorageService {
         return err.code === 'SQLITE_CONSTRAINT';
     }
 
-    public truncate () {
+    public truncate (): Promise<any> {
         const sql1 = `DELETE FROM ${this.config.labelsTable}`;
         const sql2 = `DELETE FROM ${this.config.restrictionsTable}`;
         return this.db.run(sql1)
@@ -141,8 +147,8 @@ class SqliteStorageService {
                 return this.db.run(uniqueIndexSql2);
             });
     }
-}
+};
 
-const sqlStorageService = SqliteStorageService.instance;
+const sqlStorageService = sqliteStorageServiceClass.instance;
 
 export default sqlStorageService;

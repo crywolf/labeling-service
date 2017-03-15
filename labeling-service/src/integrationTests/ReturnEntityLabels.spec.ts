@@ -41,7 +41,7 @@ describe('Integration::ReturnEntityLabels route', () => {
     });
 
     describe('calling the route', () => {
-        describe('without any querystring parameters', () => {
+        context('without any querystring parameters', () => {
             it('should return all labels of the entity', () => {
                 return request
                     .get(`/owner/1/labeled-entities/${entityAId}/labels`)
@@ -57,7 +57,7 @@ describe('Integration::ReturnEntityLabels route', () => {
             });
         });
 
-        describe('with complex querystring', () => {
+        context('with complex querystring', () => {
             it('should return labels of specified entity with corresponding label types and label values', () => {
                 const querystring = '?labelTypes=color,size&labelValues=black,big,small';
 

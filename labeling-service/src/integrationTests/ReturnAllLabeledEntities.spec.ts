@@ -38,7 +38,7 @@ describe('Integration::ReturnAllLabeledEntities route', () => {
     });
 
     describe('calling the route', () => {
-        describe('without any querystring parameters', () => {
+        context('without any querystring parameters', () => {
             it('should return all labeled entities of a corresponding owner', () => {
                 const ownerId = 1;
 
@@ -63,7 +63,7 @@ describe('Integration::ReturnAllLabeledEntities route', () => {
             });
         });
 
-        describe('more label types joined with "," and more entity types', () => {
+        context('more label types joined with "," and more entity types', () => {
             it('should return labeled entities with corresponding label types and entity types', () => {
                 const ownerId = 1;
                 const querystring = '?labelTypes=color,shape&entityTypes=EntityA,EntityC';

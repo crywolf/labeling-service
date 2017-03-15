@@ -29,7 +29,7 @@ describe('Integration::CreateLabelRestriction route', () => {
     });
 
     describe('calling the route', () => {
-        describe('in case labelType and entityType is unique', () => {
+        context('in case labelType and entityType is unique', () => {
             it('should add restriction', () => {
                 return request
                     .post('/owner/1/label-restrictions')
@@ -45,7 +45,7 @@ describe('Integration::CreateLabelRestriction route', () => {
             });
         });
 
-        describe('in case label restriction is completely the same (not unique)', () => {
+        context('in case label restriction is completely the same (not unique)', () => {
             beforeEach(() => {
                 return addRestriction(db, entityARestriction1, whateverHash);
             });

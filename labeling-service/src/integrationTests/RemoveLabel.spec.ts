@@ -44,7 +44,7 @@ describe('Integration::RemoveLabel route', () => {
     });
 
     describe('calling the route', () => {
-        describe('without any querystring parameters', () => {
+        context('without any querystring parameters', () => {
             it('should remove all labels of entity and let labels of other entities untouched', () => {
                 const removedEntitiesCount = 5;
 
@@ -66,7 +66,7 @@ describe('Integration::RemoveLabel route', () => {
             });
         });
 
-        describe('with complex querystring', () => {
+        context('with complex querystring', () => {
             it('should remove labels of specified entity with corresponding label types and label values', () => {
                 const querystring = '?labelTypes=color,size&labelValues=black,red';
                 const removedEntitiesCount = 2;

@@ -46,7 +46,7 @@ describe('Integration::RemoveLabelRestriction route', () => {
     });
 
     describe('calling the route', () => {
-        describe('without valueHash parameter', () => {
+        context('without valueHash parameter', () => {
             it('should remove all restrictions for the owner and let restrictions of other owner untouched', () => {
                 const removedEntitiesCount = 5;
 
@@ -68,7 +68,7 @@ describe('Integration::RemoveLabelRestriction route', () => {
             });
         });
 
-        describe('with correct valueHash', () => {
+        context('with correct valueHash', () => {
             it('should remove restriction', () => {
                 const valueHash = entityBRestriction1Hash;
                 const removedEntitiesCount = 1;

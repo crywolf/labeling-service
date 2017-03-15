@@ -30,7 +30,7 @@ describe('Integration::CreateLabelRelationship route', () => {
     });
 
     describe('calling the route', () => {
-        describe('in case entityType and entityId is unique', () => {
+        context('in case entityType and entityId is unique', () => {
             it('should attach label to entity', () => {
                 return request
                     .post('/owner/1/label-relationships')
@@ -46,7 +46,7 @@ describe('Integration::CreateLabelRelationship route', () => {
             });
         });
 
-        describe('in case label is completely the same (not unique)', () => {
+        context('in case label is completely the same (not unique)', () => {
             beforeEach(() => {
                 return addLabel(db, entityA200Label1);
             });
