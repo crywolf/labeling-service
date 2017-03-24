@@ -1,9 +1,9 @@
-import {Command, Method} from '../../coreEntities/Command';
+import {Command, CommandSettings, Method} from '../../coreEntities/Command';
 import UnprocessableEntityError from '../../coreEntities/UnprocessableEntityError';
 
 class CreateLabelRestriction extends Command {
 
-    protected readonly settings = {
+    protected readonly settings: CommandSettings = {
         method: Method.POST,
         url: '/owner/:ownerId/label-restrictions'
     };

@@ -10,9 +10,9 @@ import * as chaiAsPromised from 'chai-as-promised';
 chai.use(chaiSinon);
 chai.use(chaiAsPromised);
 
-describe('ReturnEntityLabels command', () => {
+describe('ReturnEntityLabels query', () => {
 
-    let command: Query;
+    let query: Query;
     const executor: QueryExecutor = { fetch: () => Promise.resolve() };
 
     let req: {params: any};
@@ -23,8 +23,8 @@ describe('ReturnEntityLabels command', () => {
     let fetch;
 
     beforeEach(() => {
-        command = new ReturnEntityLabels(executor);
-        response = sinon.spy(command, 'response');
+        query = new ReturnEntityLabels(executor);
+        response = sinon.spy(query, 'response');
         fetch = sinon.spy(executor, 'fetch');
     });
 
@@ -36,7 +36,7 @@ describe('ReturnEntityLabels command', () => {
     describe('#handler', () => {
         it('calls response() with request data', () => {
             req = { params: 'someRequestData' };
-            command.handler(req, res, next);
+            query.handler(req, res, next);
             expect(response).to.be.calledOnce;
             expect(response).to.be.calledWith(req);
         });
@@ -54,7 +54,7 @@ describe('ReturnEntityLabels command', () => {
 
         describe('without querystring', () => {
             beforeEach(() => {
-                command.handler(req, res, next);
+                query.handler(req, res, next);
             });
 
             it('calls fetch() with correct parameters', () => {
@@ -66,7 +66,7 @@ describe('ReturnEntityLabels command', () => {
         describe('with "labelTypes=someType"', () => {
             beforeEach(() => {
                 req.params.labelTypes = 'someType';
-                command.handler(req, res, next);
+                query.handler(req, res, next);
             });
 
             it('calls fetch() with correct parameters', () => {
@@ -78,7 +78,7 @@ describe('ReturnEntityLabels command', () => {
         describe('with "labelTypes=someType,anotherType"', () => {
             beforeEach(() => {
                 req.params.labelTypes = 'someType,anotherType';
-                command.handler(req, res, next);
+                query.handler(req, res, next);
             });
 
             it('calls fetch() with correct parameters', () => {
@@ -90,7 +90,7 @@ describe('ReturnEntityLabels command', () => {
         describe('with "labelValues=someValue"', () => {
             beforeEach(() => {
                 req.params.labelValues = 'someValue';
-                command.handler(req, res, next);
+                query.handler(req, res, next);
             });
 
             it('calls fetch() with correct parameters', () => {
@@ -102,7 +102,7 @@ describe('ReturnEntityLabels command', () => {
         describe('with "labelValues=someValue,anotherValue"', () => {
             beforeEach(() => {
                 req.params.labelValues = 'someValue,anotherValue';
-                command.handler(req, res, next);
+                query.handler(req, res, next);
             });
 
             it('calls fetch() with correct parameters', () => {

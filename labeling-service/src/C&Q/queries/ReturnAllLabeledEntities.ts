@@ -1,8 +1,8 @@
-import {Query, Method} from '../../coreEntities/Query';
+import {Query, Method, QuerySettings} from '../../coreEntities/Query';
 
 class ReturnAllLabeledEntities extends Query {
 
-    protected readonly settings = {
+    protected readonly settings: QuerySettings = {
         method: Method.GET,
         url: '/owner/:ownerId/labeled-entities'
     };

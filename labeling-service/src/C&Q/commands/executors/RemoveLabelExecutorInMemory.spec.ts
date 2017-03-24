@@ -93,7 +93,7 @@ describe('RemoveLabelExecutorInMemory', () => {
                 return executor.execute(entityId);
             });
 
-            it('should remove all labels of entity and let labels of other entities untouched', () => {
+            it('should remove all labels of entity and leave labels of other entities untouched', () => {
                 expect(memoryStorage).to.be.a('Set');
                 const removedEntitiesCount = 4;
                 expect(memoryStorage.size).to.equal(storedEntitiesCount - removedEntitiesCount);

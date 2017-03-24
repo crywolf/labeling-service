@@ -1,8 +1,8 @@
-import {Command, Method} from '../../coreEntities/Command';
+import {Command, CommandSettings, Method} from '../../coreEntities/Command';
 
 class RemoveLabel extends Command {
 
-    protected readonly settings = {
+    protected readonly settings: CommandSettings = {
         method: Method.DELETE,
         url: '/owner/:ownerId/labeled-entities/:entityId/labels'
     };

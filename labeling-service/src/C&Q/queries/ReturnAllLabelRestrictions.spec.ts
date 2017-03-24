@@ -10,9 +10,9 @@ import * as chaiAsPromised from 'chai-as-promised';
 chai.use(chaiSinon);
 chai.use(chaiAsPromised);
 
-describe('ReturnAllLabelRestrictions command', () => {
+describe('ReturnAllLabelRestrictions query', () => {
 
-    let command: Query;
+    let query: Query;
     const executor: QueryExecutor = { fetch: () => Promise.resolve() };
 
     let req: {params: any};
@@ -23,8 +23,8 @@ describe('ReturnAllLabelRestrictions command', () => {
     let fetch;
 
     beforeEach(() => {
-        command = new ReturnAllLabelRestrictions(executor);
-        response = sinon.spy(command, 'response');
+        query = new ReturnAllLabelRestrictions(executor);
+        response = sinon.spy(query, 'response');
         fetch = sinon.spy(executor, 'fetch');
     });
 
@@ -36,7 +36,7 @@ describe('ReturnAllLabelRestrictions command', () => {
     describe('#handler', () => {
         it('calls response() with request data', () => {
             req = { params: 'someRequestData' };
-            command.handler(req, res, next);
+            query.handler(req, res, next);
             expect(response).to.be.calledOnce;
             expect(response).to.be.calledWith(req);
         });
@@ -53,7 +53,7 @@ describe('ReturnAllLabelRestrictions command', () => {
 
         describe('without querystring', () => {
             beforeEach(() => {
-                command.handler(req, res, next);
+                query.handler(req, res, next);
             });
 
             it('calls fetch() with correct parameters', () => {
@@ -65,7 +65,7 @@ describe('ReturnAllLabelRestrictions command', () => {
         describe('with "entityTypes=someType"', () => {
             beforeEach(() => {
                 req.params.entityTypes = 'someType';
-                command.handler(req, res, next);
+                query.handler(req, res, next);
             });
 
             it('calls fetch() with correct parameters', () => {
@@ -77,7 +77,7 @@ describe('ReturnAllLabelRestrictions command', () => {
         describe('with "entityTypes=someType,anotherType"', () => {
             beforeEach(() => {
                 req.params.entityTypes = 'someType,anotherType';
-                command.handler(req, res, next);
+                query.handler(req, res, next);
             });
 
             it('calls fetch() with correct parameters', () => {

@@ -11,7 +11,7 @@ abstract class Command {
 
     protected executor: CommandExecutor;
 
-    protected settings: CommandSettings;
+    protected abstract settings: CommandSettings;
 
     constructor (executor: CommandExecutor) {
         this.executor = executor;

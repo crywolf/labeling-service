@@ -11,7 +11,7 @@ abstract class Query {
 
     protected executor: QueryExecutor;
 
-    protected settings: QuerySettings;
+    protected abstract readonly settings: QuerySettings;
 
     constructor (executor: QueryExecutor) {
         this.executor = executor;

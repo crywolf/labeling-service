@@ -72,7 +72,7 @@ describe('CreateLabelRestrictionExecutorSql', () => {
                 return executor.execute(restrictionWithoutEntityType);
             });
 
-            it('should add restriction wit entityType set to null', () => {
+            it('should add restriction with entityType set to null', () => {
                 return countRows(db, testConfig.db.restrictionsTable)
                     .then((count) => {
                         expect(count).to.equal(1);
@@ -147,7 +147,7 @@ describe('CreateLabelRestrictionExecutorSql', () => {
                         executor = sqlExecutor;
                     });
             });
-            it('should throw InternalServerError', () => {
+            it('should reject with InternalServerError', () => {
                 return expect(executor.execute(entityARestriction1)).to.be.rejectedWith(InternalServerError);
             });
         });

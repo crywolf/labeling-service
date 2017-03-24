@@ -31,14 +31,10 @@ sqliteStorageServiceClass = class SqliteStorageService implements SqlStorageServ
                 this.connection = db;
                 this.config = config;
                 logger.info('DB Connected.');
-                return this.createLabelsDb()
-                    .then(() => {
-                        return this.createRestrictionsDb();
-                    })
-                    .then(() => {
-                        return this.db;
-                    });
-            });
+                return this.createLabelsDb();
+            })
+            .then(() => this.createRestrictionsDb())
+            .then(() => this.db);
     }
 
     get db (): sqlite.Database {

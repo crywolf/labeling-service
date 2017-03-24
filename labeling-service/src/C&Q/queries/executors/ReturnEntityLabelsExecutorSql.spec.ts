@@ -107,7 +107,7 @@ describe('ReturnEntityLabelsExecutorSql', () => {
                             executor = sqlExecutor;
                         });
                 });
-                it('should throw InternalServerError', () => {
+                it('should reject with InternalServerError', () => {
                     const ownerId = 1;
                     return expect(executor.fetch(ownerId, entityBId)).to.be.rejectedWith(InternalServerError);
                 });

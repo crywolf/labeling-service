@@ -139,7 +139,7 @@ describe('ReturnAllLabelRestrictionsExecutorSql', () => {
                             executor = sqlExecutor;
                         });
                 });
-                it('should throw InternalServerError', () => {
+                it('should reject with InternalServerError', () => {
                     return expect(executor.fetch(ownerId)).to.be.rejectedWith(InternalServerError);
                 });
             });

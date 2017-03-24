@@ -180,7 +180,7 @@ describe('CreateLabelRelationshipExecutorSql', () => {
                         executor = sqlExecutor;
                     });
             });
-            it('should throw InternalServerError', () => {
+            it('should reject with InternalServerError', () => {
                 return expect(executor.execute(entityA200Label1)).to.be.rejectedWith(InternalServerError);
             });
         });

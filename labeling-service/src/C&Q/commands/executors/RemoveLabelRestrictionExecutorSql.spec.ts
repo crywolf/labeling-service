@@ -45,7 +45,7 @@ describe('RemoveLabelRestrictionExecutorSql', () => {
                 return executor.execute(ownerId);
             });
 
-            it('should remove all restrictions for the owner and let restrictions of other owner untouched', () => {
+            it('should remove all restrictions for the owner and leave restrictions of other owner untouched', () => {
                 const removedEntitiesCount = 5;
                 return countRows(db, testConfig.db.restrictionsTable)
                     .then((count) => {
@@ -105,7 +105,7 @@ describe('RemoveLabelRestrictionExecutorSql', () => {
                         executor = sqlExecutor;
                     });
             });
-            it('should throw InternalServerError', () => {
+            it('should reject with InternalServerError', () => {
                 return expect(executor.execute(ownerId, entityARestriction1Hash))
                     .to.be.rejectedWith(InternalServerError);
             });

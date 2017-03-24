@@ -40,7 +40,7 @@ describe('RemoveLabelExecutorSql', () => {
                 return executor.execute(ownerId, entityAId);
             });
 
-            it('should remove all labels of entity and let labels of other entities untouched', () => {
+            it('should remove all labels of entity and leave labels of other entities untouched', () => {
                 const removedEntitiesCount = 5;
                 return countRows(db, testConfig.db.labelsTable)
                     .then((count) => {
@@ -156,7 +156,7 @@ describe('RemoveLabelExecutorSql', () => {
                         executor = sqlExecutor;
                     });
             });
-            it('should throw InternalServerError', () => {
+            it('should reject InternalServerError', () => {
                 return expect(executor.execute(ownerId, entityAId)).to.be.rejectedWith(InternalServerError);
             });
         });
