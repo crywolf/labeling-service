@@ -1,18 +1,15 @@
 import {expect} from 'chai';
 import SqlStorageService from './SqlStorageService';
-import SqliteStorageService from './sqliteStorageService';
-import {Console} from 'console';
+import sqliteStorageService from './sqliteStorageService';
 
 describe('sqliteStorageService', () => {
 
     let sqliteStorageService1: SqlStorageService;
     let sqliteStorageService2: SqlStorageService;
-    let cons;
 
     beforeEach(() => {
         sqliteStorageService1 = initializeStorageService();
         sqliteStorageService2 = initializeStorageService();
-        cons = new Console(process.stdout, process.stderr);
     });
 
     describe('when asked to instantiate', () => {
@@ -23,8 +20,8 @@ describe('sqliteStorageService', () => {
 
     });
 
-    function initializeStorageService() : SqlStorageService {
-        return SqliteStorageService;
+    function initializeStorageService (): SqlStorageService {
+        return sqliteStorageService;
     }
 
 });
