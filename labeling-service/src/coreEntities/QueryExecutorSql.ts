@@ -8,9 +8,9 @@ abstract class QueryExecutorSql implements QueryExecutor {
     protected storage: SqlDatabase;
     protected tables: Tables;
 
-    constructor (storage: SqlDatabase, tables?: Tables) {
+    constructor (storage: SqlDatabase) {
         this.storage = storage;
-        this.tables = tables || {
+        this.tables = {
                 labelsTable: config.sqlite.labelsTable,
                 restrictionsTable: config.sqlite.restrictionsTable
             };

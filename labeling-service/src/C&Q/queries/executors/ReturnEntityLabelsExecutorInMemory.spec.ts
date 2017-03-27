@@ -74,7 +74,7 @@ describe('ReturnEntityLabelsExecutorInMemory', () => {
                 const entityId = 3;
                 const labelTypes = ['color', 'height'];
 
-                return executor.fetch(ownerId, entityId, labelTypes)
+                return executor.fetch(ownerId, entityId, {labelTypes})
                     .then((labels) => {
                         expect(labels).to.be.a('Array');
                         expect(labels).to.have.lengthOf(2);
@@ -91,7 +91,7 @@ describe('ReturnEntityLabelsExecutorInMemory', () => {
                 const labelTypes = ['color', 'height'];
                 const entityTypes = ['SomeOtherEntity'];
 
-                return executor.fetch(ownerId, entityId, labelTypes, entityTypes)
+                return executor.fetch(ownerId, entityId, {labelTypes, entityTypes})
                     .then((labels) => {
                         expect(labels).to.be.a('Array');
                         expect(labels).to.have.lengthOf(2);

@@ -1,14 +1,20 @@
 import QueryExecutorInMemory from '../../../coreEntities/QueryExecutorInMemory';
+import Label from '../../../coreEntities/Label';
 
 class ReturnEntityLabelsExecutorInMemory extends QueryExecutorInMemory {
 
     public fetch (
         ownerId: number,
         entityId: number,
-        labelTypes: Array<string> = [],
-        labelValues: Array<string> = [],
-        entityTypes: Array<string> = []
-    ): Promise<any> {
+        params?: {
+            labelTypes?: Array<string>,
+            labelValues?: Array<string>,
+            entityTypes?: Array<string>
+        }): Promise<Array<Label>> {
+
+        const labelTypes = params ? params.labelTypes || [] : [];
+        const labelValues = params ? params.labelValues || [] : [];
+        const entityTypes = params ? params.entityTypes || [] : [];
 
         const data = Array.from(this.storage)
             .filter((label) => {

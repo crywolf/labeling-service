@@ -8,27 +8,29 @@ class ReturnAllLabeledEntities extends Query {
     };
 
     protected response (req) {
-        const ownerId = parseInt(req.params.ownerId, 10);
+        const params = req.params;
+        const ownerId = parseInt(params.ownerId, 10);
 
         let labelTypes = [];
+        let entityTypes = [];
         let labelOperator = 'OR';
-        if (req.params.labelTypes) {
-            if (req.params.labelTypes.indexOf(',') !== -1) {
-                labelTypes = req.params.labelTypes.split(',');
-            } else if (req.params.labelTypes.indexOf(';') !== -1) {
-                labelTypes = req.params.labelTypes.split(';');
+
+        if (params.labelTypes) {
+            if (this.paramsSeparatedBy(params.labelTypes, ',')) {
+                labelTypes = params.labelTypes.split(',');
+            } else if (this.paramsSeparatedBy(params.labelTypes, ';')) {
+                labelTypes = params.labelTypes.split(';');
                 labelOperator = 'AND';
             } else {
-                labelTypes.push(req.params.labelTypes);
+                labelTypes.push(params.labelTypes);
             }
         }
 
-        let entityTypes = [];
-        if (req.params.entityTypes) {
-            if (req.params.entityTypes.indexOf(',') !== -1) {
-                entityTypes = req.params.entityTypes.split(',');
+        if (params.entityTypes) {
+            if (this.paramsSeparatedBy (params.entityTypes, ',')) {
+                entityTypes = params.entityTypes.split(',');
             } else {
-                entityTypes.push(req.params.entityTypes);
+                entityTypes.push(params.entityTypes);
             }
         }
 
@@ -39,6 +41,10 @@ class ReturnAllLabeledEntities extends Query {
         };
 
         return this.executor.fetch(ownerId, executorParams);
+    }
+
+    private paramsSeparatedBy (p: Array<any>, separator: string) {
+        return p.indexOf(separator) !== -1;
     }
 
 }
