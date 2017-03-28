@@ -54,6 +54,21 @@ describe('Integration::ReturnEntityLabels route', () => {
                         expect(body[0]).to.deep.equal({type: entityALabel1.type, value: entityALabel1.value});
                     });
             });
+
+            describe('calling an existing owner by ownerId in route with some additional zeros at the beginning of ownerId', function () {
+                it('should return empty array', function() {
+
+                    return request
+                        .get(`/owner/00099/labeled-entities/${entityAId}/labels`)
+                        .then((res) => {
+                            expect(res).to.have.status(200);
+
+                            const body = res.body;
+                            expect(body).to.be.an('Array');
+                            expect(body).to.be.empty;
+                        });
+                });
+            });
         });
 
         context('with complex querystring', () => {
@@ -156,7 +171,7 @@ describe('Integration::ReturnEntityLabels route', () => {
 
         entityALabel3DifferentOwner = {
             ownerId: '99',
-            entityId: '2',
+            entityId: entityAId,
             entityType: 'EntityA',
             type: 'color',
             value: 'black'
