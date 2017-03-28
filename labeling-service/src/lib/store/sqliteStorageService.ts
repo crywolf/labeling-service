@@ -71,8 +71,8 @@ sqliteStorageServiceClass = class SqliteStorageService implements SqlStorageServ
         const sql = `
                 CREATE TABLE IF NOT EXISTS ${this.config.labelsTable} (
                     id INTEGER PRIMARY KEY,
-                    ownerId INTEGER NOT NULL,
-                    entityId INTEGER NOT NULL,
+                    ownerId STRING NOT NULL,
+                    entityId STRING NOT NULL,
                     entityType CHAR(255) NOT NULL,
                     type CHAR(255) NOT NULL,
                     value CHAR(255)          
@@ -112,7 +112,7 @@ sqliteStorageServiceClass = class SqliteStorageService implements SqlStorageServ
         const sql = `
                 CREATE TABLE IF NOT EXISTS ${this.config.restrictionsTable} (
                     id INTEGER PRIMARY KEY,
-                    ownerId INTEGER NOT NULL,
+                    ownerId STRING NOT NULL,
                     labelType CHAR(255) NOT NULL,
                     entityType CHAR(255),
                     hash CHAR(255) NOT NULL

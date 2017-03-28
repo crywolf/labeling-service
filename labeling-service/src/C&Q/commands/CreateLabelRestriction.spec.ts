@@ -46,7 +46,7 @@ describe('CreateLabelRestriction command', () => {
     describe('#process', () => {
         const entityType = 'entityA';
         const labelType = 'someLabelType';
-        const params = { ownerId: '2' };
+        const params = { ownerId: '002' };
 
         describe('with complete request data', () => {
             beforeEach(() => {
@@ -64,7 +64,7 @@ describe('CreateLabelRestriction command', () => {
                 expect(execute).to.be.calledOnce;
 
                 const expected = {
-                    ownerId: 2,
+                    ownerId: '002',
                     entityType,
                     labelType
                 };

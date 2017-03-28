@@ -45,8 +45,8 @@ describe('CreateLabelRelationship command', () => {
 
     describe('#process', () => {
         const entityType = 'entityA';
-        const entityId = '4';
-        const params = { ownerId: '2' };
+        const entityId = '0004';
+        const params = { ownerId: '0002' };
 
         describe('with complete request data', () => {
             beforeEach(() => {
@@ -66,8 +66,8 @@ describe('CreateLabelRelationship command', () => {
                 expect(execute).to.be.calledOnce;
 
                 const expected = {
-                    ownerId: 2,
-                    entityId: 4,
+                    ownerId: '0002',
+                    entityId: '0004',
                     entityType,
                     type: 'color',
                     value: 'black'

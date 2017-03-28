@@ -43,10 +43,12 @@ describe('ReturnAllLabeledEntities query', () => {
     });
 
     describe('#response', () => {
+        const ownerId = '002';
+
         beforeEach(() => {
             req = {
                 params: {
-                    ownerId: '2'
+                    ownerId
                 }
             };
         });
@@ -58,7 +60,7 @@ describe('ReturnAllLabeledEntities query', () => {
 
             it('calls fetch() with correct parameters', () => {
                 expect(fetch).to.be.calledOnce;
-                expect(fetch).to.be.calledWith(2, {
+                expect(fetch).to.be.calledWith(ownerId, {
                     labelTypes: [],
                     labelOperator: 'OR',
                     entityTypes: []
@@ -74,7 +76,7 @@ describe('ReturnAllLabeledEntities query', () => {
 
             it('calls fetch() with correct parameters', () => {
                 expect(fetch).to.be.calledOnce;
-                expect(fetch).to.be.calledWith(2, {
+                expect(fetch).to.be.calledWith(ownerId, {
                     labelTypes: ['someType'],
                     labelOperator: 'OR',
                     entityTypes: []
@@ -90,7 +92,7 @@ describe('ReturnAllLabeledEntities query', () => {
 
             it('calls fetch() with correct parameters', () => {
                 expect(fetch).to.be.calledOnce;
-                expect(fetch).to.be.calledWith(2, {
+                expect(fetch).to.be.calledWith(ownerId, {
                     labelTypes: ['someType', 'anotherType'],
                     labelOperator: 'OR',
                     entityTypes: []
@@ -106,7 +108,7 @@ describe('ReturnAllLabeledEntities query', () => {
 
             it('calls fetch() with correct parameters', () => {
                 expect(fetch).to.be.calledOnce;
-                expect(fetch).to.be.calledWith(2, {
+                expect(fetch).to.be.calledWith(ownerId, {
                     labelTypes: ['someType', 'anotherType'],
                     labelOperator: 'AND',
                     entityTypes: []
@@ -122,7 +124,7 @@ describe('ReturnAllLabeledEntities query', () => {
 
             it('calls fetch() with correct parameters', () => {
                 expect(fetch).to.be.calledOnce;
-                expect(fetch).to.be.calledWith(2, {
+                expect(fetch).to.be.calledWith(ownerId, {
                     labelTypes: [],
                     labelOperator: 'OR',
                     entityTypes: ['someEntity']
@@ -138,7 +140,7 @@ describe('ReturnAllLabeledEntities query', () => {
 
             it('calls fetch() with correct parameters', () => {
                 expect(fetch).to.be.calledOnce;
-                expect(fetch).to.be.calledWith(2, {
+                expect(fetch).to.be.calledWith(ownerId, {
                     labelTypes: [],
                     labelOperator: 'OR',
                     entityTypes: ['someEntity', 'anotherEntity']

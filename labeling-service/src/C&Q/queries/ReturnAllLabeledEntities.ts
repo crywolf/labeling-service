@@ -9,7 +9,7 @@ class ReturnAllLabeledEntities extends Query {
 
     protected response (req) {
         const params = req.params;
-        const ownerId = parseInt(params.ownerId, 10);
+        const ownerId = params.ownerId;
 
         let labelTypes = [];
         let entityTypes = [];

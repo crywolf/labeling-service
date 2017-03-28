@@ -8,7 +8,7 @@ class ReturnAllLabelRestrictions extends Query {
     };
 
     protected response (req) {
-        const ownerId = parseInt(req.params.ownerId, 10);
+        const ownerId = req.params.ownerId;
 
         const entityTypes = req.params.entityTypes ? req.params.entityTypes.split(',') : [];
 

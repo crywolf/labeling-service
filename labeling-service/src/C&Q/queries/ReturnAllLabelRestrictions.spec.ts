@@ -43,10 +43,12 @@ describe('ReturnAllLabelRestrictions query', () => {
     });
 
     describe('#response', () => {
+        const ownerId = '002';
+
         beforeEach(() => {
             req = {
                 params: {
-                    ownerId: '2'
+                    ownerId
                 }
             };
         });
@@ -58,7 +60,7 @@ describe('ReturnAllLabelRestrictions query', () => {
 
             it('calls fetch() with correct parameters', () => {
                 expect(fetch).to.be.calledOnce;
-                expect(fetch).to.be.calledWith(2, {entityTypes: []});
+                expect(fetch).to.be.calledWith(ownerId, {entityTypes: []});
             });
         });
 
@@ -70,7 +72,7 @@ describe('ReturnAllLabelRestrictions query', () => {
 
             it('calls fetch() with correct parameters', () => {
                 expect(fetch).to.be.calledOnce;
-                expect(fetch).to.be.calledWith(2, {entityTypes: ['someType']});
+                expect(fetch).to.be.calledWith(ownerId, {entityTypes: ['someType']});
             });
         });
 
@@ -82,7 +84,7 @@ describe('ReturnAllLabelRestrictions query', () => {
 
             it('calls fetch() with correct parameters', () => {
                 expect(fetch).to.be.calledOnce;
-                expect(fetch).to.be.calledWith(2, {entityTypes: ['someType', 'anotherType']});
+                expect(fetch).to.be.calledWith(ownerId, {entityTypes: ['someType', 'anotherType']});
             });
         });
     });

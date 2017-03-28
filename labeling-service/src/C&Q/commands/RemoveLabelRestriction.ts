@@ -8,7 +8,7 @@ class RemoveLabelRestriction extends Command {
     };
 
     protected process (req) {
-        const ownerId = parseInt(req.params.ownerId, 10);
+        const ownerId = req.params.ownerId;
         const valueHash = req.params.valueHash;
 
         return this.executor.execute(ownerId, valueHash);

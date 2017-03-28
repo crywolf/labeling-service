@@ -41,11 +41,14 @@ describe('RemoveLabel command', () => {
     });
 
     describe('#process', () => {
+        const ownerId = '002';
+        const entityId = '0100';
+
         beforeEach(() => {
             req = {
                 params: {
-                    ownerId: '2',
-                    entityId: '100'
+                    ownerId,
+                    entityId
                 }
             };
         });
@@ -57,7 +60,9 @@ describe('RemoveLabel command', () => {
 
             it('calls execute() with correct parameters', () => {
                 expect(execute).to.be.calledOnce;
-                expect(execute).to.be.calledWith(2, 100, {labelTypes: [], labelValues: []});
+                expect(execute).to.be.calledWith(
+                    ownerId, entityId, {labelTypes: [], labelValues: []}
+                );
             });
         });
 
@@ -69,7 +74,9 @@ describe('RemoveLabel command', () => {
 
             it('calls execute() with correct parameters', () => {
                 expect(execute).to.be.calledOnce;
-                expect(execute).to.be.calledWith(2, 100, {labelTypes: ['someType'], labelValues: []});
+                expect(execute).to.be.calledWith(
+                    ownerId, entityId, {labelTypes: ['someType'], labelValues: []}
+                );
             });
         });
 
@@ -81,7 +88,9 @@ describe('RemoveLabel command', () => {
 
             it('calls execute() with correct parameters', () => {
                 expect(execute).to.be.calledOnce;
-                expect(execute).to.be.calledWith(2, 100, {labelTypes: ['someType', 'anotherType'], labelValues: []});
+                expect(execute).to.be.calledWith(
+                    ownerId, entityId, {labelTypes: ['someType', 'anotherType'], labelValues: []}
+                );
             });
         });
 
@@ -93,7 +102,9 @@ describe('RemoveLabel command', () => {
 
             it('calls execute() with correct parameters', () => {
                 expect(execute).to.be.calledOnce;
-                expect(execute).to.be.calledWith(2, 100, {labelTypes: [], labelValues: ['someValue']});
+                expect(execute).to.be.calledWith(
+                    ownerId, entityId, {labelTypes: [], labelValues: ['someValue']}
+                );
             });
         });
 
@@ -105,7 +116,9 @@ describe('RemoveLabel command', () => {
 
             it('calls execute() with correct parameters', () => {
                 expect(execute).to.be.calledOnce;
-                expect(execute).to.be.calledWith(2, 100, {labelTypes: [], labelValues: ['someValue', 'anotherValue']});
+                expect(execute).to.be.calledWith(
+                    ownerId, entityId, {labelTypes: [], labelValues: ['someValue', 'anotherValue']}
+                );
             });
         });
     });

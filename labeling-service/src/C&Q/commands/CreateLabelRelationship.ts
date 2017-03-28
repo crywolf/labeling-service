@@ -10,8 +10,8 @@ class CreateLabelRelationship extends Command {
 
     protected process (req) {
         const label = {
-            ownerId: parseInt(req.params.ownerId, 10),
-            entityId: parseInt(req.body.entityId, 10),
+            ownerId: req.params.ownerId,
+            entityId: req.body.entityId,
             entityType: req.body.entityType,
             type: req.body.type,
             value: req.body.value

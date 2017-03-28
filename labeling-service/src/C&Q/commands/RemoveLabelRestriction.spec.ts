@@ -45,7 +45,7 @@ describe('RemoveLabelRestriction command', () => {
         beforeEach(() => {
             req = {
                 params: {
-                    ownerId: '2',
+                    ownerId: '002',
                     valueHash
                 }
             };
@@ -54,7 +54,7 @@ describe('RemoveLabelRestriction command', () => {
 
         it('calls execute() with correct parameters', () => {
             expect(execute).to.be.calledOnce;
-            expect(execute).to.be.calledWith(2, valueHash);
+            expect(execute).to.be.calledWith('002', valueHash);
         });
     });
 

@@ -43,11 +43,14 @@ describe('ReturnEntityLabels query', () => {
     });
 
     describe('#response', () => {
+        const ownerId = '0002';
+        const entityId = '0010';
+
         beforeEach(() => {
             req = {
                 params: {
-                    ownerId: '2',
-                    entityId: '10'
+                    ownerId,
+                    entityId
                 }
             };
         });
@@ -59,7 +62,9 @@ describe('ReturnEntityLabels query', () => {
 
             it('calls fetch() with correct parameters', () => {
                 expect(fetch).to.be.calledOnce;
-                expect(fetch).to.be.calledWith(2, 10, {labelTypes: [], labelValues: []});
+                expect(fetch).to.be.calledWith(
+                    ownerId, entityId, {labelTypes: [], labelValues: []}
+                );
             });
         });
 
@@ -71,7 +76,9 @@ describe('ReturnEntityLabels query', () => {
 
             it('calls fetch() with correct parameters', () => {
                 expect(fetch).to.be.calledOnce;
-                expect(fetch).to.be.calledWith(2, 10, {labelTypes: ['someType'], labelValues: []});
+                expect(fetch).to.be.calledWith(
+                    ownerId, entityId, {labelTypes: ['someType'], labelValues: []}
+                );
             });
         });
 
@@ -83,7 +90,9 @@ describe('ReturnEntityLabels query', () => {
 
             it('calls fetch() with correct parameters', () => {
                 expect(fetch).to.be.calledOnce;
-                expect(fetch).to.be.calledWith(2, 10, {labelTypes: ['someType', 'anotherType'], labelValues: []});
+                expect(fetch).to.be.calledWith(
+                    ownerId, entityId, {labelTypes: ['someType', 'anotherType'], labelValues: []}
+                );
             });
         });
 
@@ -95,7 +104,9 @@ describe('ReturnEntityLabels query', () => {
 
             it('calls fetch() with correct parameters', () => {
                 expect(fetch).to.be.calledOnce;
-                expect(fetch).to.be.calledWith(2, 10, {labelTypes: [], labelValues: ['someValue']});
+                expect(fetch).to.be.calledWith(
+                    ownerId, entityId, {labelTypes: [], labelValues: ['someValue']}
+                );
             });
         });
 
@@ -107,7 +118,9 @@ describe('ReturnEntityLabels query', () => {
 
             it('calls fetch() with correct parameters', () => {
                 expect(fetch).to.be.calledOnce;
-                expect(fetch).to.be.calledWith(2, 10, {labelTypes: [], labelValues: ['someValue', 'anotherValue']});
+                expect(fetch).to.be.calledWith(
+                    ownerId, entityId, {labelTypes: [], labelValues: ['someValue', 'anotherValue']}
+                );
             });
         });
     });

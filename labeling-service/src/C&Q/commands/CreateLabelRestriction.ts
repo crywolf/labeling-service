@@ -10,7 +10,7 @@ class CreateLabelRestriction extends Command {
 
     protected process (req) {
         const restriction = {
-            ownerId: parseInt(req.params.ownerId, 10),
+            ownerId: req.params.ownerId,
             labelType: req.body.labelType,
             entityType: req.body.entityType
         };
