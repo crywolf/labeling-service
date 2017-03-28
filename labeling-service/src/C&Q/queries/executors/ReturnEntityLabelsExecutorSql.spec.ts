@@ -11,19 +11,19 @@ describe('ReturnEntityLabelsExecutorSql', () => {
     let executor: ReturnEntityLabelsExecutorSql;
     let db: SqlDatabase;
 
-    const entityAId = 2;
+    const entityAId = '002';
     let entityALabel1: Label;
     let entityALabel2: Label;
     let entityALabel3: Label;
     let entityALabel4: Label;
 
-    const entityBId = 3;
+    const entityBId = '003';
     let entityBLabel1: Label;
     let entityBLabel2: Label;
     let entityBLabel3: Label;
     let entityBLabel4: Label;
 
-    const entityCId = 6;
+    const entityCId = '006';
     let entityCLabel1: Label;
     let entityCLabel2: Label;
 
@@ -37,7 +37,7 @@ describe('ReturnEntityLabelsExecutorSql', () => {
         context('without label types and values parameters', () => {
             context('for specific entity', () => {
                 it('should return all labels of the entity', () => {
-                    const ownerId = 1;
+                    const ownerId = '001';
 
                     return executor.fetch(ownerId, entityAId)
                         .then((labels) => {
@@ -57,7 +57,7 @@ describe('ReturnEntityLabelsExecutorSql', () => {
                 });
 
                 it('should return all labels of the entity belonging to owner with different ID', () => {
-                    const differentOwnerId = 99;
+                    const differentOwnerId = '099';
 
                     return executor.fetch(differentOwnerId, entityAId)
                         .then((labels) => {
@@ -75,7 +75,7 @@ describe('ReturnEntityLabelsExecutorSql', () => {
 
             context('for another entity', () => {
                 it('should return all labels of the entity', () => {
-                    const ownerId = 1;
+                    const ownerId = '001';
 
                     return executor.fetch(ownerId, entityBId)
                         .then((labels) => {
@@ -108,7 +108,7 @@ describe('ReturnEntityLabelsExecutorSql', () => {
                         });
                 });
                 it('should reject with InternalServerError', () => {
-                    const ownerId = 1;
+                    const ownerId = '001';
                     return expect(executor.fetch(ownerId, entityBId)).to.be.rejectedWith(InternalServerError);
                 });
             });
@@ -117,7 +117,7 @@ describe('ReturnEntityLabelsExecutorSql', () => {
         context('with label types', () => {
             context('and no label values', () => {
                 it('should return labels of specified entity with corresponding label types', () => {
-                    const ownerId = 1;
+                    const ownerId = '001';
                     const labelTypes = ['color', 'size', 'height'];
 
                     const params = {
@@ -142,7 +142,7 @@ describe('ReturnEntityLabelsExecutorSql', () => {
 
             context('and label values', () => {
                 it('should return labels of specified entity with corresponding label types and label values', () => {
-                    const ownerId = 1;
+                    const ownerId = '001';
                     const labelTypes = ['color', 'size'];
                     const labelValues = ['black', 'big', 'small'];
 
@@ -169,7 +169,7 @@ describe('ReturnEntityLabelsExecutorSql', () => {
         context('with label values', () => {
             context('and no label types', () => {
                 it('should return labels of specified entity with corresponding label values', () => {
-                    const ownerId = 1;
+                    const ownerId = '001';
                     const labelValues = ['black', 'blue', 'red'];
 
                     const params = {
@@ -203,28 +203,28 @@ describe('ReturnEntityLabelsExecutorSql', () => {
 
     function insertLabels () {
         entityALabel1 = {
-            ownerId: 1,
+            ownerId: '001',
             entityId: entityAId,
             entityType: 'EntityA',
             type: 'color',
             value: 'blue'
         };
         entityALabel2 = {
-            ownerId: 1,
+            ownerId: '001',
             entityId: entityAId,
             entityType: 'EntityA',
             type: 'color',
             value: 'black'
         };
         entityALabel3 = {
-            ownerId: 1,
+            ownerId: '001',
             entityId: entityAId,
             entityType: 'EntityA',
             type: 'someLabel',
             value: ''
         };
         entityALabel4 = {
-            ownerId: 1,
+            ownerId: '001',
             entityId: entityAId,
             entityType: 'EntityA',
             type: 'size',
@@ -232,28 +232,28 @@ describe('ReturnEntityLabelsExecutorSql', () => {
         };
 
         entityBLabel1 = {
-            ownerId: 1,
+            ownerId: '001',
             entityId: entityBId,
             entityType: 'EntityB',
             type: 'height',
             value: '3'
         };
         entityBLabel2 = {
-            ownerId: 1,
+            ownerId: '001',
             entityId: entityBId,
             entityType: 'EntityB',
             type: 'width',
             value: '6'
         };
         entityBLabel3 = {
-            ownerId: 1,
+            ownerId: '001',
             entityId: entityBId,
             entityType: 'EntityB',
             type: 'color',
             value: 'black'
         };
         entityBLabel4 = {
-            ownerId: 1,
+            ownerId: '001',
             entityId: entityBId,
             entityType: 'EntityB',
             type: 'size',
@@ -261,14 +261,14 @@ describe('ReturnEntityLabelsExecutorSql', () => {
         };
 
         entityCLabel1 = {
-            ownerId: 1,
+            ownerId: '001',
             entityId: entityCId,
             entityType: 'EntityC',
             type: 'size',
             value: 'medium'
         };
         entityCLabel2 = {
-            ownerId: 1,
+            ownerId: '001',
             entityId: entityCId,
             entityType: 'EntityC',
             type: 'shape',
@@ -276,8 +276,8 @@ describe('ReturnEntityLabelsExecutorSql', () => {
         };
 
         entityALabel3DifferentOwner = {
-            ownerId: 99,
-            entityId: 2,
+            ownerId: '099',
+            entityId: '002',
             entityType: 'EntityA',
             type: 'color',
             value: 'black'

@@ -10,10 +10,10 @@ describe('Integration::RemoveLabel route', () => {
 
     let db: SqlDatabase;
 
-    const entityAId = 3;
-    const entityBId = 4;
-    const ownerId = 10;
-    const diffenrentOwnerId = 99;
+    const entityAId = '003';
+    const entityBId = '004';
+    const ownerId = '0010';
+    const differentOwnerId = '0099';
 
     let entityALabel1: Label;
     let entityALabel2: Label;
@@ -44,7 +44,7 @@ describe('Integration::RemoveLabel route', () => {
 
     describe('calling the route', () => {
         context('without any querystring parameters', () => {
-            it('should remove all labels of entity and let labels of other entities untouched', () => {
+            it('should remove all labels of entity and leave labels of other entities untouched', () => {
                 const removedEntitiesCount = 5;
 
                 return request
@@ -143,7 +143,7 @@ describe('Integration::RemoveLabel route', () => {
         };
 
         entityADifferentOwnerLabel1 = {
-            ownerId: diffenrentOwnerId,
+            ownerId: differentOwnerId,
             entityId: entityAId,
             entityType: 'EntityA',
             type: 'color',

@@ -129,8 +129,8 @@ describe('CreateLabelRelationshipExecutorSql', () => {
 
             beforeEach(() => {
                 labelWithoutValue = {
-                    ownerId: 1,
-                    entityId: 68,
+                    ownerId: '001',
+                    entityId: '068',
                     entityType: 'someEntity',
                     type: 'color'
                 };
@@ -189,46 +189,46 @@ describe('CreateLabelRelationshipExecutorSql', () => {
 
     function initializeTest () {
         entityA200Label1 = {
-            ownerId: 1,
-            entityId: 200,
+            ownerId: '001',
+            entityId: '0200',
             entityType: 'entityA',
             type: 'color',
             value: 'blue'
         };
         entityA200Label2 = {
-            ownerId: 1,
-            entityId: 200,
+            ownerId: '001',
+            entityId: '0200',
             entityType: 'entityA',
             type: 'color',
             value: 'red'
         };
 
         entityA200Label1DifferentOwner = {
-            ownerId: 99,
-            entityId: 200,
+            ownerId: '099',
+            entityId: '0200',
             entityType: 'entityA',
             type: 'color',
             value: 'blue'
         };
 
         entityA210Label = {
-            ownerId: 1,
-            entityId: 210,
+            ownerId: '001',
+            entityId: '0210',
             entityType: 'entityA',
             type: 'color',
             value: 'blue'
         };
 
         entityB200Label = {
-            ownerId: 1,
-            entityId: 200,
+            ownerId: '001',
+            entityId: '0200',
             entityType: 'entityB',
             type: 'color',
             value: 'blue'
         };
         entityB300label = {
-            ownerId: 1,
-            entityId: 300,
+            ownerId: '001',
+            entityId: '0300',
             entityType: 'entityB',
             type: 'color',
             value: 'blue'

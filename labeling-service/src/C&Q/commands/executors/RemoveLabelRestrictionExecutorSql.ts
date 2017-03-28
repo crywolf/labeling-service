@@ -4,7 +4,7 @@ import * as squel from 'squel';
 
 class RemoveLabelRestrictionExecutorSql extends CommandExecutorSql {
 
-    public execute (ownerId: number, valueHash?: string): Promise<void> {
+    public execute (ownerId: string, valueHash?: string): Promise<void> {
 
         const sql = squel.delete()
             .from(this.tables.restrictionsTable)

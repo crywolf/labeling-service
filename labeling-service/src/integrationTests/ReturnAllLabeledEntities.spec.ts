@@ -113,81 +113,81 @@ describe('Integration::ReturnAllLabeledEntities route', () => {
 
     function insertRestrictions () {
         entityALabel1 = {
-            ownerId: 1,
-            entityId: 2,
+            ownerId: '1',
+            entityId: '2',
             entityType: 'EntityA',
             type: 'color',
             value: 'blue'
         };
         entityALabel2 = {
-            ownerId: 1,
-            entityId: 2,
+            ownerId: '1',
+            entityId: '2',
             entityType: 'EntityA',
             type: 'color',
             value: 'black'
         };
         entityALabel3 = {
-            ownerId: 1,
-            entityId: 2,
+            ownerId: '1',
+            entityId: '2',
             entityType: 'EntityA',
             type: 'someLabel',
             value: ''
         };
         entityALabel4 = {
-            ownerId: 1,
-            entityId: 2,
+            ownerId: '1',
+            entityId: '2',
             entityType: 'EntityA',
             type: 'size',
             value: 'big'
         };
 
         entityBLabel1 = {
-            ownerId: 1,
-            entityId: 3,
+            ownerId: '1',
+            entityId: '3',
             entityType: 'EntityB',
             type: 'height',
             value: '3'
         };
         entityBLabel2 = {
-            ownerId: 1,
-            entityId: 3,
+            ownerId: '1',
+            entityId: '3',
             entityType: 'EntityB',
             type: 'width',
             value: '6'
         };
         entityBLabel3 = {
-            ownerId: 1,
-            entityId: 3,
+            ownerId: '1',
+            entityId: '3',
             entityType: 'EntityB',
             type: 'color',
             value: 'black'
         };
         entityBLabel4 = {
-            ownerId: 1,
-            entityId: 3,
+            ownerId: '1',
+            entityId: '3',
             entityType: 'EntityB',
             type: 'size',
             value: 'small'
         };
 
         entityCLabel1 = {
-            ownerId: 1,
-            entityId: 6,
+            ownerId: '1',
+            entityId: '6',
             entityType: 'EntityC',
             type: 'size',
             value: 'medium'
         };
         entityCLabel2 = {
-            ownerId: 1,
-            entityId: 6,
+            ownerId: '1',
+            entityId: '6',
             entityType: 'EntityC',
             type: 'shape',
             value: 'square'
         };
 
         entityALabel3DifferentOwner = {
-            ownerId: 99,
-            entityId: 2,
+            ownerId: '99',
+            entityId: '2',
             entityType: 'EntityA',
             type: 'color',
             value: 'black'

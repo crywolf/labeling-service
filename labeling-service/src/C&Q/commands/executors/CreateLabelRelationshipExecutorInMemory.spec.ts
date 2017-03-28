@@ -15,29 +15,29 @@ describe('CreateLabelRelationshipExecutorInMemory', () => {
         executor = initializeExecutor();
 
         label1 = {
-            ownerId: 1,
-            entityId: 2,
+            ownerId: '1',
+            entityId: '2',
             entityType: 'SomeEntity',
             type: 'color',
             value: 'blue'
         };
         label2 = {
-            ownerId: 1,
-            entityId: 3,
+            ownerId: '1',
+            entityId: '3',
             entityType: 'SomeOtherEntity',
             type: 'height',
             value: '3'
         };
         label3 = {
-            ownerId: 1,
-            entityId: 3,
+            ownerId: '1',
+            entityId: '3',
             entityType: 'SomeOtherEntity',
             type: 'width',
             value: '6'
         };
         label4 = {
-            ownerId: 1,
-            entityId: 3,
+            ownerId: '1',
+            entityId: '3',
             entityType: 'SomeOtherEntity',
             type: 'color',
             value: 'black'

@@ -65,7 +65,7 @@ describe('CreateLabelRestrictionExecutorSql', () => {
 
             beforeEach(() => {
                 restrictionWithoutEntityType = {
-                    ownerId: 1,
+                    ownerId: '001',
                     labelType: 'color'
                 };
 
@@ -156,24 +156,24 @@ describe('CreateLabelRestrictionExecutorSql', () => {
 
     function initializeTest () {
         entityARestriction1 = {
-            ownerId: 1,
+            ownerId: '001',
             labelType: 'color',
             entityType: 'entityA'
         };
         entityARestriction2 = {
-            ownerId: 1,
+            ownerId: '001',
             labelType: 'producer',
             entityType: 'entityA'
         };
 
         entityARestriction1DifferentOwner = {
-            ownerId: 99,
+            ownerId: '099',
             labelType: 'color',
             entityType: 'entityA'
         };
 
         entityBRestriction1 = {
-            ownerId: 1,
+            ownerId: '001',
             labelType: 'color',
             entityType: 'entityB'
         };

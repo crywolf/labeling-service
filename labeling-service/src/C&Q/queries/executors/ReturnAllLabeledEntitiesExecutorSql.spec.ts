@@ -33,7 +33,7 @@ describe('ReturnAllLabeledEntitiesExecutorSql', () => {
     describe('#fetch', () => {
         context('without label types and entity types parameters', () => {
             it('should return all labeled entities of a corresponding owner', () => {
-                const ownerId = 1;
+                const ownerId = '001';
 
                 return executor.fetch(ownerId)
                     .then((labels) => {
@@ -51,7 +51,7 @@ describe('ReturnAllLabeledEntitiesExecutorSql', () => {
             });
 
             it('should return all labeled entities of a corresponding owner with different ID', () => {
-                const differentOwnerId = 99;
+                const differentOwnerId = '099';
 
                 return executor.fetch(differentOwnerId)
                     .then((labels) => {
@@ -79,7 +79,7 @@ describe('ReturnAllLabeledEntitiesExecutorSql', () => {
                         });
                 });
                 it('should reject with InternalServerError', () => {
-                    const ownerId = 1;
+                    const ownerId = '001';
                     return expect(executor.fetch(ownerId)).to.be.rejectedWith(InternalServerError);
                 });
             });
@@ -88,7 +88,7 @@ describe('ReturnAllLabeledEntitiesExecutorSql', () => {
         context('with label types', () => {
             context('and OR condition', () => {
                 it('should return labeled entities with corresponding label types', () => {
-                    const ownerId = 1;
+                    const ownerId = '001';
                     const labelTypes = ['color', 'height'];
 
                     const params = {
@@ -111,7 +111,7 @@ describe('ReturnAllLabeledEntitiesExecutorSql', () => {
 
             context('and AND condition', () => {
                 it('should return labeled entities with corresponding label types', () => {
-                    const ownerId = 1;
+                    const ownerId = '001';
                     const labelTypes = ['color', 'height'];
 
                     const params = {
@@ -134,7 +134,7 @@ describe('ReturnAllLabeledEntitiesExecutorSql', () => {
         context('with', () => {
             context('one label type and entity type param', () => {
                 it('should return labeled entities with corresponding label type and entity type', () => {
-                    const ownerId = 1;
+                    const ownerId = '001';
                     const labelTypes = ['color'];
                     const entityTypes = ['EntityB'];
 
@@ -151,7 +151,7 @@ describe('ReturnAllLabeledEntitiesExecutorSql', () => {
 
             context('more label types joined with OR condition and more entity types', () => {
                 it('should return labeled entities with corresponding label types and entity types', () => {
-                    const ownerId = 1;
+                    const ownerId = '001';
                     const labelTypes = ['color', 'someNonexistentLabel'];
                     const entityTypes = ['EntityB', 'EntityA', 'EntityC'];
 
@@ -177,7 +177,7 @@ describe('ReturnAllLabeledEntitiesExecutorSql', () => {
             context('more label types joined with AND condition and more entity types', () => {
                 context('if no entity of required types with all required labels does not exist', () => {
                     it('should not return anything', () => {
-                        const ownerId = 1;
+                        const ownerId = '001';
                         const labelTypes = ['color', 'shape'];
                         const entityTypes = ['EntityB', 'EntityA', 'EntityC'];
 
@@ -198,7 +198,7 @@ describe('ReturnAllLabeledEntitiesExecutorSql', () => {
 
             context('if entity of one the required types with all required labels exists', () => {
                 it('should return that entity', () => {
-                    const ownerId = 1;
+                    const ownerId = '001';
                     const labelTypes = ['color', 'height'];
                     const entityTypes = ['EntityB', 'EntityA', 'EntityC'];
 
@@ -221,7 +221,7 @@ describe('ReturnAllLabeledEntitiesExecutorSql', () => {
 
             context('if entities of required types with all required labels exists', () => {
                 it('should return those entities', () => {
-                    const ownerId = 1;
+                    const ownerId = '001';
                     const labelTypes = ['color', 'size'];
                     const entityTypes = ['EntityB', 'EntityA', 'EntityC'];
 
@@ -257,81 +257,81 @@ describe('ReturnAllLabeledEntitiesExecutorSql', () => {
 
     function insertLabels () {
         entityALabel1 = {
-            ownerId: 1,
-            entityId: 2,
+            ownerId: '001',
+            entityId: '002',
             entityType: 'EntityA',
             type: 'color',
             value: 'blue'
         };
         entityALabel2 = {
-            ownerId: 1,
-            entityId: 2,
+            ownerId: '001',
+            entityId: '002',
             entityType: 'EntityA',
             type: 'color',
             value: 'black'
         };
         entityALabel3 = {
-            ownerId: 1,
-            entityId: 2,
+            ownerId: '001',
+            entityId: '002',
             entityType: 'EntityA',
             type: 'someLabel',
             value: ''
         };
         entityALabel4 = {
-            ownerId: 1,
-            entityId: 2,
+            ownerId: '001',
+            entityId: '002',
             entityType: 'EntityA',
             type: 'size',
             value: 'big'
         };
 
         entityBLabel1 = {
-            ownerId: 1,
-            entityId: 3,
+            ownerId: '001',
+            entityId: '003',
             entityType: 'EntityB',
             type: 'height',
             value: '3'
         };
         entityBLabel2 = {
-            ownerId: 1,
-            entityId: 3,
+            ownerId: '001',
+            entityId: '003',
             entityType: 'EntityB',
             type: 'width',
             value: '6'
         };
         entityBLabel3 = {
-            ownerId: 1,
-            entityId: 3,
+            ownerId: '001',
+            entityId: '003',
             entityType: 'EntityB',
             type: 'color',
             value: 'black'
         };
         entityBLabel4 = {
-            ownerId: 1,
-            entityId: 3,
+            ownerId: '001',
+            entityId: '003',
             entityType: 'EntityB',
             type: 'size',
             value: 'small'
         };
 
         entityCLabel1 = {
-            ownerId: 1,
-            entityId: 6,
+            ownerId: '001',
+            entityId: '006',
             entityType: 'EntityC',
             type: 'size',
             value: 'medium'
         };
         entityCLabel2 = {
-            ownerId: 1,
-            entityId: 6,
+            ownerId: '001',
+            entityId: '006',
             entityType: 'EntityC',
             type: 'shape',
             value: 'square'
         };
 
         entityALabel3DifferentOwner = {
-            ownerId: 99,
-            entityId: 2,
+            ownerId: '099',
+            entityId: '002',
             entityType: 'EntityA',
             type: 'color',
             value: 'black'

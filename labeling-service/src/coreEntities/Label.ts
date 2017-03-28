@@ -1,6 +1,6 @@
 interface Label {
-    ownerId: number;
-    entityId: number;
+    ownerId: string;
+    entityId: string;
     entityType: string;
     type: string;
     value?: string;

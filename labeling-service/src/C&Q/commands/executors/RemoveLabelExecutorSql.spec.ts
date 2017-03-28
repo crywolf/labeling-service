@@ -11,10 +11,10 @@ describe('RemoveLabelExecutorSql', () => {
     let executor: RemoveLabelExecutorSql;
     let db: SqlDatabase;
 
-    const entityAId = 3;
-    const entityBId = 4;
-    const ownerId = 10;
-    const differentOwnerId = 99;
+    const entityAId = '003';
+    const entityBId = '004';
+    const ownerId = '010';
+    const differentOwnerId = '099';
 
     let entityALabel1: Label;
     let entityALabel2: Label;

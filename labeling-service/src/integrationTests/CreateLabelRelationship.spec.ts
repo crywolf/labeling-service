@@ -7,12 +7,12 @@ describe('Integration::CreateLabelRelationship route', () => {
 
     let db: SqlDatabase;
 
-    let entityA200Label1: Label;
+    let entityALabel1: Label;
 
     before(() => {
-        entityA200Label1 = {
-            ownerId: 1,
-            entityId: 200,
+        entityALabel1 = {
+            ownerId: '001',
+            entityId: '00200',
             entityType: 'entityA',
             type: 'color',
             value: 'blue'
@@ -32,8 +32,8 @@ describe('Integration::CreateLabelRelationship route', () => {
         context('in case entityType and entityId is unique', () => {
             it('should attach label to entity', () => {
                 return request
-                    .post('/owner/1/label-relationships')
-                    .send(entityA200Label1)
+                    .post('/owner/001/label-relationships')
+                    .send(entityALabel1)
                     .then((res) => {
                         expect(res).to.have.status(200);
                         expect(res.body).to.be.empty;
@@ -47,13 +47,13 @@ describe('Integration::CreateLabelRelationship route', () => {
 
         context('in case label is completely the same (not unique)', () => {
             beforeEach(() => {
-                return addLabel(db, entityA200Label1);
+                return addLabel(db, entityALabel1);
             });
 
             it('should not do anything and return 200 OK', () => {
                 return request
-                    .post('/owner/1/label-relationships')
-                    .send(entityA200Label1)
+                    .post('/owner/001/label-relationships')
+                    .send(entityALabel1)
                     .then((res) => {
                         expect(res).to.have.status(200);
                         expect(res.body).to.be.empty;

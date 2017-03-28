@@ -7,19 +7,19 @@ describe('Integration::ReturnEntityLabels route', () => {
 
     let db: SqlDatabase;
 
-    const entityAId = 2;
+    const entityAId = '2';
     let entityALabel1: Label;
     let entityALabel2: Label;
     let entityALabel3: Label;
     let entityALabel4: Label;
 
-    const entityBId = 3;
+    const entityBId = '3';
     let entityBLabel1: Label;
     let entityBLabel2: Label;
     let entityBLabel3: Label;
     let entityBLabel4: Label;
 
-    const entityCId = 6;
+    const entityCId = '6';
     let entityCLabel1: Label;
     let entityCLabel2: Label;
 
@@ -82,28 +82,28 @@ describe('Integration::ReturnEntityLabels route', () => {
 
     function insertLabels () {
         entityALabel1 = {
-            ownerId: 1,
+            ownerId: '1',
             entityId: entityAId,
             entityType: 'EntityA',
             type: 'color',
             value: 'blue'
         };
         entityALabel2 = {
-            ownerId: 1,
+            ownerId: '1',
             entityId: entityAId,
             entityType: 'EntityA',
             type: 'color',
             value: 'black'
         };
         entityALabel3 = {
-            ownerId: 1,
+            ownerId: '1',
             entityId: entityAId,
             entityType: 'EntityA',
             type: 'someLabel',
             value: ''
         };
         entityALabel4 = {
-            ownerId: 1,
+            ownerId: '1',
             entityId: entityAId,
             entityType: 'EntityA',
             type: 'size',
@@ -111,28 +111,28 @@ describe('Integration::ReturnEntityLabels route', () => {
         };
 
         entityBLabel1 = {
-            ownerId: 1,
+            ownerId: '1',
             entityId: entityBId,
             entityType: 'EntityB',
             type: 'height',
             value: '3'
         };
         entityBLabel2 = {
-            ownerId: 1,
+            ownerId: '1',
             entityId: entityBId,
             entityType: 'EntityB',
             type: 'width',
             value: '6'
         };
         entityBLabel3 = {
-            ownerId: 1,
+            ownerId: '1',
             entityId: entityBId,
             entityType: 'EntityB',
             type: 'color',
             value: 'black'
         };
         entityBLabel4 = {
-            ownerId: 1,
+            ownerId: '1',
             entityId: entityBId,
             entityType: 'EntityB',
             type: 'size',
@@ -140,14 +140,14 @@ describe('Integration::ReturnEntityLabels route', () => {
         };
 
         entityCLabel1 = {
-            ownerId: 1,
+            ownerId: '1',
             entityId: entityCId,
             entityType: 'EntityC',
             type: 'size',
             value: 'medium'
         };
         entityCLabel2 = {
-            ownerId: 1,
+            ownerId: '1',
             entityId: entityCId,
             entityType: 'EntityC',
             type: 'shape',
@@ -155,8 +155,8 @@ describe('Integration::ReturnEntityLabels route', () => {
         };
 
         entityALabel3DifferentOwner = {
-            ownerId: 99,
-            entityId: 2,
+            ownerId: '99',
+            entityId: '2',
             entityType: 'EntityA',
             type: 'color',
             value: 'black'

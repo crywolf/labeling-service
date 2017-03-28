@@ -5,8 +5,8 @@ import * as squel from 'squel';
 class RemoveLabelExecutorSql extends CommandExecutorSql {
 
     public execute (
-        ownerId: number,
-        entityId: number,
+        ownerId: string,
+        entityId: string,
         params?: {
             labelTypes?: Array<string>,
             labelValues?: Array<string>

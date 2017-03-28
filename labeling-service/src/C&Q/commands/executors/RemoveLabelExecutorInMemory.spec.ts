@@ -19,43 +19,43 @@ describe('RemoveLabelExecutorInMemory', () => {
         executor = initializeExecutor();
 
         labelA = {
-            ownerId: 1,
-            entityId: 3,
+            ownerId: '001',
+            entityId: '003',
             entityType: 'EntityA',
             type: 'color',
             value: 'black'
         };
         labelB = {
-            ownerId: 1,
-            entityId: 4,
+            ownerId: '001',
+            entityId: '004',
             entityType: 'EntityB',
             type: 'height',
             value: '3'
         };
         labelC = {
-            ownerId: 1,
-            entityId: 3,
+            ownerId: '001',
+            entityId: '003',
             entityType: 'EntityA',
             type: 'length',
             value: '5'
         };
         labelD = {
-            ownerId: 1,
-            entityId: 4,
+            ownerId: '001',
+            entityId: '004',
             entityType: 'EntityB',
             type: 'color',
             value: 'white'
         };
         labelE = {
-            ownerId: 1,
-            entityId: 3,
+            ownerId: '001',
+            entityId: '003',
             entityType: 'EntityA',
             type: 'color',
             value: 'red'
         };
         labelF = {
-            ownerId: 1,
-            entityId: 3,
+            ownerId: '001',
+            entityId: '003',
             entityType: 'EntityA',
             type: 'color',
             value: 'blue'
@@ -75,7 +75,7 @@ describe('RemoveLabelExecutorInMemory', () => {
         });
 
         it('should return removed labels', () => {
-            const entityId = 3;
+            const entityId = '003';
 
             return executor.execute(entityId)
                 .then((labels) => {
@@ -89,7 +89,7 @@ describe('RemoveLabelExecutorInMemory', () => {
 
         describe('without labelTypes and labelValues parameters', () => {
             beforeEach(() => {
-                const entityId = 3;
+                const entityId = '003';
                 return executor.execute(entityId);
             });
 
@@ -106,7 +106,7 @@ describe('RemoveLabelExecutorInMemory', () => {
 
         describe('with labelTypes parameters', () => {
             beforeEach(() => {
-                const entityId = 3;
+                const entityId = '003';
                 const labelTypes = ['color'];
                 return executor.execute(entityId, labelTypes);
             });
@@ -124,7 +124,7 @@ describe('RemoveLabelExecutorInMemory', () => {
 
         describe('with labelTypes and labelValues parameters', () => {
             beforeEach(() => {
-                const entityId = 3;
+                const entityId = '003';
                 const labelTypes = ['color'];
                 const labelValues = ['black', 'red'];
                 return executor.execute(entityId, labelTypes, labelValues);

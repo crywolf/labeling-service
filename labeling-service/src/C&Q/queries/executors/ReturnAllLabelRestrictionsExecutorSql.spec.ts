@@ -13,7 +13,7 @@ describe('ReturnAllLabelRestrictionsExecutorSql', () => {
 
     const whateverHash = '56d2f7e59b5b4716a88ca5c4ddc0791d';
 
-    const ownerId = 10;
+    const ownerId = '010';
     let entityARestriction1: Restriction;
     let entityARestriction2: Restriction;
     let entityARestriction3: Restriction;
@@ -27,7 +27,7 @@ describe('ReturnAllLabelRestrictionsExecutorSql', () => {
     let entityCRestriction1: Restriction;
     let entityCRestriction2: Restriction;
 
-    const differentOwnerId = 99;
+    const differentOwnerId = '099';
     let entityARestriction3DifferentOwner: Restriction;
 
     beforeEach(() => {

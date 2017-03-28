@@ -6,7 +6,7 @@ import * as squel from 'squel';
 class ReturnAllLabelRestrictionsExecutorSql extends QueryExecutorSql {
 
     public fetch (
-        ownerId: number,
+        ownerId: string,
         params?: {
             entityTypes?: Array<string>
         }): Promise<Array<Restriction>> {

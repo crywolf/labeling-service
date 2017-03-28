@@ -6,7 +6,7 @@ describe('RestrictionHasher', () => {
     let hasher: RestrictionHasher;
 
     const restriction: Restriction = {
-        ownerId: 1,
+        ownerId: '1',
         labelType: 'color',
         entityType: 'entityA'
     };

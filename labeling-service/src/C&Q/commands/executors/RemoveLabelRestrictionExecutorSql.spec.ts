@@ -14,8 +14,8 @@ describe('RemoveLabelRestrictionExecutorSql', () => {
     let executor: RemoveLabelRestrictionExecutorSql;
     let db: SqlDatabase;
 
-    const ownerId = 10;
-    const differentOwnerId = 99;
+    const ownerId = '010';
+    const differentOwnerId = '099';
 
     let entityARestriction1: Restriction;
     const entityARestriction1Hash = 'entityARestriction1Hash';

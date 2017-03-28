@@ -10,8 +10,8 @@ describe('Integration::RemoveLabelRestriction route', () => {
 
     let db: SqlDatabase;
 
-    const ownerId = 10;
-    const differentOwnerId = 99;
+    const ownerId = '10';
+    const differentOwnerId = '99';
 
     let entityARestriction1: Restriction;
     const entityARestriction1Hash = 'entityARestriction1Hash';

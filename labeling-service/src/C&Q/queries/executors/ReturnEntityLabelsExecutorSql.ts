@@ -6,8 +6,8 @@ import * as squel from 'squel';
 class ReturnEntityLabelsExecutorSql extends QueryExecutorSql {
 
     public fetch (
-        ownerId: number,
-        entityId: number,
+        ownerId: string,
+        entityId: string,
         params?: {
             labelTypes?: Array<string>,
             labelValues?: Array<string>

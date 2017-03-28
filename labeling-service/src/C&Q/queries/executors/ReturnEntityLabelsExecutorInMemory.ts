@@ -4,8 +4,8 @@ import Label from '../../../coreEntities/Label';
 class ReturnEntityLabelsExecutorInMemory extends QueryExecutorInMemory {
 
     public fetch (
-        ownerId: number,
-        entityId: number,
+        ownerId: string,
+        entityId: string,
         params?: {
             labelTypes?: Array<string>,
             labelValues?: Array<string>,

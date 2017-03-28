@@ -1,5 +1,5 @@
 interface Restriction {
-    ownerId: number;
+    ownerId: string;
     labelType: string;
     entityType?: string;
 }

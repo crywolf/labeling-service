@@ -12,7 +12,7 @@ describe('Integration::CreateLabelRestriction route', () => {
 
     before(() => {
         entityARestriction1 = {
-            ownerId: 1,
+            ownerId: '001',
             labelType: 'color',
             entityType: 'entityA'
         };
@@ -31,7 +31,7 @@ describe('Integration::CreateLabelRestriction route', () => {
         context('in case labelType and entityType is unique', () => {
             it('should add restriction', () => {
                 return request
-                    .post('/owner/1/label-restrictions')
+                    .post('/owner/001/label-restrictions')
                     .send(entityARestriction1)
                     .then((res) => {
                         expect(res).to.have.status(200);
@@ -51,7 +51,7 @@ describe('Integration::CreateLabelRestriction route', () => {
 
             it('should not do anything and return 200 OK', () => {
                 return request
-                    .post('/owner/1/label-restrictions')
+                    .post('/owner/001/label-restrictions')
                     .send(entityARestriction1)
                     .then((res) => {
                         expect(res).to.have.status(200);

@@ -3,7 +3,7 @@ import CommandExecutorInMemory from '../../../coreEntities/CommandExecutorInMemo
 
 class RemoveLabelExecutorInMemory extends CommandExecutorInMemory {
 
-    public execute (entityId: number, labelTypes: Array<string> = [],
+    public execute (entityId: string, labelTypes: Array<string> = [],
                     labelValues: Array<string> = []): Promise<Array<Label>> {
 
         let toDelete: Set<number|string>;

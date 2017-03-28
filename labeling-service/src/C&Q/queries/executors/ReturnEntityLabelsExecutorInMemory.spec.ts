@@ -15,29 +15,29 @@ describe('ReturnEntityLabelsExecutorInMemory', () => {
         executor = initializeExecutor();
 
         label1 = {
-            ownerId: 1,
-            entityId: 2,
+            ownerId: '1',
+            entityId: '2',
             entityType: 'SomeEntity',
             type: 'color',
             value: 'blue'
         };
         label2 = {
-            ownerId: 1,
-            entityId: 3,
+            ownerId: '1',
+            entityId: '3',
             entityType: 'SomeOtherEntity',
             type: 'height',
             value: '3'
         };
         label3 = {
-            ownerId: 1,
-            entityId: 3,
+            ownerId: '1',
+            entityId: '3',
             entityType: 'SomeOtherEntity',
             type: 'width',
             value: '6'
         };
         label4 = {
-            ownerId: 1,
-            entityId: 3,
+            ownerId: '1',
+            entityId: '3',
             entityType: 'SomeOtherEntity',
             type: 'color',
             value: 'black'
@@ -54,8 +54,8 @@ describe('ReturnEntityLabelsExecutorInMemory', () => {
 
         describe('without label types and values parameters', () => {
             it('should return all labels of entity', () => {
-                const ownerId = 1;
-                const entityId = 3;
+                const ownerId = '1';
+                const entityId = '3';
 
                 return executor.fetch(ownerId, entityId)
                     .then((labels) => {
@@ -70,8 +70,8 @@ describe('ReturnEntityLabelsExecutorInMemory', () => {
 
         describe('with label types', () => {
             it('should return labels with corresponding label types', () => {
-                const ownerId = 1;
-                const entityId = 3;
+                const ownerId = '1';
+                const entityId = '3';
                 const labelTypes = ['color', 'height'];
 
                 return executor.fetch(ownerId, entityId, {labelTypes})
@@ -86,8 +86,8 @@ describe('ReturnEntityLabelsExecutorInMemory', () => {
 
         describe('with label types and entity types parameters', () => {
             it('should return labels with corresponding label types and entity types', () => {
-                const ownerId = 1;
-                const entityId = 3;
+                const ownerId = '1';
+                const entityId = '3';
                 const labelTypes = ['color', 'height'];
                 const entityTypes = ['SomeOtherEntity'];
 

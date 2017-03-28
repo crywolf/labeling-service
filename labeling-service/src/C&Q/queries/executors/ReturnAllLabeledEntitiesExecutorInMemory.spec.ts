@@ -15,29 +15,29 @@ describe('ReturnAllLabeledEntitiesExecutorInMemory', () => {
         executor = initializeExecutor();
 
         label1 = {
-            ownerId: 1,
-            entityId: 2,
+            ownerId: '1',
+            entityId: '2',
             entityType: 'SomeEntity',
             type: 'color',
             value: 'blue'
         };
         label2 = {
-            ownerId: 1,
-            entityId: 3,
+            ownerId: '1',
+            entityId: '3',
             entityType: 'SomeOtherEntity',
             type: 'height',
             value: '3'
         };
         label3 = {
-            ownerId: 1,
-            entityId: 3,
+            ownerId: '1',
+            entityId: '3',
             entityType: 'SomeOtherEntity',
             type: 'width',
             value: '6'
         };
         label4 = {
-            ownerId: 1,
-            entityId: 3,
+            ownerId: '1',
+            entityId: '3',
             entityType: 'SomeOtherEntity',
             type: 'color',
             value: 'black'
@@ -54,7 +54,7 @@ describe('ReturnAllLabeledEntitiesExecutorInMemory', () => {
 
         describe('without label types and values parameters', () => {
             it('should return all labeled entities', () => {
-                const ownerId = 1;
+                const ownerId = '1';
 
                 return executor.fetch(ownerId)
                     .then((labels) => {
@@ -70,7 +70,7 @@ describe('ReturnAllLabeledEntitiesExecutorInMemory', () => {
 
         describe('with label types', () => {
             it('should return labeled entities with corresponding label types', () => {
-                const ownerId = 1;
+                const ownerId = '1';
                 const labelTypes = ['color', 'height'];
 
                 return executor.fetch(ownerId, labelTypes)
@@ -85,9 +85,8 @@ describe('ReturnAllLabeledEntitiesExecutorInMemory', () => {
         });
 
         describe('with label types and entity types parameters', () => {
-//            describe('', () => {
             it('should return labeled entities with corresponding label types and entity types', () => {
-                const ownerId = 1;
+                const ownerId = '1';
                 const labelTypes = ['color', 'height'];
                 const entityTypes = ['SomeOtherEntity'];
 
@@ -100,7 +99,6 @@ describe('ReturnAllLabeledEntitiesExecutorInMemory', () => {
                     });
             });
         });
-//        });
     });
 
     function initializeExecutor (): ReturnAllLabeledEntitiesExecutorInMemory {

@@ -3,7 +3,7 @@ import QueryExecutorInMemory from '../../../coreEntities/QueryExecutorInMemory';
 
 class ReturnAllLabeledEntitiesExecutorInMemory extends QueryExecutorInMemory {
 
-    public fetch (ownerId: number, labelTypes: Array<string> = [],
+    public fetch (ownerId: string, labelTypes: Array<string> = [],
                   entityTypes: Array<string> = []): Promise<Array<Label>> {
 
         const data = Array.from(this.storage)
