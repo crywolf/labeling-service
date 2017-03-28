@@ -40,6 +40,20 @@ describe('Integration::ReturnEntityLabels route', () => {
     });
 
     describe('calling the route', () => {
+        context('for an existing ownerId with some additional zeros at the beginning', () => {
+            it('should return an empty array', () => {
+                return request
+                    .get(`/owner/00099/labeled-entities/${entityAId}/labels`)
+                    .then((res) => {
+                        expect(res).to.have.status(200);
+
+                        const body = res.body;
+                        expect(body).to.be.an('Array');
+                        expect(body).to.be.empty;
+                    });
+            });
+        });
+
         context('without any querystring parameters', () => {
             it('should return all labels of the entity', () => {
                 return request
@@ -53,21 +67,6 @@ describe('Integration::ReturnEntityLabels route', () => {
                         expect(body).to.have.lengthOf(4);
                         expect(body[0]).to.deep.equal({type: entityALabel1.type, value: entityALabel1.value});
                     });
-            });
-
-            describe('calling an existing owner by ownerId in route with some additional zeros ' +
-                'at the beginning of ownerId', () => {
-                it('should return empty array', () => {
-                    return request
-                        .get(`/owner/00099/labeled-entities/${entityAId}/labels`)
-                        .then((res) => {
-                            expect(res).to.have.status(200);
-
-                            const body = res.body;
-                            expect(body).to.be.an('Array');
-                            expect(body).to.be.empty;
-                        });
-                });
             });
         });
 
