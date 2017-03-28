@@ -55,8 +55,9 @@ describe('Integration::ReturnEntityLabels route', () => {
                     });
             });
 
-            describe('calling an existing owner by ownerId in route with some additional zeros at the beginning of ownerId', function () {
-                it('should return empty array', function() {
+            describe('calling an existing owner by ownerId in route with some additional zeros ' +
+                'at the beginning of ownerId', () => {
+                it('should return empty array', () => {
 
                     return request
                         .get(`/owner/00099/labeled-entities/${entityAId}/labels`)
