@@ -55,8 +55,8 @@ describe('CreateLabelRelationship command', () => {
                     body: {
                         entityId,
                         entityType,
-                        type: 'color',
-                        value: 'black'
+                        labelType: 'color',
+                        labelValue: 'black'
                     }
                 };
                 command.handler(req, res, next);
@@ -82,8 +82,8 @@ describe('CreateLabelRelationship command', () => {
                     params,
                     body: {
                         entityType,
-                        type: 'color',
-                        value: 'black'
+                        labelType: 'color',
+                        labelValue: 'black'
                     }
                 };
                 command.handler(req, res, next);
@@ -101,8 +101,8 @@ describe('CreateLabelRelationship command', () => {
                     params,
                     body: {
                         entityId,
-                        type: 'color',
-                        value: 'black'
+                        labelType: 'color',
+                        labelValue: 'black'
                     }
                 };
                 command.handler(req, res, next);
@@ -121,7 +121,7 @@ describe('CreateLabelRelationship command', () => {
                     body: {
                         entityId,
                         entityType,
-                        value: 'black'
+                        labelValue: 'black'
                     }
                 };
                 command.handler(req, res, next);
@@ -140,7 +140,7 @@ describe('CreateLabelRelationship command', () => {
                     body: {
                         entityId,
                         entityType,
-                        type: 'color'
+                        labelType: 'color'
                     }
                 };
                 command.handler(req, res, next);

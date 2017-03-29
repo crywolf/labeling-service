@@ -8,6 +8,7 @@ describe('Integration::CreateLabelRelationship route', () => {
     let db: SqlDatabase;
 
     let entityALabel1: Label;
+    let labelPayload;
 
     before(() => {
         entityALabel1 = {
@@ -16,6 +17,14 @@ describe('Integration::CreateLabelRelationship route', () => {
             entityType: 'entityA',
             type: 'color',
             value: 'blue'
+        };
+
+        labelPayload = {
+            ownerId: entityALabel1.ownerId,
+            entityId: entityALabel1.entityId,
+            entityType: entityALabel1.entityType,
+            labelType: entityALabel1.type,
+            labelValue: entityALabel1.value
         };
 
         return initApp()
@@ -33,7 +42,7 @@ describe('Integration::CreateLabelRelationship route', () => {
             it('should attach label to entity', () => {
                 return request
                     .post('/owner/001/label-relationships')
-                    .send(entityALabel1)
+                    .send(labelPayload)
                     .then((res) => {
                         expect(res).to.have.status(200);
                         expect(res.body).to.be.empty;
@@ -53,7 +62,7 @@ describe('Integration::CreateLabelRelationship route', () => {
             it('should not do anything and return 200 OK', () => {
                 return request
                     .post('/owner/001/label-relationships')
-                    .send(entityALabel1)
+                    .send(labelPayload)
                     .then((res) => {
                         expect(res).to.have.status(200);
                         expect(res.body).to.be.empty;

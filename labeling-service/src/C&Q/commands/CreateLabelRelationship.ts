@@ -13,8 +13,8 @@ class CreateLabelRelationship extends Command {
             ownerId: req.params.ownerId,
             entityId: req.body.entityId,
             entityType: req.body.entityType,
-            type: req.body.type,
-            value: req.body.value
+            type: req.body.labelType,
+            value: req.body.labelValue
         };
 
         if (!label.entityId) {
