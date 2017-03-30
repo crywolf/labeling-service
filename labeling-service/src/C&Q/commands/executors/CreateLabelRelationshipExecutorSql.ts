@@ -4,7 +4,7 @@ import InternalServerError from '../../../coreEntities/InternalServerError';
 
 class CreateLabelRelationshipExecutorSql extends CommandExecutorSql {
 
-    public execute (label: Label): Promise<Label> {
+    public execute (label: Label): Promise<void> {
         const sql = `INSERT INTO ${this.tables.labelsTable}
                     (id, ownerId, entityId, entityType, type, value) 
                     VALUES(NULL, ?, ?, ?, ?, ?);`;
@@ -13,11 +13,11 @@ class CreateLabelRelationshipExecutorSql extends CommandExecutorSql {
 
         return this.storage.run(sql, values)
             .then(() => {
-                return label;
+                return;
             })
             .catch((err) => {
                 if (this.isUniqueConstraintError(err)) {
-                    return label;
+                    return;
                 } else {
                     const message = `${this.constructor.name}: ${err.message}`;
                     throw new InternalServerError(message);

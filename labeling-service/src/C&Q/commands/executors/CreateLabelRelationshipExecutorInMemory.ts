@@ -3,7 +3,7 @@ import CommandExecutorInMemory from '../../../coreEntities/CommandExecutorInMemo
 
 class CreateLabelRelationshipExecutorInMemory extends CommandExecutorInMemory {
 
-    public execute (label: Label): Promise<Label> {
+    public execute (label: Label): Promise<void> {
         let unique: boolean = true;
 
         for (const storedLabel of this.storage) {
@@ -16,7 +16,7 @@ class CreateLabelRelationshipExecutorInMemory extends CommandExecutorInMemory {
             this.storage.add(label);
         }
 
-        return Promise.resolve(label);
+        return Promise.resolve();
     }
 
     private deepEqual (x, y) {

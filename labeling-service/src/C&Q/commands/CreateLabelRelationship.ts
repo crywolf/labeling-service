@@ -27,10 +27,7 @@ class CreateLabelRelationship extends Command {
             return Promise.reject(new UnprocessableEntityError('Label type is missing!'));
         }
 
-        return this.executor.execute(label)
-            .then(() => {
-                return;
-            });
+        return this.executor.execute(label);
     }
 
 }

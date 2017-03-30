@@ -19,10 +19,7 @@ class CreateLabelRestriction extends Command {
             return Promise.reject(new UnprocessableEntityError('Label type is missing!'));
         }
 
-        return this.executor.execute(restriction)
-            .then(() => {
-                return;
-            });
+        return this.executor.execute(restriction);
     }
 
 }

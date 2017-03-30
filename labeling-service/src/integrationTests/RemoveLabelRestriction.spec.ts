@@ -1,10 +1,7 @@
 import {initApp, request, expect, storageService} from '../lib/test/integration';
-import {addRestriction, countRows, getAllRestrictions} from '../lib/test/util';
+import {addRestriction, countRows, getAllRestrictions, testConfig} from '../lib/test/util';
 import Restriction from '../coreEntities/Restriction';
 import SqlDatabase from '../coreEntities/SqlDatabase';
-
-import config from '../config';
-const testConfig = config.sqlite;
 
 describe('Integration::RemoveLabelRestriction route', () => {
 
@@ -54,7 +51,7 @@ describe('Integration::RemoveLabelRestriction route', () => {
                     .then((res) => {
                         expect(res).to.have.status(200);
                         expect(res.body).to.be.empty;
-                        return countRows(db, testConfig.restrictionsTable)
+                        return countRows(db, testConfig.db.restrictionsTable)
                             .then((count) => {
                                 expect(count).to.equal(storedEntitiesCount - removedEntitiesCount);
                             })
@@ -77,7 +74,7 @@ describe('Integration::RemoveLabelRestriction route', () => {
                     .then((res) => {
                         expect(res).to.have.status(200);
                         expect(res.body).to.be.empty;
-                        return countRows(db, testConfig.restrictionsTable)
+                        return countRows(db, testConfig.db.restrictionsTable)
                             .then((count) => {
                                 expect(count).to.equal(storedEntitiesCount - removedEntitiesCount);
                             })
@@ -145,7 +142,7 @@ describe('Integration::RemoveLabelRestriction route', () => {
                 return addRestriction(db, entityADifferentOwnerRestriction1, entityADifferentOwnerRestriction1Hash);
             })
             .then(() => {
-                return countRows(db, testConfig.restrictionsTable);
+                return countRows(db, testConfig.db.restrictionsTable);
             })
             .then((count) => {
                 storedEntitiesCount = count;

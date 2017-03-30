@@ -1,10 +1,7 @@
 import {initApp, request, expect, storageService} from '../lib/test/integration';
-import {addLabel, countRows, getAllLabels} from '../lib/test/util';
+import {addLabel, countRows, getAllLabels, testConfig} from '../lib/test/util';
 import Label from '../coreEntities/Label';
 import SqlDatabase from '../coreEntities/SqlDatabase';
-
-import config from '../config';
-const testConfig = config.sqlite;
 
 describe('Integration::RemoveLabel route', () => {
 
@@ -52,7 +49,7 @@ describe('Integration::RemoveLabel route', () => {
                     .then((res) => {
                         expect(res).to.have.status(200);
                         expect(res.body).to.be.empty;
-                        return countRows(db, testConfig.labelsTable)
+                        return countRows(db, testConfig.db.labelsTable)
                             .then((count) => {
                                 expect(count).to.equal(storedEntitiesCount - removedEntitiesCount);
                             })
@@ -75,7 +72,7 @@ describe('Integration::RemoveLabel route', () => {
                     .then((res) => {
                         expect(res).to.have.status(200);
                         expect(res.body).to.be.empty;
-                        return countRows(db, testConfig.labelsTable)
+                        return countRows(db, testConfig.db.labelsTable)
                             .then((count) => {
                                 expect(count).to.equal(storedEntitiesCount - removedEntitiesCount);
                             })
@@ -173,7 +170,7 @@ describe('Integration::RemoveLabel route', () => {
                 return addLabel(db, entityADifferentOwnerLabel1);
             })
             .then(() => {
-                return countRows(db, testConfig.labelsTable);
+                return countRows(db, testConfig.db.labelsTable);
             })
             .then((count) => {
                 storedEntitiesCount = count;

@@ -5,7 +5,7 @@ import RestrictionHasher from '../../../coreEntities/RestrictionHasher';
 
 class CreateLabelRestrictionExecutorSql extends CommandExecutorSql {
 
-    public execute (restriction: Restriction): Promise<Restriction> {
+    public execute (restriction: Restriction): Promise<void> {
 
         const sql = `INSERT INTO ${this.tables.restrictionsTable}
                     (id, ownerId, labelType, entityType, hash) 
@@ -19,16 +19,16 @@ class CreateLabelRestrictionExecutorSql extends CommandExecutorSql {
 
                 return this.storage.run(sql, values)
                     .then(() => {
-                        return restriction;
+                        return;
                     })
                     .catch((err) => {
                         if (this.isUniqueConstraintError(err)) {
-                            return restriction;
+                            return;
                         } else {
                             const message = `${this.constructor.name}: ${err.message}`;
                             throw new InternalServerError(message);
                         }
-                    }) as Promise<Restriction>;
+                    }) as Promise<void>;
             });
     }
 
