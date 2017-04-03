@@ -12,17 +12,30 @@ class ReturnAllLabeledEntities extends Query {
         const ownerId = params.ownerId;
 
         let labelTypes = [];
+        let labelValues = [];
         let entityTypes = [];
-        let labelOperator = 'OR';
+        let typesOperator = 'OR';
+        let valuesOperator = 'OR';
 
         if (params.labelTypes) {
             if (this.paramsSeparatedBy(params.labelTypes, ',')) {
                 labelTypes = params.labelTypes.split(',');
             } else if (this.paramsSeparatedBy(params.labelTypes, ';')) {
                 labelTypes = params.labelTypes.split(';');
-                labelOperator = 'AND';
+                typesOperator = 'AND';
             } else {
                 labelTypes.push(params.labelTypes);
+            }
+        }
+
+        if (params.labelValues) {
+            if (this.paramsSeparatedBy(params.labelValues, ',')) {
+                labelValues = params.labelValues.split(',');
+            } else if (this.paramsSeparatedBy(params.labelValues, ';')) {
+                labelValues = params.labelValues.split(';');
+                valuesOperator = 'AND';
+            } else {
+                labelValues.push(params.labelValues);
             }
         }
 
@@ -36,7 +49,9 @@ class ReturnAllLabeledEntities extends Query {
 
         const executorParams = {
             labelTypes,
-            labelOperator,
+            typesOperator,
+            labelValues,
+            valuesOperator,
             entityTypes
         };
 

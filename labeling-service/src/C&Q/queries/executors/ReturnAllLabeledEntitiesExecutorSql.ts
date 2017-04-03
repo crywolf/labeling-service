@@ -9,12 +9,16 @@ class ReturnAllLabeledEntitiesExecutorSql extends QueryExecutorSql {
         ownerId: string,
         params?: {
             labelTypes?: Array<string>,
-            labelOperator?: string,
+            typesOperator?: string,
+            labelValues?: Array<string>,
+            valuesOperator?: string,
             entityTypes?: Array<string>
         }): Promise<Array<Label>> {
 
         const labelTypes = params ? params.labelTypes || [] : [];
-        const labelOperator = params ? params.labelOperator || 'OR' : 'OR';
+        const labelValues = params ? params.labelValues || [] : [];
+        const typesOperator = params ? params.typesOperator || 'OR' : 'OR';
+        const valuesOperator = params ? params.valuesOperator || 'OR' : 'OR';
         const entityTypes = params ? params.entityTypes || [] : [];
 
         const subselectsSql = [];
@@ -29,13 +33,27 @@ class ReturnAllLabeledEntitiesExecutorSql extends QueryExecutorSql {
         const whereLabelTypes = squel.expr();
         if (labelTypes.length) {
             labelTypes.forEach((labelType) => {
-                if (labelOperator === 'AND') {
+                if (typesOperator === 'AND') {
                     const subselect = select.clone().where(
                         squel.expr().and('type = ?', labelType).and('ownerId = ?', ownerId)
                     );
                     subselectsSql.push(subselect);
                 } else {
                     whereLabelTypes.or('type = ?', labelType);
+                }
+            });
+        }
+
+        const whereLabelValues = squel.expr();
+        if (labelValues.length) {
+            labelValues.forEach((labelValue) => {
+                if (valuesOperator === 'AND') {
+                    const subselect = select.clone().where(
+                        squel.expr().and('value = ?', labelValue).and('ownerId = ?', ownerId)
+                    );
+                    subselectsSql.push(subselect);
+                } else {
+                    whereLabelValues.or('value = ?', labelValue);
                 }
             });
         }
@@ -49,6 +67,9 @@ class ReturnAllLabeledEntitiesExecutorSql extends QueryExecutorSql {
 
         if (whereLabelTypes._nodes.length) {
             where.and(whereLabelTypes);
+        }
+        if (whereLabelValues._nodes.length) {
+            where.and(whereLabelValues);
         }
         if (whereEntityTypes._nodes.length) {
             where.and(whereEntityTypes);

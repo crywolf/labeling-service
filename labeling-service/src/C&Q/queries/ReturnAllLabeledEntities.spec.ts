@@ -62,7 +62,9 @@ describe('ReturnAllLabeledEntities query', () => {
                 expect(fetch).to.be.calledOnce;
                 expect(fetch).to.be.calledWith(ownerId, {
                     labelTypes: [],
-                    labelOperator: 'OR',
+                    typesOperator: 'OR',
+                    labelValues: [],
+                    valuesOperator: 'OR',
                     entityTypes: []
                 });
             });
@@ -78,7 +80,9 @@ describe('ReturnAllLabeledEntities query', () => {
                 expect(fetch).to.be.calledOnce;
                 expect(fetch).to.be.calledWith(ownerId, {
                     labelTypes: ['someType'],
-                    labelOperator: 'OR',
+                    typesOperator: 'OR',
+                    labelValues: [],
+                    valuesOperator: 'OR',
                     entityTypes: []
                 });
             });
@@ -94,7 +98,9 @@ describe('ReturnAllLabeledEntities query', () => {
                 expect(fetch).to.be.calledOnce;
                 expect(fetch).to.be.calledWith(ownerId, {
                     labelTypes: ['someType', 'anotherType'],
-                    labelOperator: 'OR',
+                    typesOperator: 'OR',
+                    labelValues: [],
+                    valuesOperator: 'OR',
                     entityTypes: []
                 });
             });
@@ -110,7 +116,63 @@ describe('ReturnAllLabeledEntities query', () => {
                 expect(fetch).to.be.calledOnce;
                 expect(fetch).to.be.calledWith(ownerId, {
                     labelTypes: ['someType', 'anotherType'],
-                    labelOperator: 'AND',
+                    typesOperator: 'AND',
+                    labelValues: [],
+                    valuesOperator: 'OR',
+                    entityTypes: []
+                });
+            });
+        });
+
+        describe('with "labelValues=someValue"', () => {
+            beforeEach(() => {
+                req.params.labelValues = 'someValue';
+                query.handler(req, res, next);
+            });
+
+            it('calls fetch() with correct parameters', () => {
+                expect(fetch).to.be.calledOnce;
+                expect(fetch).to.be.calledWith(ownerId, {
+                    labelTypes: [],
+                    typesOperator: 'OR',
+                    labelValues: ['someValue'],
+                    valuesOperator: 'OR',
+                    entityTypes: []
+                });
+            });
+        });
+
+        describe('with "labelValues=someValue,anotherValue"', () => {
+            beforeEach(() => {
+                req.params.labelValues = 'someValue,anotherValue';
+                query.handler(req, res, next);
+            });
+
+            it('calls fetch() with correct parameters', () => {
+                expect(fetch).to.be.calledOnce;
+                expect(fetch).to.be.calledWith(ownerId, {
+                    labelTypes: [],
+                    typesOperator: 'OR',
+                    labelValues: ['someValue', 'anotherValue'],
+                    valuesOperator: 'OR',
+                    entityTypes: []
+                });
+            });
+        });
+
+        describe('with "labelValues=someValue;anotherValue"', () => {
+            beforeEach(() => {
+                req.params.labelValues = 'someValue;anotherValue';
+                query.handler(req, res, next);
+            });
+
+            it('calls fetch() with correct parameters', () => {
+                expect(fetch).to.be.calledOnce;
+                expect(fetch).to.be.calledWith(ownerId, {
+                    labelTypes: [],
+                    typesOperator: 'OR',
+                    labelValues: ['someValue', 'anotherValue'],
+                    valuesOperator: 'AND',
                     entityTypes: []
                 });
             });
@@ -126,7 +188,9 @@ describe('ReturnAllLabeledEntities query', () => {
                 expect(fetch).to.be.calledOnce;
                 expect(fetch).to.be.calledWith(ownerId, {
                     labelTypes: [],
-                    labelOperator: 'OR',
+                    typesOperator: 'OR',
+                    labelValues: [],
+                    valuesOperator: 'OR',
                     entityTypes: ['someEntity']
                 });
             });
@@ -142,7 +206,51 @@ describe('ReturnAllLabeledEntities query', () => {
                 expect(fetch).to.be.calledOnce;
                 expect(fetch).to.be.calledWith(ownerId, {
                     labelTypes: [],
-                    labelOperator: 'OR',
+                    typesOperator: 'OR',
+                    labelValues: [],
+                    valuesOperator: 'OR',
+                    entityTypes: ['someEntity', 'anotherEntity']
+                });
+            });
+        });
+
+        // tslint:disable-next-line:max-line-length
+        describe('with "labelTypes=someType,anotherType&labelValues=someValue,anotherValue&entityTypes=someEntity,anotherEntity"', () => {
+            beforeEach(() => {
+                req.params.labelTypes = 'someType,anotherType';
+                req.params.labelValues = 'someValue,anotherValue';
+                req.params.entityTypes = 'someEntity,anotherEntity';
+                query.handler(req, res, next);
+            });
+
+            it('calls fetch() with correct parameters', () => {
+                expect(fetch).to.be.calledOnce;
+                expect(fetch).to.be.calledWith(ownerId, {
+                    labelTypes: ['someType', 'anotherType'],
+                    typesOperator: 'OR',
+                    labelValues: ['someValue', 'anotherValue'],
+                    valuesOperator: 'OR',
+                    entityTypes: ['someEntity', 'anotherEntity']
+                });
+            });
+        });
+
+        // tslint:disable-next-line:max-line-length
+        describe('with "labelTypes=someType;anotherType&labelValues=someValue;anotherValue&entityTypes=someEntity,anotherEntity"', () => {
+            beforeEach(() => {
+                req.params.labelTypes = 'someType;anotherType';
+                req.params.labelValues = 'someValue;anotherValue';
+                req.params.entityTypes = 'someEntity,anotherEntity';
+                query.handler(req, res, next);
+            });
+
+            it('calls fetch() with correct parameters', () => {
+                expect(fetch).to.be.calledOnce;
+                expect(fetch).to.be.calledWith(ownerId, {
+                    labelTypes: ['someType', 'anotherType'],
+                    typesOperator: 'AND',
+                    labelValues: ['someValue', 'anotherValue'],
+                    valuesOperator: 'AND',
                     entityTypes: ['someEntity', 'anotherEntity']
                 });
             });

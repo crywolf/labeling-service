@@ -109,6 +109,31 @@ describe('Integration::ReturnAllLabeledEntities route', () => {
                     });
             });
         });
+
+        context('label type and more label values', () => {
+            it('should return labeled entities with corresponding label type and label values', () => {
+                const ownerId = 1;
+                const querystring = '?labelTypes=size&labelValues=small,medium';
+
+                return request
+                    .get(`/owner/${ownerId}/labeled-entities${querystring}`)
+                    .then((res) => {
+                        expect(res).to.have.status(200);
+                        expect(res).to.be.json;
+
+                        const body = res.body;
+                        expect(body).to.be.an('Array');
+                        expect(body).to.have.lengthOf(2);
+
+                        const entityB = {entityId: entityBLabel1.entityId, entityType: entityBLabel1.entityType};
+                        const entityC = {entityId: entityCLabel1.entityId, entityType: entityCLabel1.entityType};
+
+                        expect(body[0]).to.deep.equal(entityB);
+                        expect(body[1]).to.deep.equal(entityC);
+                    });
+            });
+        });
+
     });
 
     function insertRestrictions () {

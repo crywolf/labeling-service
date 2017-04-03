@@ -20,6 +20,7 @@ describe('ReturnAllLabeledEntitiesExecutorSql', () => {
     let entityBLabel2: Label;
     let entityBLabel3: Label;
     let entityBLabel4: Label;
+    let entityBLabel5: Label;
 
     let entityCLabel1: Label;
     let entityCLabel2: Label;
@@ -93,7 +94,7 @@ describe('ReturnAllLabeledEntitiesExecutorSql', () => {
 
                     const params = {
                         labelTypes,
-                        labelOperator: 'OR'
+                        typesOperator: 'OR'
                     };
 
                     return executor.fetch(ownerId, params)
@@ -116,7 +117,7 @@ describe('ReturnAllLabeledEntitiesExecutorSql', () => {
 
                     const params = {
                         labelTypes,
-                        labelOperator: 'AND'
+                        typesOperator: 'AND'
                     };
 
                     return executor.fetch(ownerId, params)
@@ -126,6 +127,81 @@ describe('ReturnAllLabeledEntitiesExecutorSql', () => {
 
                             const entityB = {entityId: entityBLabel1.entityId, entityType: entityBLabel1.entityType};
                             expect(labels[0]).to.deep.equal(entityB);
+                        });
+                });
+            });
+        });
+
+        context('with label values', () => {
+            context('and OR condition', () => {
+                it('should return labeled entities with corresponding label values', () => {
+                    const ownerId = '001';
+                    const labelValues = ['blue', 'white'];
+
+                    const params = {
+                        labelValues,
+                        valuesOperator: 'OR'
+                    };
+
+                    return executor.fetch(ownerId, params)
+                        .then((labels) => {
+                            expect(labels).to.be.a('Array');
+                            expect(labels).to.have.lengthOf(2);
+
+                            const entityA = {entityId: entityALabel1.entityId, entityType: entityALabel1.entityType};
+                            const entityB = {entityId: entityBLabel1.entityId, entityType: entityBLabel1.entityType};
+                            expect(labels[0]).to.deep.equal(entityA);
+                            expect(labels[1]).to.deep.equal(entityB);
+                        });
+                });
+            });
+        });
+
+        context('with label values', () => {
+            context('and AND condition', () => {
+                it('should return labeled entities with corresponding label values', () => {
+                    const ownerId = '001';
+                    const labelValues = ['blue', 'black'];
+
+                    const params = {
+                        labelValues,
+                        valuesOperator: 'AND'
+                    };
+
+                    return executor.fetch(ownerId, params)
+                        .then((labels) => {
+                            expect(labels).to.be.a('Array');
+                            expect(labels).to.have.lengthOf(1);
+
+                            const entityA = {entityId: entityALabel1.entityId, entityType: entityALabel1.entityType};
+                            expect(labels[0]).to.deep.equal(entityA);
+                        });
+                });
+            });
+        });
+
+        context('with label type and label values', () => {
+            context('joined with OR condition', () => {
+                it('should return labeled entities with corresponding label type and label values', () => {
+                    const ownerId = '001';
+                    const labelTypes = ['size'];
+                    const labelValues = ['small', 'medium'];
+
+                    const params = {
+                        labelTypes,
+                        labelValues,
+                        typesOperator: 'OR'
+                    };
+
+                    return executor.fetch(ownerId, params)
+                        .then((labels) => {
+                            expect(labels).to.be.a('Array');
+                            expect(labels).to.have.lengthOf(2);
+
+                            const entityB = {entityId: entityBLabel1.entityId, entityType: entityBLabel1.entityType};
+                            const entityC = {entityId: entityCLabel1.entityId, entityType: entityCLabel1.entityType};
+                            expect(labels[0]).to.deep.equal(entityB);
+                            expect(labels[1]).to.deep.equal(entityC);
                         });
                 });
             });
@@ -157,7 +233,7 @@ describe('ReturnAllLabeledEntitiesExecutorSql', () => {
 
                     const params = {
                         labelTypes,
-                        labelOperator: 'OR',
+                        typesOperator: 'OR',
                         entityTypes
                     };
 
@@ -183,7 +259,7 @@ describe('ReturnAllLabeledEntitiesExecutorSql', () => {
 
                         const params = {
                             labelTypes,
-                            labelOperator: 'AND',
+                            typesOperator: 'AND',
                             entityTypes
                         };
 
@@ -204,7 +280,7 @@ describe('ReturnAllLabeledEntitiesExecutorSql', () => {
 
                     const params = {
                         labelTypes,
-                        labelOperator: 'AND',
+                        typesOperator: 'AND',
                         entityTypes
                     };
 
@@ -227,7 +303,7 @@ describe('ReturnAllLabeledEntitiesExecutorSql', () => {
 
                     const params = {
                         labelTypes,
-                        labelOperator: 'AND',
+                        typesOperator: 'AND',
                         entityTypes
                     };
 
@@ -313,6 +389,13 @@ describe('ReturnAllLabeledEntitiesExecutorSql', () => {
             type: 'size',
             value: 'small'
         };
+        entityBLabel5 = {
+            ownerId: '001',
+            entityId: '003',
+            entityType: 'EntityB',
+            type: 'color',
+            value: 'white'
+        };
 
         entityCLabel1 = {
             ownerId: '001',
@@ -364,6 +447,9 @@ describe('ReturnAllLabeledEntitiesExecutorSql', () => {
             })
             .then(() => {
                 return addLabel(db, entityBLabel4);
+            })
+            .then(() => {
+                return addLabel(db, entityBLabel5);
             })
             .then(() => {
                 return addLabel(db, entityALabel3DifferentOwner);
