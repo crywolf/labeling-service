@@ -5,7 +5,7 @@ class CreateLabelRelationship extends Command {
 
     protected readonly settings: CommandSettings = {
         method: Method.POST,
-        url: '/owner/:ownerId/label-relationships'
+        url: '/owners/:ownerId/label-relationships'
     };
 
     protected process (req) {

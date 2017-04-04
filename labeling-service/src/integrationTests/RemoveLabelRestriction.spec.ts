@@ -47,7 +47,7 @@ describe('Integration::RemoveLabelRestriction route', () => {
                 const removedEntitiesCount = 5;
 
                 return request
-                    .delete(`/owner/${ownerId}/label-restrictions/`)
+                    .delete(`/owners/${ownerId}/label-restrictions/`)
                     .then((res) => {
                         expect(res).to.have.status(200);
                         expect(res.body).to.be.empty;
@@ -70,7 +70,7 @@ describe('Integration::RemoveLabelRestriction route', () => {
                 const removedEntitiesCount = 1;
 
                 return request
-                    .delete(`/owner/${ownerId}/label-restrictions/${valueHash}`)
+                    .delete(`/owners/${ownerId}/label-restrictions/${valueHash}`)
                     .then((res) => {
                         expect(res).to.have.status(200);
                         expect(res.body).to.be.empty;

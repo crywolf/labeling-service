@@ -44,7 +44,7 @@ describe('Integration::ReturnAllLabelRestrictions route', () => {
         context('without any querystring parameters', () => {
             it('should return all restrictions for the specified owner', () => {
                 return request
-                    .get(`/owner/${ownerId}/label-restrictions`)
+                    .get(`/owners/${ownerId}/label-restrictions`)
                     .then((res) => {
                         expect(res).to.have.status(200);
                         expect(res).to.be.json;
@@ -67,7 +67,7 @@ describe('Integration::ReturnAllLabelRestrictions route', () => {
             it('should return all restrictions only for specified entity type', () => {
                 const querystring = '?entityTypes=EntityC';
                 return request
-                    .get(`/owner/${ownerId}/label-restrictions${querystring}`)
+                    .get(`/owners/${ownerId}/label-restrictions${querystring}`)
                     .then((res) => {
                         expect(res).to.have.status(200);
                         expect(res).to.be.json;

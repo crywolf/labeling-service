@@ -5,7 +5,7 @@ class CreateLabelRestriction extends Command {
 
     protected readonly settings: CommandSettings = {
         method: Method.POST,
-        url: '/owner/:ownerId/label-restrictions'
+        url: '/owners/:ownerId/label-restrictions'
     };
 
     protected process (req) {

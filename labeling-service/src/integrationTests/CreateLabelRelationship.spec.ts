@@ -51,7 +51,7 @@ describe('Integration::CreateLabelRelationship route', () => {
         context('in case entityType and entityId is unique', () => {
             it('should attach label to entity', () => {
                 return request
-                    .post('/owner/001/label-relationships')
+                    .post('/owners/001/label-relationships')
                     .send(labelPayload)
                     .then((res) => {
                         expect(res).to.have.status(200);
@@ -71,7 +71,7 @@ describe('Integration::CreateLabelRelationship route', () => {
 
             it('should not do anything and return 200 OK', () => {
                 return request
-                    .post('/owner/001/label-relationships')
+                    .post('/owners/001/label-relationships')
                     .send(labelPayload)
                     .then((res) => {
                         expect(res).to.have.status(200);
@@ -91,7 +91,7 @@ describe('Integration::CreateLabelRelationship route', () => {
 
             it('should not attach label and return 422 Unprocessable entity', () => {
                 return request
-                    .post('/owner/001/label-relationships')
+                    .post('/owners/001/label-relationships')
                     .send(labelPayload)
                     .catch((err) => {
                         const res = err.response;
@@ -120,7 +120,7 @@ describe('Integration::CreateLabelRelationship route', () => {
 
             it('should return 500 InternalServerError', () => {
                 return request
-                    .post('/owner/001/label-relationships')
+                    .post('/owners/001/label-relationships')
                     .send(labelPayload)
                     .catch((err) => {
                         const res = err.response;

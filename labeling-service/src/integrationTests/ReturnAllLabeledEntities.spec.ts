@@ -42,7 +42,7 @@ describe('Integration::ReturnAllLabeledEntities route', () => {
                 const ownerId = 1;
 
                 return request
-                    .get(`/owner/${ownerId}/labeled-entities`)
+                    .get(`/owners/${ownerId}/labeled-entities`)
                     .then((res) => {
                         expect(res).to.have.status(200);
                         expect(res).to.be.json;
@@ -68,7 +68,7 @@ describe('Integration::ReturnAllLabeledEntities route', () => {
                 const querystring = '?labelTypes=color,shape&entityTypes=EntityA,EntityC';
 
                 return request
-                    .get(`/owner/${ownerId}/labeled-entities${querystring}`)
+                    .get(`/owners/${ownerId}/labeled-entities${querystring}`)
                     .then((res) => {
                         expect(res).to.have.status(200);
                         expect(res).to.be.json;
@@ -92,7 +92,7 @@ describe('Integration::ReturnAllLabeledEntities route', () => {
                 const querystring = '?labelTypes=color;size&entityTypes=EntityB,EntityA,EntityC';
 
                 return request
-                    .get(`/owner/${ownerId}/labeled-entities${querystring}`)
+                    .get(`/owners/${ownerId}/labeled-entities${querystring}`)
                     .then((res) => {
                         expect(res).to.have.status(200);
                         expect(res).to.be.json;
@@ -116,7 +116,7 @@ describe('Integration::ReturnAllLabeledEntities route', () => {
                 const querystring = '?labelTypes=size&labelValues=small,medium';
 
                 return request
-                    .get(`/owner/${ownerId}/labeled-entities${querystring}`)
+                    .get(`/owners/${ownerId}/labeled-entities${querystring}`)
                     .then((res) => {
                         expect(res).to.have.status(200);
                         expect(res).to.be.json;

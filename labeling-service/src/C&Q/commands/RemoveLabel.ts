@@ -4,7 +4,7 @@ class RemoveLabel extends Command {
 
     protected readonly settings: CommandSettings = {
         method: Method.DELETE,
-        url: '/owner/:ownerId/labeled-entities/:entityId/labels'
+        url: '/owners/:ownerId/labeled-entities/:entityId/labels'
     };
 
     protected process (req) {

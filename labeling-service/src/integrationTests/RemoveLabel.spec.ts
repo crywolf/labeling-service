@@ -45,7 +45,7 @@ describe('Integration::RemoveLabel route', () => {
                 const removedEntitiesCount = 5;
 
                 return request
-                    .delete(`/owner/${ownerId}/labeled-entities/${entityAId}/labels`)
+                    .delete(`/owners/${ownerId}/labeled-entities/${entityAId}/labels`)
                     .then((res) => {
                         expect(res).to.have.status(200);
                         expect(res.body).to.be.empty;
@@ -68,7 +68,7 @@ describe('Integration::RemoveLabel route', () => {
                 const removedEntitiesCount = 2;
 
                 return request
-                    .delete(`/owner/${ownerId}/labeled-entities/${entityAId}/labels${querystring}`)
+                    .delete(`/owners/${ownerId}/labeled-entities/${entityAId}/labels${querystring}`)
                     .then((res) => {
                         expect(res).to.have.status(200);
                         expect(res.body).to.be.empty;

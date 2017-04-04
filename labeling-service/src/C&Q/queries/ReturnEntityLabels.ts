@@ -4,7 +4,7 @@ class ReturnEntityLabels extends Query {
 
     protected readonly settings: QuerySettings = {
         method: Method.GET,
-        url: '/owner/:ownerId/labeled-entities/:entityId/labels'
+        url: '/owners/:ownerId/labeled-entities/:entityId/labels'
     };
 
     protected response (req) {

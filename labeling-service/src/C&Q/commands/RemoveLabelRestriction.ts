@@ -4,7 +4,7 @@ class RemoveLabelRestriction extends Command {
 
     protected readonly settings: CommandSettings = {
         method: Method.DELETE,
-        url: '/owner/:ownerId/label-restrictions/:valueHash'
+        url: '/owners/:ownerId/label-restrictions/:valueHash'
     };
 
     protected process (req) {

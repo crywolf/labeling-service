@@ -43,7 +43,7 @@ describe('Integration::ReturnEntityLabels route', () => {
         context('for an existing ownerId with some additional zeros at the beginning', () => {
             it('should return an empty array', () => {
                 return request
-                    .get(`/owner/00099/labeled-entities/${entityAId}/labels`)
+                    .get(`/owners/00099/labeled-entities/${entityAId}/labels`)
                     .then((res) => {
                         expect(res).to.have.status(200);
 
@@ -57,7 +57,7 @@ describe('Integration::ReturnEntityLabels route', () => {
         context('without any querystring parameters', () => {
             it('should return all labels of the entity', () => {
                 return request
-                    .get(`/owner/1/labeled-entities/${entityAId}/labels`)
+                    .get(`/owners/1/labeled-entities/${entityAId}/labels`)
                     .then((res) => {
                         expect(res).to.have.status(200);
                         expect(res).to.be.json;
@@ -75,7 +75,7 @@ describe('Integration::ReturnEntityLabels route', () => {
                 const querystring = '?labelTypes=color,size&labelValues=black,big,small';
 
                 return request
-                    .get(`/owner/1/labeled-entities/${entityAId}/labels${querystring}`)
+                    .get(`/owners/1/labeled-entities/${entityAId}/labels${querystring}`)
                     .then((res) => {
                         expect(res).to.have.status(200);
                         expect(res).to.be.json;
