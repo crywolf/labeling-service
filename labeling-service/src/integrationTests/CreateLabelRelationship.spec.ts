@@ -3,6 +3,7 @@ import {countRows, addLabel, testConfig, addRestriction} from '../lib/test/util'
 import Label from '../coreEntities/Label';
 import Restriction from '../coreEntities/Restriction';
 import SqlDatabase from '../coreEntities/SqlDatabase';
+import * as sinon from 'sinon';
 
 describe('Integration::CreateLabelRelationship route', () => {
 
@@ -98,6 +99,35 @@ describe('Integration::CreateLabelRelationship route', () => {
                         expect(res.body).to.deep.equal({
                             code: 'UnprocessableEntityError',
                             message: 'Forbidden label type because of restriction!'
+                        });
+                        return countRows(db, testConfig.db.labelsTable)
+                            .then((count) => {
+                                expect(count).to.equal(0);
+                            });
+                    });
+            });
+        });
+
+        context('in case of unexpected database error', () => {
+            let runMethod;
+            beforeEach(() => {
+                runMethod = sinon.stub(db, 'run').returns(Promise.reject(new Error('Some SQL error')));
+            });
+
+            afterEach(() => {
+                runMethod.restore();
+            });
+
+            it('should return 500 InternalServerError', () => {
+                return request
+                    .post('/owner/001/label-relationships')
+                    .send(labelPayload)
+                    .catch((err) => {
+                        const res = err.response;
+                        expect(res).to.have.status(500);
+                        expect(res.body).to.deep.equal({
+                            code: 'InternalServerError',
+                            message: 'Something went wrong!'
                         });
                         return countRows(db, testConfig.db.labelsTable)
                             .then((count) => {
