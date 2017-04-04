@@ -1,10 +1,14 @@
-import {addLabel, countRows, getAllLabels, testConfig, initializeStorageService} from '../../../lib/test/util';
+import {
+    addLabel, addRestriction, countRows, getAllLabels, testConfig, initializeStorageService
+} from '../../../lib/test/util';
 import {expect} from 'chai';
 import Label from '../../../coreEntities/Label';
+import Restriction from '../../../coreEntities/Restriction';
 import CreateLabelRelationshipExecutorSql from './CreateLabelRelationshipExecutorSql';
 import SqlDatabase from '../../../coreEntities/SqlDatabase';
 import * as sinon from 'sinon';
 import InternalServerError from '../../../coreEntities/InternalServerError';
+import UnprocessableEntityError from '../../../coreEntities/UnprocessableEntityError';
 
 describe('CreateLabelRelationshipExecutorSql', () => {
 
@@ -13,11 +17,19 @@ describe('CreateLabelRelationshipExecutorSql', () => {
 
     let entityA200Label1: Label;
     let entityA200Label2: Label;
+    let entityA200Label3: Label;
     let entityA200Label1DifferentOwner: Label;
 
     let entityB200Label: Label;
     let entityA210Label: Label;
     let entityB300label: Label;
+
+    let entityARestriction1: Restriction;
+    let entityARestriction2: Restriction;
+    let entityARestriction3: Restriction;
+
+    let entityBRestriction1: Restriction;
+    const whateverHash = '35r2f7e59b5b4716a88ca5c4ddc07ooe';
 
     beforeEach(() => {
         return initializeTest();
@@ -185,6 +197,62 @@ describe('CreateLabelRelationshipExecutorSql', () => {
             });
         });
 
+        context('in case restriction exists', () => {
+            context('on the same labelType and unspecified entityType', () => {
+                beforeEach(() => {
+                    return addRestriction(db, entityARestriction1, whateverHash);
+                });
+
+                it('should reject with UnprocessableEntityError', () => {
+                    return expect(executor.execute(entityA200Label3)).to.be.rejectedWith(UnprocessableEntityError);
+                });
+            });
+
+            context('on the same labelType and entityType', () => {
+                beforeEach(() => {
+                    return addRestriction(db, entityARestriction2, whateverHash);
+                });
+
+                it('should reject with UnprocessableEntityError', () => {
+                    return expect(executor.execute(entityA200Label3)).to.be.rejectedWith(UnprocessableEntityError);
+                });
+            });
+
+            context('on the same labelType and different entityType', () => {
+                beforeEach(() => {
+                    return addRestriction(db, entityBRestriction1, whateverHash);
+                });
+
+                it('should attach label to entity', () => {
+                    return executor.execute(entityA200Label3)
+                        .then(() => {
+                            return countRows(db, testConfig.db.labelsTable);
+                        })
+                        .then((count) => {
+                            return expect(count).to.equal(1);
+                        });
+
+                });
+            });
+
+            context('on the same entityType and different labelType', () => {
+                beforeEach(() => {
+                    return addRestriction(db, entityARestriction3, whateverHash);
+                });
+
+                it('should attach label to entity', () => {
+                    return executor.execute(entityA200Label3)
+                        .then(() => {
+                            return countRows(db, testConfig.db.labelsTable);
+                        })
+                        .then((count) => {
+                            return expect(count).to.equal(1);
+                        });
+
+                });
+            });
+        });
+
     });
 
     function initializeTest () {
@@ -201,6 +269,13 @@ describe('CreateLabelRelationshipExecutorSql', () => {
             entityType: 'entityA',
             type: 'color',
             value: 'red'
+        };
+        entityA200Label3 = {
+            ownerId: '001',
+            entityId: '0200',
+            entityType: 'entityA',
+            type: 'size',
+            value: 'small'
         };
 
         entityA200Label1DifferentOwner = {
@@ -232,6 +307,28 @@ describe('CreateLabelRelationshipExecutorSql', () => {
             entityType: 'entityB',
             type: 'color',
             value: 'blue'
+        };
+
+        entityARestriction1 = {
+            ownerId: '001',
+            labelType: 'size'
+        };
+        entityARestriction2 = {
+            ownerId: '001',
+            labelType: 'size',
+            entityType: 'entityA'
+        };
+
+        entityARestriction3 = {
+            ownerId: '001',
+            labelType: 'height',
+            entityType: 'entityA'
+        };
+
+        entityBRestriction1 = {
+            ownerId: '001',
+            labelType: 'size',
+            entityType: 'entityB'
         };
 
         return initializeExecutor()

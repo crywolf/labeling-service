@@ -1,6 +1,7 @@
 import {initApp, request, expect, storageService} from '../lib/test/integration';
-import {countRows, addLabel, testConfig} from '../lib/test/util';
+import {countRows, addLabel, testConfig, addRestriction} from '../lib/test/util';
 import Label from '../coreEntities/Label';
+import Restriction from '../coreEntities/Restriction';
 import SqlDatabase from '../coreEntities/SqlDatabase';
 
 describe('Integration::CreateLabelRelationship route', () => {
@@ -9,6 +10,9 @@ describe('Integration::CreateLabelRelationship route', () => {
 
     let entityALabel1: Label;
     let labelPayload;
+
+    let entityARestriction1: Restriction;
+    const whateverHash = '35r2f7e59b5b4716a88ca5c4ddc07ooe';
 
     before(() => {
         entityALabel1 = {
@@ -25,6 +29,11 @@ describe('Integration::CreateLabelRelationship route', () => {
             entityType: entityALabel1.entityType,
             labelType: entityALabel1.type,
             labelValue: entityALabel1.value
+        };
+
+        entityARestriction1 = {
+            ownerId: '001',
+            labelType: 'color'
         };
 
         return initApp()
@@ -69,6 +78,30 @@ describe('Integration::CreateLabelRelationship route', () => {
                         return countRows(db, testConfig.db.labelsTable)
                             .then((count) => {
                                 expect(count).to.equal(1);
+                            });
+                    });
+            });
+        });
+
+        context('in case restriction exists', () => {
+            beforeEach(() => {
+                return addRestriction(db, entityARestriction1, whateverHash);
+            });
+
+            it('should not attach label and return 422 Unprocessable entity', () => {
+                return request
+                    .post('/owner/001/label-relationships')
+                    .send(labelPayload)
+                    .catch((err) => {
+                        const res = err.response;
+                        expect(res).to.have.status(422);
+                        expect(res.body).to.deep.equal({
+                            code: 'UnprocessableEntityError',
+                            message: 'Forbidden label type because of restriction!'
+                        });
+                        return countRows(db, testConfig.db.labelsTable)
+                            .then((count) => {
+                                expect(count).to.equal(0);
                             });
                     });
             });
