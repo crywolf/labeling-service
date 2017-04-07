@@ -48,13 +48,9 @@ describe('RemoveLabelRestrictionExecutorSql', () => {
             it('should remove all restrictions for the owner and leave restrictions of other owner untouched', () => {
                 const removedEntitiesCount = 5;
                 return countRows(db, testConfig.db.restrictionsTable)
-                    .then((count) => {
-                        expect(count).to.equal(storedEntitiesCount - removedEntitiesCount);
-                    })
+                    .then((count) => expect(count).to.equal(storedEntitiesCount - removedEntitiesCount))
                     .then(() => getAllRestrictions(db))
-                    .then((restrictions) => {
-                        expect(restrictions[0]).to.deep.equal(entityADifferentOwnerRestriction1);
-                    });
+                    .then((restrictions) => expect(restrictions[0]).to.deep.equal(entityADifferentOwnerRestriction1));
             });
         });
 
@@ -66,9 +62,7 @@ describe('RemoveLabelRestrictionExecutorSql', () => {
             it(`should remove restriction`, () => {
                 const removedEntitiesCount = 1;
                 return countRows(db, testConfig.db.restrictionsTable)
-                    .then((count) => {
-                        expect(count).to.equal(storedEntitiesCount - removedEntitiesCount);
-                    })
+                    .then((count) => expect(count).to.equal(storedEntitiesCount - removedEntitiesCount))
                     .then(() => getAllRestrictions(db))
                     .then((restrictions) => {
                         expect(restrictions[0]).to.deep.equal(entityARestriction1);
@@ -87,9 +81,7 @@ describe('RemoveLabelRestrictionExecutorSql', () => {
 
             it(`should not remove anything`, () => {
                 return countRows(db, testConfig.db.restrictionsTable)
-                    .then((count) => {
-                        expect(count).to.equal(storedEntitiesCount);
-                    });
+                    .then((count) => expect(count).to.equal(storedEntitiesCount));
             });
         });
 
@@ -156,24 +148,12 @@ describe('RemoveLabelRestrictionExecutorSql', () => {
         };
 
         return addRestriction(db, entityARestriction1, entityARestriction1Hash)
-            .then(() => {
-                return addRestriction(db, entityBRestriction1, entityBRestriction1Hash);
-            })
-            .then(() => {
-                return addRestriction(db, entityARestriction2, entityARestriction2Hash);
-            })
-            .then(() => {
-                return addRestriction(db, entityBRestriction2, entityBRestriction2Hash);
-            })
-            .then(() => {
-                return addRestriction(db, entityARestriction3, entityARestriction3Hash);
-            })
-            .then(() => {
-                return addRestriction(db, entityADifferentOwnerRestriction1, entityADifferentOwnerRestriction1Hash);
-            })
-            .then(() => {
-                return countRows(db, testConfig.db.restrictionsTable);
-            })
+            .then(() => addRestriction(db, entityBRestriction1, entityBRestriction1Hash))
+            .then(() => addRestriction(db, entityARestriction2, entityARestriction2Hash))
+            .then(() => addRestriction(db, entityBRestriction2, entityBRestriction2Hash))
+            .then(() => addRestriction(db, entityARestriction3, entityARestriction3Hash))
+            .then(() => addRestriction(db, entityADifferentOwnerRestriction1, entityADifferentOwnerRestriction1Hash))
+            .then(() => countRows(db, testConfig.db.restrictionsTable))
             .then((count) => {
                 storedEntitiesCount = count;
             });

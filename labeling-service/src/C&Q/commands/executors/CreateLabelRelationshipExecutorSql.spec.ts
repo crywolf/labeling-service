@@ -45,25 +45,19 @@ describe('CreateLabelRelationshipExecutorSql', () => {
         context('in case entityType and entityId is unique', () => {
             beforeEach(() => {
                 return addLabel(db, entityA200Label1)
-                    .then(() => {
-                        return executor.execute(entityB300Label);
-                    });
+                    .then(() => executor.execute(entityB300Label));
             });
 
             it('should attach label to entity', () => {
                 return countRows(db, testConfig.db.labelsTable)
-                    .then((count) => {
-                        return expect(count).to.equal(2);
-                    });
+                    .then((count) => expect(count).to.equal(2));
             });
         });
 
         context('in case entityType is different and entityId is the same', () => {
             beforeEach(() => {
                 return addLabel(db, entityA200Label1)
-                    .then(() => {
-                        return executor.execute(entityB200Label);
-                    });
+                    .then(() => executor.execute(entityB200Label));
             });
 
             it('should attach label to entity', () => {
@@ -77,67 +71,49 @@ describe('CreateLabelRelationshipExecutorSql', () => {
         context('in case entityType is the same and entityId is different', () => {
             beforeEach(() => {
                 return addLabel(db, entityA200Label1)
-                    .then(() => {
-                        return executor.execute(entityA210Label);
-                    });
+                    .then(() => executor.execute(entityA210Label));
             });
 
             it('should attach label to entity', () => {
                 return countRows(db, testConfig.db.labelsTable)
-                    .then((count) => {
-                        return expect(count).to.equal(2);
-                    });
+                    .then((count) => expect(count).to.equal(2));
             });
         });
 
         context('in case label is completely the same (not unique)', () => {
             beforeEach(() => {
                 return addLabel(db, entityA200Label1)
-                    .then(() => {
-                        return addLabel(db, entityB300Label);
-                    })
-                    .then(() => {
-                        return executor.execute(entityA200Label1);
-                    });
+                    .then(() => addLabel(db, entityB300Label))
+                    .then(() => executor.execute(entityA200Label1));
             });
 
             it('should not attach duplicate label to entity', () => {
                 return countRows(db, testConfig.db.labelsTable)
-                    .then((count) => {
-                        return expect(count).to.equal(2);
-                    });
+                    .then((count) => expect(count).to.equal(2));
             });
         });
 
         context('in case only label value is different', () => {
             beforeEach(() => {
                 return addLabel(db, entityA200Label1)
-                    .then(() => {
-                        return executor.execute(entityA200Label2);
-                    });
+                    .then(() => executor.execute(entityA200Label2));
             });
 
             it('should attach label to entity', () => {
                 return countRows(db, testConfig.db.labelsTable)
-                    .then((count) => {
-                        return expect(count).to.equal(2);
-                    });
+                    .then((count) => expect(count).to.equal(2));
             });
         });
 
         context('in case label is the same but different owner', () => {
             beforeEach(() => {
                 return addLabel(db, entityA200Label1)
-                    .then(() => {
-                        return executor.execute(entityA200Label1DifferentOwner);
-                    });
+                    .then(() => executor.execute(entityA200Label1DifferentOwner));
             });
 
             it('should attach label to entity', () => {
                 return countRows(db, testConfig.db.labelsTable)
-                    .then((count) => {
-                        return expect(count).to.equal(2);
-                    });
+                    .then((count) => expect(count).to.equal(2));
             });
         });
 
@@ -157,9 +133,7 @@ describe('CreateLabelRelationshipExecutorSql', () => {
 
             it('should attach label to entity with labelValue set to null', () => {
                 return countRows(db, testConfig.db.labelsTable)
-                    .then((count) => {
-                        return expect(count).to.equal(1);
-                    })
+                    .then((count) => expect(count).to.equal(1))
                     .then(() => getAllLabels(db))
                     .then((labels) => {
                         expect(labels[0]).to.deep.equal({
@@ -175,12 +149,8 @@ describe('CreateLabelRelationshipExecutorSql', () => {
             describe('and trying to add the same label', () => {
                 it('should not attach duplicate label to entity', () => {
                     return executor.execute(labelWithoutValue)
-                        .then(() => {
-                            return countRows(db, testConfig.db.labelsTable);
-                        })
-                        .then((count) => {
-                            return expect(count).to.equal(1);
-                        });
+                        .then(() => countRows(db, testConfig.db.labelsTable))
+                        .then((count) => expect(count).to.equal(1));
                 });
             });
         });
@@ -218,9 +188,7 @@ describe('CreateLabelRelationshipExecutorSql', () => {
                     });
                     it('should attach label to entity', () => {
                         return countRows(db, testConfig.db.labelsTable)
-                            .then((count) => {
-                                return expect(count).to.equal(1);
-                            });
+                            .then((count) => expect(count).to.equal(1));
                     });
                 });
 
@@ -256,9 +224,7 @@ describe('CreateLabelRelationshipExecutorSql', () => {
                     });
                     it('should attach label to entity', () => {
                         return countRows(db, testConfig.db.labelsTable)
-                            .then((count) => {
-                                return expect(count).to.equal(1);
-                            });
+                            .then((count) => expect(count).to.equal(1));
                     });
                 });
             });
@@ -274,12 +240,8 @@ describe('CreateLabelRelationshipExecutorSql', () => {
                     // entityType: 'entityA'
                     // type: 'size'
                     return executor.execute(entityA200Label3)
-                        .then(() => {
-                            return countRows(db, testConfig.db.labelsTable);
-                        })
-                        .then((count) => {
-                            return expect(count).to.equal(1);
-                        });
+                        .then(() => countRows(db, testConfig.db.labelsTable))
+                        .then((count) => expect(count).to.equal(1));
                 });
             });
 
@@ -313,9 +275,7 @@ describe('CreateLabelRelationshipExecutorSql', () => {
                     });
                     it('should attach label to entity', () => {
                         return countRows(db, testConfig.db.labelsTable)
-                            .then((count) => {
-                                return expect(count).to.equal(1);
-                            });
+                            .then((count) => expect(count).to.equal(1));
                     });
                 });
 
@@ -329,9 +289,7 @@ describe('CreateLabelRelationshipExecutorSql', () => {
 
                     it('should attach label to entity', () => {
                         return countRows(db, testConfig.db.labelsTable)
-                            .then((count) => {
-                                return expect(count).to.equal(1);
-                            });
+                            .then((count) => expect(count).to.equal(1));
                     });
                 });
 
@@ -353,9 +311,7 @@ describe('CreateLabelRelationshipExecutorSql', () => {
                     });
                     it('should attach label to entity', () => {
                         return countRows(db, testConfig.db.labelsTable)
-                            .then((count) => {
-                                return expect(count).to.equal(1);
-                            });
+                            .then((count) => expect(count).to.equal(1));
                     });
                 });
 
@@ -365,9 +321,7 @@ describe('CreateLabelRelationshipExecutorSql', () => {
                     });
                     it('should attach label to entity', () => {
                         return countRows(db, testConfig.db.labelsTable)
-                            .then((count) => {
-                                return expect(count).to.equal(1);
-                            });
+                            .then((count) => expect(count).to.equal(1));
                     });
                 });
 
@@ -408,9 +362,7 @@ describe('CreateLabelRelationshipExecutorSql', () => {
                 });
                 it('should allow to attach label to entity', () => {
                     return countRows(db, testConfig.db.labelsTable)
-                        .then((count) => {
-                            return expect(count).to.equal(1);
-                        });
+                        .then((count) => expect(count).to.equal(1));
                 });
             });
 
@@ -432,9 +384,7 @@ describe('CreateLabelRelationshipExecutorSql', () => {
                         .then(() => {
                             return countRows(db, testConfig.db.labelsTable);
                         })
-                        .then((count) => {
-                            return expect(count).to.equal(1);
-                        });
+                        .then((count) => expect(count).to.equal(1));
                 });
             });
         });

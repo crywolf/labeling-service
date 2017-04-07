@@ -31,32 +31,24 @@ describe('CreateLabelRestrictionExecutorSql', () => {
         context('in case entityType is different and labelType is the same', () => {
             beforeEach(() => {
                 return addRestriction(db, entityARestriction1, whateverHash)
-                    .then(() => {
-                        return executor.execute(entityBRestriction1);
-                    });
+                    .then(() => executor.execute(entityBRestriction1));
             });
 
             it('should add restriction', () => {
                 return countRows(db, testConfig.db.restrictionsTable)
-                    .then((count) => {
-                        expect(count).to.equal(2);
-                    });
+                    .then((count) => expect(count).to.equal(2));
             });
         });
 
         context('in case entityType is the same and labelType is different', () => {
             beforeEach(() => {
                 return addRestriction(db, entityARestriction1, whateverHash)
-                    .then(() => {
-                        return executor.execute(entityARestriction2);
-                    });
+                    .then(() => executor.execute(entityARestriction2));
             });
 
             it('should add restriction', () => {
                 return countRows(db, testConfig.db.restrictionsTable)
-                    .then((count) => {
-                        expect(count).to.equal(2);
-                    });
+                    .then((count) => expect(count).to.equal(2));
             });
         });
 
@@ -74,9 +66,7 @@ describe('CreateLabelRestrictionExecutorSql', () => {
 
             it('should add restriction with entityType set to null', () => {
                 return countRows(db, testConfig.db.restrictionsTable)
-                    .then((count) => {
-                        expect(count).to.equal(1);
-                    })
+                    .then((count) => expect(count).to.equal(1))
                     .then(() => getAllRestrictions(db))
                     .then((restrictions) => {
                         expect(restrictions[0]).to.deep.equal({
@@ -90,12 +80,8 @@ describe('CreateLabelRestrictionExecutorSql', () => {
             context('and trying to add the same restriction', () => {
                 it('should not add duplicate restriction', () => {
                     return executor.execute(restrictionWithoutEntityType)
-                        .then(() => {
-                            return countRows(db, testConfig.db.restrictionsTable);
-                        })
-                        .then((count) => {
-                            expect(count).to.equal(1);
-                        });
+                        .then(() => countRows(db, testConfig.db.restrictionsTable))
+                        .then((count) => expect(count).to.equal(1));
                 });
             });
         });
@@ -103,35 +89,25 @@ describe('CreateLabelRestrictionExecutorSql', () => {
         context('in case restriction is completely the same (not unique)', () => {
             beforeEach(() => {
                 return addRestriction(db, entityARestriction1, whateverHash)
-                    .then(() => {
-                        return addRestriction(db, entityBRestriction1, whateverHash);
-                    })
-                    .then(() => {
-                        return executor.execute(entityARestriction1);
-                    });
+                    .then(() => addRestriction(db, entityBRestriction1, whateverHash))
+                    .then(() => executor.execute(entityARestriction1));
             });
 
             it('should not add duplicate restriction', () => {
                 return countRows(db, testConfig.db.restrictionsTable)
-                    .then((count) => {
-                        expect(count).to.equal(2);
-                    });
+                    .then((count) => expect(count).to.equal(2));
             });
         });
 
         context('in case restriction is the same but different owner', () => {
             beforeEach(() => {
                 return addRestriction(db, entityARestriction1, whateverHash)
-                    .then(() => {
-                        return executor.execute(entityARestriction1DifferentOwner);
-                    });
+                    .then(() => executor.execute(entityARestriction1DifferentOwner));
             });
 
             it('should add restriction', () => {
                 return countRows(db, testConfig.db.restrictionsTable)
-                    .then((count) => {
-                        expect(count).to.equal(2);
-                    });
+                    .then((count) => expect(count).to.equal(2));
             });
         });
 

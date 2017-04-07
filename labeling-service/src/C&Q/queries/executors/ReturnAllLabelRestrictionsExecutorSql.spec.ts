@@ -300,36 +300,16 @@ describe('ReturnAllLabelRestrictionsExecutorSql', () => {
         };
 
         return addRestriction(db, entityARestriction1, whateverHash)
-            .then(() => {
-                return addRestriction(db, entityARestriction2, whateverHash);
-            })
-            .then(() => {
-                return addRestriction(db, entityARestriction3, whateverHash);
-            })
-            .then(() => {
-                return addRestriction(db, entityBRestriction1, whateverHash);
-            })
-            .then(() => {
-                return addRestriction(db, entityBRestriction2, whateverHash);
-            })
-            .then(() => {
-                return addRestriction(db, entityBRestriction3, whateverHash);
-            })
-            .then(() => {
-                return addRestriction(db, entityCRestriction1, whateverHash);
-            })
-            .then(() => {
-                return addRestriction(db, entityCRestriction2, whateverHash);
-            })
-            .then(() => {
-                return addRestriction(db, entityARestriction4, whateverHash);
-            })
-            .then(() => {
-                return addRestriction(db, entityBRestriction4, whateverHash);
-            })
-            .then(() => {
-                return addRestriction(db, entityARestriction3DifferentOwner, whateverHash);
-            });
+            .then(() => addRestriction(db, entityARestriction2, whateverHash))
+            .then(() => addRestriction(db, entityARestriction3, whateverHash))
+            .then(() => addRestriction(db, entityBRestriction1, whateverHash))
+            .then(() => addRestriction(db, entityBRestriction2, whateverHash))
+            .then(() => addRestriction(db, entityBRestriction3, whateverHash))
+            .then(() => addRestriction(db, entityCRestriction1, whateverHash))
+            .then(() => addRestriction(db, entityCRestriction2, whateverHash))
+            .then(() => addRestriction(db, entityARestriction4, whateverHash))
+            .then(() => addRestriction(db, entityBRestriction4, whateverHash))
+            .then(() => addRestriction(db, entityARestriction3DifferentOwner, whateverHash));
     }
 
     function initializeExecutor (): Promise<ReturnAllLabelRestrictionsExecutorSql> {

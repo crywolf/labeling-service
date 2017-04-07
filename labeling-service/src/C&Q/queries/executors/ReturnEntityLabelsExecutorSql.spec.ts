@@ -284,36 +284,16 @@ describe('ReturnEntityLabelsExecutorSql', () => {
         };
 
         return addLabel(db, entityALabel1)
-            .then(() => {
-                return addLabel(db, entityALabel2);
-            })
-            .then(() => {
-                return addLabel(db, entityALabel3);
-            })
-            .then(() => {
-                return addLabel(db, entityBLabel1);
-            })
-            .then(() => {
-                return addLabel(db, entityBLabel2);
-            })
-            .then(() => {
-                return addLabel(db, entityBLabel3);
-            })
-            .then(() => {
-                return addLabel(db, entityCLabel1);
-            })
-            .then(() => {
-                return addLabel(db, entityCLabel2);
-            })
-            .then(() => {
-                return addLabel(db, entityALabel4);
-            })
-            .then(() => {
-                return addLabel(db, entityBLabel4);
-            })
-            .then(() => {
-                return addLabel(db, entityALabel3DifferentOwner);
-            });
+            .then(() => addLabel(db, entityALabel2))
+            .then(() => addLabel(db, entityALabel3))
+            .then(() => addLabel(db, entityBLabel1))
+            .then(() => addLabel(db, entityBLabel2))
+            .then(() => addLabel(db, entityBLabel3))
+            .then(() => addLabel(db, entityCLabel1))
+            .then(() => addLabel(db, entityCLabel2))
+            .then(() => addLabel(db, entityALabel4))
+            .then(() => addLabel(db, entityBLabel4))
+            .then(() => addLabel(db, entityALabel3DifferentOwner));
     }
 
     function initializeExecutor (): Promise<ReturnEntityLabelsExecutorSql> {

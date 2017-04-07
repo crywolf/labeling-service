@@ -43,9 +43,7 @@ describe('RemoveLabelExecutorSql', () => {
             it('should remove all labels of entity and leave labels of other entities untouched', () => {
                 const removedEntitiesCount = 5;
                 return countRows(db, testConfig.db.labelsTable)
-                    .then((count) => {
-                        expect(count).to.equal(storedEntitiesCount - removedEntitiesCount);
-                    })
+                    .then((count) => expect(count).to.equal(storedEntitiesCount - removedEntitiesCount))
                     .then(() => getAllLabels(db))
                     .then((labels) => {
                         expect(labels[0]).to.deep.equal(entityBLabel1);
@@ -62,9 +60,7 @@ describe('RemoveLabelExecutorSql', () => {
             it(`should remove all labels of the entity belonging to that different owner`, () => {
                 const removedEntitiesCount = 1;
                 return countRows(db, testConfig.db.labelsTable)
-                    .then((count) => {
-                        expect(count).to.equal(storedEntitiesCount - removedEntitiesCount);
-                    });
+                    .then((count) => expect(count).to.equal(storedEntitiesCount - removedEntitiesCount));
             });
         });
 
@@ -80,9 +76,7 @@ describe('RemoveLabelExecutorSql', () => {
             it('should remove only labels of that types', () => {
                 const removedEntitiesCount = 4;
                 return countRows(db, testConfig.db.labelsTable)
-                    .then((count) => {
-                        return expect(count).to.equal(storedEntitiesCount - removedEntitiesCount);
-                    })
+                    .then((count) => expect(count).to.equal(storedEntitiesCount - removedEntitiesCount))
                     .then(() => getAllLabels(db))
                     .then((labels) => {
                         expect(labels[0]).to.deep.equal(entityBLabel1);
@@ -104,9 +98,7 @@ describe('RemoveLabelExecutorSql', () => {
             it('should remove only labels of that values', () => {
                 const removedEntitiesCount = 3;
                 return countRows(db, testConfig.db.labelsTable)
-                    .then((count) => {
-                        return expect(count).to.equal(storedEntitiesCount - removedEntitiesCount);
-                    })
+                    .then((count) => expect(count).to.equal(storedEntitiesCount - removedEntitiesCount))
                     .then(() => getAllLabels(db))
                     .then((labels) => {
                         expect(labels[0]).to.deep.equal(entityBLabel1);
@@ -131,9 +123,7 @@ describe('RemoveLabelExecutorSql', () => {
             it('should remove only labels of that types and values', () => {
                 const removedEntitiesCount = 2;
                 return countRows(db, testConfig.db.labelsTable)
-                    .then((count) => {
-                        return expect(count).to.equal(storedEntitiesCount - removedEntitiesCount);
-                    })
+                    .then((count) => expect(count).to.equal(storedEntitiesCount - removedEntitiesCount))
                     .then(() => getAllLabels(db))
                     .then((labels) => {
                         expect(labels[0]).to.deep.equal(entityBLabel1);
@@ -231,30 +221,14 @@ describe('RemoveLabelExecutorSql', () => {
         };
 
         return addLabel(db, entityALabel1)
-            .then(() => {
-                return addLabel(db, entityBLabel1);
-            })
-            .then(() => {
-                return addLabel(db, entityALabel2);
-            })
-            .then(() => {
-                return addLabel(db, entityBLabel2);
-            })
-            .then(() => {
-                return addLabel(db, entityALabel3);
-            })
-            .then(() => {
-                return addLabel(db, entityALabel4);
-            })
-            .then(() => {
-                return addLabel(db, entityALabel5);
-            })
-            .then(() => {
-                return addLabel(db, entityADifferentOwnerLabel1);
-            })
-            .then(() => {
-                return countRows(db, testConfig.db.labelsTable);
-            })
+            .then(() => addLabel(db, entityBLabel1))
+            .then(() => addLabel(db, entityALabel2))
+            .then(() => addLabel(db, entityBLabel2))
+            .then(() => addLabel(db, entityALabel3))
+            .then(() => addLabel(db, entityALabel4))
+            .then(() => addLabel(db, entityALabel5))
+            .then(() => addLabel(db, entityADifferentOwnerLabel1))
+            .then(() => countRows(db, testConfig.db.labelsTable))
             .then((count) => {
                 storedEntitiesCount = count;
             });
