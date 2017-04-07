@@ -18,12 +18,17 @@ describe('CreateLabelRelationshipExecutorSql', () => {
     let entityA200Label1: Label;
     let entityA200Label2: Label;
     let entityA200Label3: Label;
+    let entityA200Label4: Label;
     let entityA200Label1DifferentOwner: Label;
 
     let entityB200Label: Label;
     let entityA210Label: Label;
-    let entityB300label: Label;
+    let entityB300Label: Label;
+    let entityB300Label2: Label;
 
+    let restriction1: Restriction;
+    let restriction2: Restriction;
+    let restriction1ForDifferentOwner: Restriction;
     let entityARestriction1: Restriction;
     let entityARestriction2: Restriction;
     let entityARestriction3: Restriction;
@@ -41,7 +46,7 @@ describe('CreateLabelRelationshipExecutorSql', () => {
             beforeEach(() => {
                 return addLabel(db, entityA200Label1)
                     .then(() => {
-                        return executor.execute(entityB300label);
+                        return executor.execute(entityB300Label);
                     });
             });
 
@@ -89,7 +94,7 @@ describe('CreateLabelRelationshipExecutorSql', () => {
             beforeEach(() => {
                 return addLabel(db, entityA200Label1)
                     .then(() => {
-                        return addLabel(db, entityB300label);
+                        return addLabel(db, entityB300Label);
                     })
                     .then(() => {
                         return executor.execute(entityA200Label1);
@@ -197,33 +202,77 @@ describe('CreateLabelRelationshipExecutorSql', () => {
             });
         });
 
+        // RESTRICTIONS
         context('in case restriction exists', () => {
-            context('on the same labelType and unspecified entityType', () => {
+            context('with labelType and unspecified entityType', () => {
                 beforeEach(() => {
+                    // labelType: 'size'
+                    return addRestriction(db, restriction1, whateverHash);
+                });
+
+                context('and new label is of that type', () => {
+                    beforeEach(() => {
+                        // entityType: 'entityA'
+                        // type: 'size'
+                        return executor.execute(entityA200Label3);
+                    });
+                    it('should attach label to entity', () => {
+                        return countRows(db, testConfig.db.labelsTable)
+                            .then((count) => {
+                                return expect(count).to.equal(1);
+                            });
+                    });
+                });
+
+                context('and new label is not of corresponding type', () => {
+                    it('should reject with UnprocessableEntityError', () => {
+                        // entityType: 'entityA'
+                        // type: 'color'
+                        return expect(executor.execute(entityA200Label1)).to.be.rejectedWith(UnprocessableEntityError);
+                    });
+                });
+            });
+
+            context('with labelType and entityType', () => {
+                beforeEach(() => {
+                    // labelType: 'size',
+                    // entityType: 'entityA'
                     return addRestriction(db, entityARestriction1, whateverHash);
                 });
 
-                it('should reject with UnprocessableEntityError', () => {
-                    return expect(executor.execute(entityA200Label3)).to.be.rejectedWith(UnprocessableEntityError);
+                context('and new label is of different type but the same entityType', () => {
+                    it('should reject with UnprocessableEntityError', () => {
+                        // entityType: 'entityA',
+                        // type: 'color',
+                        return expect(executor.execute(entityA200Label1)).to.be.rejectedWith(UnprocessableEntityError);
+                    });
+                });
+
+                context('and new label is of the same type and the same entityType', () => {
+                    beforeEach(() => {
+                        // entityType: 'entityA'
+                        // type: 'size',
+                        return executor.execute(entityA200Label3);
+                    });
+                    it('should attach label to entity', () => {
+                        return countRows(db, testConfig.db.labelsTable)
+                            .then((count) => {
+                                return expect(count).to.equal(1);
+                            });
+                    });
                 });
             });
 
-            context('on the same labelType and entityType', () => {
+            context('with the same labelType and different entityType', () => {
                 beforeEach(() => {
-                    return addRestriction(db, entityARestriction2, whateverHash);
-                });
-
-                it('should reject with UnprocessableEntityError', () => {
-                    return expect(executor.execute(entityA200Label3)).to.be.rejectedWith(UnprocessableEntityError);
-                });
-            });
-
-            context('on the same labelType and different entityType', () => {
-                beforeEach(() => {
+                    // labelType: 'size'
+                    // entityType: 'entityB'
                     return addRestriction(db, entityBRestriction1, whateverHash);
                 });
 
                 it('should attach label to entity', () => {
+                    // entityType: 'entityA'
+                    // type: 'size'
                     return executor.execute(entityA200Label3)
                         .then(() => {
                             return countRows(db, testConfig.db.labelsTable);
@@ -231,16 +280,154 @@ describe('CreateLabelRelationshipExecutorSql', () => {
                         .then((count) => {
                             return expect(count).to.equal(1);
                         });
-
                 });
             });
 
-            context('on the same entityType and different labelType', () => {
+            context('with the same entityType and different labelType', () => {
                 beforeEach(() => {
-                    return addRestriction(db, entityARestriction3, whateverHash);
+                    // labelType: 'height'
+                    // entityType: 'entityA'
+                    return addRestriction(db, entityARestriction2, whateverHash);
                 });
 
+                it('should reject with UnprocessableEntityError', () => {
+                    // entityType: 'entityA'
+                    // type: 'size'
+                    return expect(executor.execute(entityA200Label3)).to.be.rejectedWith(UnprocessableEntityError);
+                });
+            });
+
+            context('with labelType and unspecified entityType - but for different user! -', () => {
+                beforeEach(() => {
+                    // ownerId: '099'
+                    // labelType: 'size'
+                    return addRestriction(db, restriction1ForDifferentOwner, whateverHash);
+                });
+
+                context('and new label is of that type', () => {
+                    beforeEach(() => {
+                        // ownerId: '001'
+                        // entityType: 'entityA'
+                        // type: 'size'
+                        return executor.execute(entityA200Label3);
+                    });
+                    it('should attach label to entity', () => {
+                        return countRows(db, testConfig.db.labelsTable)
+                            .then((count) => {
+                                return expect(count).to.equal(1);
+                            });
+                    });
+                });
+
+                context('and new label is not of corresponding type', () => {
+                    beforeEach(() => {
+                        // ownerId: '001'
+                        // entityType: 'entityA'
+                        // type: 'color'
+                        return executor.execute(entityA200Label1);
+                    });
+
+                    it('should attach label to entity', () => {
+                        return countRows(db, testConfig.db.labelsTable)
+                            .then((count) => {
+                                return expect(count).to.equal(1);
+                            });
+                    });
+                });
+
+            });
+        });
+
+        // More restrictions
+        context('in case more restrictions exist:', () => {
+            context('one with labelType="size" and unspecified entityType ' +
+                'and another with labelType="height" and entityType="entityA"', () => {
+                beforeEach(() => {
+                    return addRestriction(db, restriction1, whateverHash)
+                        .then(() => addRestriction(db, entityARestriction2, whateverHash));
+                });
+
+                context('and new label is of type="size" and entityType="entityB"', () => {
+                    beforeEach(() => {
+                        return executor.execute(entityB300Label2);
+                    });
+                    it('should attach label to entity', () => {
+                        return countRows(db, testConfig.db.labelsTable)
+                            .then((count) => {
+                                return expect(count).to.equal(1);
+                            });
+                    });
+                });
+
+                context('and new label is of type="height" and entityType="entityA"', () => {
+                    beforeEach(() => {
+                        return executor.execute(entityA200Label4);
+                    });
+                    it('should attach label to entity', () => {
+                        return countRows(db, testConfig.db.labelsTable)
+                            .then((count) => {
+                                return expect(count).to.equal(1);
+                            });
+                    });
+                });
+
+                context('and new label is of type="size" and entityType="entityA"', () => {
+                    it('should reject with UnprocessableEntityError', () => {
+                        return expect(executor.execute(entityA200Label3)).to.be.rejectedWith(UnprocessableEntityError);
+                    });
+                });
+
+                context('and new label is of type="color" and entityType="entityA"', () => {
+                    it('should reject with UnprocessableEntityError', () => {
+                        return expect(executor.execute(entityA210Label)).to.be.rejectedWith(UnprocessableEntityError);
+                    });
+                });
+            });
+        });
+
+        context('in case much more restrictions exist', () => {
+            beforeEach(() => {
+                        // type: 'size'
+                return addRestriction(db, restriction1, whateverHash)
+                        // ownerId: '099'
+                    .then(() => addRestriction(db, restriction1ForDifferentOwner, whateverHash))
+                        // labelType: 'size', entityType: 'entityB'
+                    .then(() => addRestriction(db, entityBRestriction1, whateverHash))
+                        // labelType: 'producer'
+                    .then(() => addRestriction(db, restriction2, whateverHash))
+                        // labelType: 'height', entityType: 'entityA'
+                    .then(() => addRestriction(db, entityARestriction2, whateverHash))
+                        // labelType: 'length', entityType: 'entityA'
+                    .then(() => addRestriction(db, entityARestriction3, whateverHash));
+            });
+
+            context('first fulfilled restriction', () => {
+                beforeEach(() => {
+                    // entityType: 'entityA', type: 'height'
+                    return executor.execute(entityA200Label4);
+                });
+                it('should allow to attach label to entity', () => {
+                    return countRows(db, testConfig.db.labelsTable)
+                        .then((count) => {
+                            return expect(count).to.equal(1);
+                        });
+                });
+            });
+
+            context('when none of them is fulfilled', () => {
+                it('should reject with UnprocessableEntityError', () => {
+                    // entityType: 'entityA', type: 'size'
+                    return expect(executor.execute(entityA200Label3)).to.be.rejectedWith(UnprocessableEntityError);
+                });
+            });
+
+            context('when adding restriction that allows to add the label', () => {
+                beforeEach(() => {
+                    // labelType: 'size', entityType: 'entityA';
+                    return addRestriction(db, entityARestriction1, whateverHash);
+                });
                 it('should attach label to entity', () => {
+                    // type: 'size', entityType: 'entityA'
                     return executor.execute(entityA200Label3)
                         .then(() => {
                             return countRows(db, testConfig.db.labelsTable);
@@ -248,7 +435,6 @@ describe('CreateLabelRelationshipExecutorSql', () => {
                         .then((count) => {
                             return expect(count).to.equal(1);
                         });
-
                 });
             });
         });
@@ -277,6 +463,13 @@ describe('CreateLabelRelationshipExecutorSql', () => {
             type: 'size',
             value: 'small'
         };
+        entityA200Label4 = {
+            ownerId: '001',
+            entityId: '0200',
+            entityType: 'entityA',
+            type: 'height',
+            value: 'tall'
+        };
 
         entityA200Label1DifferentOwner = {
             ownerId: '099',
@@ -301,27 +494,47 @@ describe('CreateLabelRelationshipExecutorSql', () => {
             type: 'color',
             value: 'blue'
         };
-        entityB300label = {
+        entityB300Label = {
             ownerId: '001',
             entityId: '0300',
             entityType: 'entityB',
             type: 'color',
             value: 'blue'
         };
+        entityB300Label2 = {
+            ownerId: '001',
+            entityId: '0300',
+            entityType: 'entityB',
+            type: 'size',
+            value: 'huge'
+        };
 
-        entityARestriction1 = {
+        restriction1 = {
             ownerId: '001',
             labelType: 'size'
         };
-        entityARestriction2 = {
+        restriction2 = {
+            ownerId: '001',
+            labelType: 'producer'
+        };
+        restriction1ForDifferentOwner = {
+            ownerId: '099',
+            labelType: 'size'
+        };
+
+        entityARestriction1 = {
             ownerId: '001',
             labelType: 'size',
             entityType: 'entityA'
         };
-
-        entityARestriction3 = {
+        entityARestriction2 = {
             ownerId: '001',
             labelType: 'height',
+            entityType: 'entityA'
+        };
+        entityARestriction3 = {
+            ownerId: '001',
+            labelType: 'length',
             entityType: 'entityA'
         };
 

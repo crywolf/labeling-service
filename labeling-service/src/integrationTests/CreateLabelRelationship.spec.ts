@@ -89,7 +89,7 @@ describe('Integration::CreateLabelRelationship route', () => {
                 return addRestriction(db, entityARestriction1, whateverHash);
             });
 
-            it('should not attach label and return 422 Unprocessable entity', () => {
+            it('should not attach label and return 422 UnprocessableEntityError', () => {
                 return request
                     .post('/owners/001/label-relationships')
                     .send(labelPayload)
