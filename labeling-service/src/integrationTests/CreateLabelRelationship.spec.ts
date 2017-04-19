@@ -111,7 +111,7 @@ describe('Integration::CreateLabelRelationship route', () => {
         context('in case of unexpected database error', () => {
             let runMethod;
             beforeEach(() => {
-                runMethod = sinon.stub(db, 'run').returns(Promise.reject(new Error('Some SQL error')));
+                runMethod = sinon.stub(db, 'run').rejects(new Error('Some SQL error'));
             });
 
             afterEach(() => {

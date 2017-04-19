@@ -160,7 +160,7 @@ describe('CreateLabelRelationshipExecutorSql', () => {
                 return initializeStorageService()
                     .then((sqlDb) => {
                         db = sqlDb;
-                        sinon.stub(db, 'run').returns(Promise.reject(new Error('Some SQL error')));
+                        sinon.stub(db, 'run').rejects(new Error('Some SQL error'));
                         return new CreateLabelRelationshipExecutorSql(db);
                     })
                     .then((sqlExecutor) => {

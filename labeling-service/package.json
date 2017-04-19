@@ -39,7 +39,7 @@
     "nsp": "^2.6.2",
     "nyc": "^10.1.2",
     "semantic-release": "^6.3.2",
-    "sinon": "^1.17.7",
+    "sinon": "^2.1.0",
     "ts-node": "^2.0.0",
     "tslint": "^4.4.2",
     "tslint-eslint-rules": "^3.3.0",
